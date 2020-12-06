@@ -79,11 +79,15 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Thousandth of Dirt">
-<meta property="og:url" content="http://example.com/index.html">
+<meta name="description" content="所有示例代码均可以在 Animations-Demo 下载到 iOS 中实现动画有好几种方式，UIView 无疑是最简单的一种，但是所有的动画归根结底还是 layer 层的动画。UIView 层面的动画只是对 layer 层部分属性的封装。我们可以直接对 UIView 的 alpha 、bounds 、center 、frame、transform、backgroundColor(如果view没有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift 笔记：动画">
+<meta property="og:url" content="http://example.com/2020/12/07/Swift-%E7%AC%94%E8%AE%B0%EF%BC%9A%E5%8A%A8%E7%94%BB/index.html">
 <meta property="og:site_name" content="Thousandth of Dirt">
+<meta property="og:description" content="所有示例代码均可以在 Animations-Demo 下载到 iOS 中实现动画有好几种方式，UIView 无疑是最简单的一种，但是所有的动画归根结底还是 layer 层的动画。UIView 层面的动画只是对 layer 层部分属性的封装。我们可以直接对 UIView 的 alpha 、bounds 、center 、frame、transform、backgroundColor(如果view没有">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-12-06T17:52:39.000Z">
+<meta property="article:modified_time" content="2020-12-06T17:55:27.471Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
@@ -115,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/"/>
+  <link rel="canonical" href="http://example.com/2020/12/07/Swift-笔记：动画/"/>
 
 
 
 
 
-  <title>Thousandth of Dirt</title>
+  <title>Swift 笔记：动画 | Thousandth of Dirt</title>
   
 
 
@@ -140,8 +144,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -234,9 +237,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -266,9 +269,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/12/07/Swift-%E7%AC%94%E8%AE%B0%EF%BC%9A%E5%8A%A8%E7%94%BB/" itemprop="url">Swift 笔记：动画</a></h1>
+          <h1 class="post-title" itemprop="name headline">Swift 笔记：动画</h1>
         
 
         <div class="post-meta">
@@ -318,9 +319,7 @@
       
 
       
-        
-          
-            <p>所有示例代码均可以在 Animations-Demo 下载到</p>
+        <p>所有示例代码均可以在 Animations-Demo 下载到</p>
 <p>iOS 中实现动画有好几种方式，UIView 无疑是最简单的一种，但是所有的动画归根结底还是 layer 层的动画。UIView 层面的动画只是对 layer 层部分属性的封装。我们可以直接对 UIView 的 alpha 、bounds 、center 、frame、transform、backgroundColor(如果view没有实现draw(_:))。上面这些属性看起来不多，但是足够满足大部分日常开发动画。</p>
 <p>在 UIView 中执行一个动画非常简单，系统已经帮我们封装好了一切，你只需要将你想要动画的属性放到 animations 的闭包中即可。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UIView.animate(withDuration: 0.4) &#123;</span><br><span class="line">  self.v.backgroundColor &#x3D; UIColor.red</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -386,8 +385,6 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">var arr &#x3D; [UIImage]()</span><br><span class="line">let w : CGFloat &#x3D; 18</span><br><span class="line">for i in 0 ..&lt; 6 &#123;</span><br><span class="line">  UIGraphicsBeginImageContextWithOptions(CGSize(width: w, height: w), false, 0)</span><br><span class="line">  let context &#x3D; UIGraphicsGetCurrentContext()!</span><br><span class="line">  context.setFillColor(UIColor.red.cgColor)</span><br><span class="line">  let ii &#x3D; CGFloat(i)</span><br><span class="line">  let rect &#x3D; CGRect(x: ii, y:ii, width: w-ii*2, height: w-ii*2)</span><br><span class="line">  context.addEllipse(in: rect)</span><br><span class="line">  context.fillPath()</span><br><span class="line">  let im &#x3D; UIGraphicsGetImageFromCurrentImageContext()!</span><br><span class="line">  UIGraphicsEndImageContext()</span><br><span class="line">  arr.append(im)</span><br><span class="line">&#125;</span><br><span class="line">let im &#x3D; UIImage.animatedImage(with: arr, duration: 0.5)</span><br><span class="line">self.button.setImage(im, for: .normal)</span><br></pre></td></tr></table></figure>
 <p>￼示例</p>
 
-          
-        
       
     </div>
     
@@ -404,135 +401,28 @@
       
 
       
-
-      
-
       
       
-        <div class="post-eof"></div>
+
       
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/06/Github-Stars/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Thousandth of Dirt">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/12/06/Github-Stars/" itemprop="url">视差框架</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-06T03:52:09+08:00">
-                2020-12-06
-              </time>
+              <a href="/2020/12/06/Github-Stars/" rel="next" title="视差框架">
+                <i class="fa fa-chevron-left"></i> 视差框架
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <h6 id="Skrollr-js"><a href="#Skrollr-js" class="headerlink" title="Skrollr.js"></a><a target="_blank" rel="noopener" href="https://github.com/Prinzhorn/skrollr">Skrollr.js</a></h6><p>效果非常棒</p>
-<h6 id="Fullpage-js"><a href="#Fullpage-js" class="headerlink" title="Fullpage.js"></a><a target="_blank" rel="noopener" href="https://github.com/alvarotrigo/fullPage.js">Fullpage.js</a></h6><p>简单和易于使用的、用于创建全屏滚动网站的插件（也被称为单页面网站</p>
-<h6 id="Rellax-js"><a href="#Rellax-js" class="headerlink" title="Rellax.js"></a>Rellax.js</h6><p>简单好用的速度视差</p>
-<h6 id="Parallax-js-15k-star"><a href="#Parallax-js-15k-star" class="headerlink" title="Parallax.js(15k star)"></a><a target="_blank" rel="noopener" href="https://github.com/wagerfield/parallax">Parallax.js(15k star)</a></h6><h6 id="Tilt-js"><a href="#Tilt-js" class="headerlink" title="Tilt.js"></a>Tilt.js</h6><p>类似Apple TV的图标视差</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -542,155 +432,11 @@
   </article>
 
 
-    
-      
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/04/JAVA%E5%AD%A6%E4%B9%A0%EF%BC%9A-Class-forName/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Thousandth of Dirt">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/12/04/JAVA%E5%AD%A6%E4%B9%A0%EF%BC%9A-Class-forName/" itemprop="url">JAVA笔记： 类，反射，动态编译</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-04T14:13:00+08:00">
-                2020-12-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h6 id="一-Class类简介："><a href="#一-Class类简介：" class="headerlink" title="一 Class类简介："></a>一 Class类简介：</h6><ol>
-<li>取信息方法</li>
-<li></li>
-</ol>
-
-          
-        
+    <div class="post-spread">
       
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
 
 
           </div>
@@ -698,6 +444,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -912,6 +662,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
