@@ -249,6 +249,237 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/07/AppleTV%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97%E4%B8%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thousandth of Dirt">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/12/07/AppleTV%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97%E4%B8%80/" itemprop="url">AppleTV编程指南一</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-07T01:58:58+08:00">
+                2020-12-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>原文：App Programming Guide for tvOS–The New Apple TV</p>
+<p><img src="/images/pasted-3.png" alt="upload successful"></p>
+<h6 id="本文档文章包括"><a href="#本文档文章包括" class="headerlink" title="本文档文章包括"></a>本文档文章包括</h6><ul>
+<li>Apple TV 编程指南：介绍</li>
+<li>Apple TV 编程指南：创建Client-Server App</li>
+<li>Apple TV 编程指南：使用Apple TV遥控器控制屏幕上的用户界面</li>
+<li>Apple TV 编程指南：检测手势和按钮按压</li>
+<li>Apple TV 编程指南：设计键盘输入体验</li>
+<li>Apple TV 编程指南：使用游戏控制器</li>
+<li>Apple TV 编程指南：创造视差美术资源</li>
+<li>Apple TV 编程指南：资源管理</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">重要：这是针对于正在开发中的API或技术的预备文档(预发布版本)。苹果提供这份文档的目的是帮助你按照文中描述的方式对技术的选择及界面的设计开发进行规划。这些信息有可能发生变化，因此根据本文档的软件开发应当基于最终版本的操作系统和文档进行测试。该文档的新版本或许会随着API或相关技术未来的发展而进行更新。</span><br></pre></td></tr></table></figure>
+
+<p>新的 Apple TV 不仅仅是一个被动的媒体播放器。Apple TV 的用户还可以玩游戏，使用工具类应用程序，看电影，享受并分享经验。这些功能的增加也给开发商提供了更多机会。</p>
+<p>tv OS 开发由 iOS 开发衍生而来但又有所不同，包括 tv OS 特有的一些框架。你会发现 Apple TV 的开发跟 iOS 开发很相似，它结合了支持分享技术、多用户体验，并且开辟了你在 iOS 设备上没有发现的app开发领域的空间。你可以创建新的APP也可以使用 iOS 代码作为起点。无论是哪种开发，你使用的都是熟悉的工具（Xcode）、语言（Objective-C,Swift以及JavaScript）。本文档介绍了 Apple TV 的独特功能，并提供了帮你开始 tv OS app 开发之旅的深入指导信息。</p>
+<p>当移植现有的项目时，你可以在 Xcode 工程中增加一个 target 以简化资源共享，但是你需要为 tv OS 创建新的 storyboards。你可能会需要了解用户如何浏览你的APP，然后让APP用户界面适用于 Apple TV。想要了解更多信息，请查看Apple TV Human Interface Guidelines（<a target="_blank" rel="noopener" href="http://www.cocoachina.com/design/20150924/13533.html">中文版</a>/<a target="_blank" rel="noopener" href="https://developer.apple.com/tvos/human-interface-guidelines/">英文版</a>）</p>
+<p>创建Apple TV的配置文件与iOS创建的配置文件方法是一样的，即在Xcode中使用Fix Issue命令或者通过开发者中心网站来创建配置文件。更多关于 Apple TV 功能支持信息，请参看 <a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/IDEs/Conceptual/AppDistributionGuide/SupportedCapabilities/SupportedCapabilities.html#//apple_ref/doc/uid/TP40012582-CH38">Supported Capabilities</a>.</p>
+<p>虽然 iOS 和 tv OS APP 是不同的实体（也就是说没有一个可以在两个平台上运行的二进制文件），但你可以创建一个绑定这些应用程序的通用购买。用户一次购买应用程序，但可以同时获得应用的 iOS 和 tv OS 版本。更多信息，请查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40012582">App Distribution Guide</a>。</p>
+<h6 id="AppleTV硬件"><a href="#AppleTV硬件" class="headerlink" title="AppleTV硬件"></a>AppleTV硬件</h6><p>新的AppleTV有以下硬件规格：</p>
+<ul>
+<li>64-bit A8 处理器 </li>
+<li>32 GB/64 GB 存储空间 </li>
+<li>2 GB RAM</li>
+<li>10/100 Mbps Ethernet</li>
+<li>WiFi 802.11a/b/g/n/ac</li>
+<li>1080p 分辨率</li>
+<li>HDMI</li>
+<li>全新Siri 遥控器/Apple TV 遥控器</li>
+</ul>
+<p>新Apple TV遥控器有两种控制方式：一种使用Siri，另一种是在屏幕上搜索。Siri搜索适用于以下国家：</p>
+<p>澳大利亚\加拿大\法国\德国\日本\西班牙\英国\美国</p>
+<p>图1-1展示的是新遥控器，它有以下按钮：</p>
+<p><img src="/images/pasted-4.png" alt="upload successful"></p>
+<ol>
+<li>触摸界面。滑动浏览。按下选择。长按展示详情菜单。</li>
+<li>菜单。按下返回上个菜单。</li>
+<li>Siri/搜索。长按与之进行对话（编辑注：适用于上边列出的国家）。在其他国家，按下该按钮则打开屏幕搜索应用程序。</li>
+<li>播放/暂停。播放和暂停媒体。</li>
+<li>Home按钮。按下返回主屏幕。按两次查看打开应用程序。长按休眠。</li>
+<li>音量。控制TV音量。</li>
+<li>Lightning接口。插入充电。<br>下图是Siri遥控器和Apple TV遥控器。</li>
+</ol>
+<h6 id="传统的APP"><a href="#传统的APP" class="headerlink" title="传统的APP"></a>传统的APP</h6><p>为 Apple TV 开发应用程序类似于 iOS APP 开发。你可以用 iOS 开发中相同的技术和框架来开发游戏、实用应用程序、媒体应用程序以及其他类型的应用。全新的以及现有的APP可以同时部署到 iOS 和新 Apple TV 平台。</p>
+<h6 id="Client-Server-Apps（简写为-C-S-APP）"><a href="#Client-Server-Apps（简写为-C-S-APP）" class="headerlink" title="Client-Server Apps（简写为 C-S APP）"></a>Client-Server Apps（简写为 C-S APP）</h6><p>为Apple TV创建Client-Server APP（简写为 C-S APP）非常简单，它的主要目的是使用HTTPS、XMLHTTPRequest、DOM 以及 JavaScript 技术传输流媒体。你可以使用苹果的自定义标记语言–TVML 创建接口，并使用JavaScript指定 APP 的行为。TVMLKit框架在原生代码和 JavaScript 代码之间搭建了桥梁。</p>
+<p>你可以在 JavaScript 文件中指定APP的初次启动行为。向往常一样创建你的二进制APP，再使用TVMLKit框架来加载 JavaScript 文件。JavaScript 文件加载 TVML页面并在屏幕上展示。你可以使用苹果提供的模板创建TVML页面。每个模板都提供了独一无二的全屏信息展示。你可以通过添加或者移除模板中的元素来调整页面。关于苹果提供的TVML模板和元素列表，请查看 Apple TV Markup Language Reference。</p>
+<p>Apple TV上所有的视频回放都基于 HTTP Live Streaming 和 FairPlay Streaming。请查看 HTTP Live Streaming 和 FairPlay Streaming Overview。关于HTTP Live Streaming 编写规范，请查阅 HLS Authoring Specification for Apple TV。</p>
+<h6 id="Top-Shelf"><a href="#Top-Shelf" class="headerlink" title="Top Shelf"></a>Top Shelf</h6><p>用户可以将任何 Apple TV app放在 App菜单的顶行，最多能放5个 icon。用户在顶行选中某个 icon 时，屏幕顶部会展示与该 APP 相关的内容，这个区域被称为 Top Shelf。在这个区域展示 APP 的内容，可以让用户预览他们关心的内容，或者让他们直接跳转至 APP 的特定部分。</p>
+<h6 id="焦点和视差图片"><a href="#焦点和视差图片" class="headerlink" title="焦点和视差图片"></a>焦点和视差图片</h6><p>当用户停留在某个项目上但却没有选择该项目时，某个UI元素就处于聚焦状态。当用户聚焦到一个分层图片上时，图片会响应用户在遥控器玻璃材质触控板上的触摸。</p>
+<p>每层图片以稍有不同的速度旋转以产生视察效果。这种精细的效果为用户创造了视觉上的深度，更现实也更有活力，并强调被聚焦的图片正是用户想要的。</p>
+<p>视差图片由设计师完成。但是如何将其应用在你的APP中呢？改进后的 UIImageView 可以支持视差图片，所以大多数情况下你只需做很小的编码调整。根据是要将图片直接添加到APP，还是在运行时从服务器加载，你的工作也会有所变化。</p>
+<h6 id="新的-tvOS-框架"><a href="#新的-tvOS-框架" class="headerlink" title="新的 tvOS 框架"></a>新的 tvOS 框架</h6><p>Apple tvOS 引入了 tvOS 专有的新框架：</p>
+<ul>
+<li>TVMLJS：描述了用于加载 TVML 页面（在C-S APP中展示信息）的JavaScript API。详见 TVJS Framework Reference.\</li>
+<li>TVMLKit：提供了将 JavaScript 和 TVML 元素包含进你的 APP 的方法。详见TVMLKit Framework Reference.</li>
+<li>TVServices：描述如何为 APP 添加一个 top shelf 扩展。详见 TVServices Framework Reference.</li>
+</ul>
+<h6 id="继承-iOS-框架"><a href="#继承-iOS-框架" class="headerlink" title="继承 iOS 框架"></a>继承 iOS 框架</h6><p>Apple tvOS 继承了 iOS 的一些框架。详见 iOS 框架和 tvOS 框架之间一些小差异。</p>
+<ul>
+<li>Accelerate</li>
+<li>AudioToolbox</li>
+<li>AudioUnit</li>
+<li>AVFoundation</li>
+<li>AVKit</li>
+<li>CFNetwork</li>
+<li>CloudKit</li>
+<li>CoreBluetooth</li>
+<li>CoreData</li>
+<li>CoreFoundation</li>
+<li>CoreGraphics</li>
+<li>CoreImage</li>
+<li>CoreLocation</li>
+<li>CoreMedia</li>
+<li>CoreSpotlight</li>
+<li>CoreText</li>
+<li>CoreVideo</li>
+<li>Darwin</li>
+<li>Foundation</li>
+<li>GameController</li>
+<li>GameKit</li>
+<li>GameplayKit</li>
+<li>GLKit</li>
+<li>ImageIO</li>
+<li>MachO</li>
+<li>MediaAccessibility</li>
+<li>MediaPlayer</li>
+<li>MediaToolbox</li>
+<li>Metal</li>
+<li>MetalKit</li>
+<li>MetalPerformanceShaders</li>
+<li>MobileCoreServices</li>
+<li>ModelIO</li>
+<li>OpenGLES</li>
+<li>SceneKit</li>
+<li>Security</li>
+<li>simd</li>
+<li>SpriteKit</li>
+<li>StoreKit</li>
+<li>Swift Standard Library</li>
+<li>SystemConfiguration</li>
+<li>UIKit</li>
+</ul>
+<h6 id="新用户界面挑战"><a href="#新用户界面挑战" class="headerlink" title="新用户界面挑战"></a>新用户界面挑战</h6><p>Apple TV 没有鼠标来让用户直接选择 APP 或者与之进行交互，也不能触摸和使用手势。相反，Apple TV 使用了 Siri Remote 或者游戏控制器在屏幕上进行移动。</p>
+<p>除了新控制器，整个用户体验也是完全不同。Mac 和 iOS 设备通常是单人体验。用户可能在你的 APP 中进行其他交互操作，但用户依然是一个人使用设备。对于新Apple TV，用户体验变得更加社交化。可能会有几个人坐在沙发上与你的 APP 进行交互。对于一款优秀的 APP 来说，利用这些变化是至关重要的。</p>
+<h6 id="APP本地储存有限"><a href="#APP本地储存有限" class="headerlink" title="APP本地储存有限"></a>APP本地储存有限</h6><p>Apple TV app 最大容量为 200MB。此外，你的 APP 最多可使用该设备本地 500KB 的永久存储（使用 NSUserDefaults 类）。</p>
+<p>除了有限的本地存储，在空间不够的情况下，其他所有数据必须可由操作系统清除。对于这些资源的管理，你有以下几个选择：</p>
+<p>你的 APP 可以在iCloud服务中存储和检索用户数据。</p>
+<p>你的 APP 将所需数据下载到它的缓存目录中。当 APP 运行时下载的数据不会被删除。不过，当空间不足并且你的 APP 没有运行时，这些数据可能会被删除。不要使用整个缓存空间，这样会导致不可预知的后果。</p>
+<p>你的 APP 可以使用 on-demand resources 打包只读资产。在运行时，APP 会根据需要请求资源，并且操作系统会自动下载和管理这些资源。知道如何以及何时加载新资产而又保持用户的参与非常关键。关于 on-demand resources 的更多信息，请参看 On-Demand Resources Guide。</p>
+<p>这意味着为新 Apple TV 开发的每款应用程序都必须能在 iCloud 储存和检索数据，以提供良好的用户体验。</p>
+<p>以 Apple TV 作为目标平台</p>
+<p>当你需要编写仅适用于 tvOS 的代码时，可使用 #define TARGET_OS_TV 1 宏。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/07/Swift-%E7%AC%94%E8%AE%B0%EF%BC%9A%E5%8A%A8%E7%94%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -734,7 +965,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
