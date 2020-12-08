@@ -79,89 +79,17 @@
 
 
 
-<meta name="description" content="新Apple TV重新定义了起居室的体验，你能将非同凡响而身临其境的内容投放到大屏幕上，这是前所未有的体验。  一、概述 1.1 设计原则 无论你是在开发游戏、媒体流应用，还是家庭实用应用，在构想产品的时候请记住这些设计原则。 互联 Connected Apple TV通过革命性的Siri遥控器为电视带来了触控体验。用户可以在房间的任何一个角落，通过流畅、直观的手势与内容进行交互。 触控板的操作犹">
+<meta name="description" content="正文有能力的小伙伴儿们可以去官方文档了解一下App Programming Guide for tvOS 接下来说几个tvOS的特别之处。 1.Apple tvOS引入了一下几个特有的框架。  TVMLJS。描述了C&#x2F;S应用中用来加载TVML页面的JavaScript接口。见《TVJS Framework Reference》。 TVMLKit。提供一种整合JavaScript和TVML的方法。见">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Apple TV 人机界面指南">
+<meta property="og:title" content="tvOS 关于Apple TV开发的注意事项">
 <meta property="og:url" content="http://example.com/2020/12/07/a/index.html">
 <meta property="og:site_name" content="Thousandth of Dirt">
-<meta property="og:description" content="新Apple TV重新定义了起居室的体验，你能将非同凡响而身临其境的内容投放到大屏幕上，这是前所未有的体验。  一、概述 1.1 设计原则 无论你是在开发游戏、媒体流应用，还是家庭实用应用，在构想产品的时候请记住这些设计原则。 互联 Connected Apple TV通过革命性的Siri遥控器为电视带来了触控体验。用户可以在房间的任何一个角落，通过流畅、直观的手势与内容进行交互。 触控板的操作犹">
+<meta property="og:description" content="正文有能力的小伙伴儿们可以去官方文档了解一下App Programming Guide for tvOS 接下来说几个tvOS的特别之处。 1.Apple tvOS引入了一下几个特有的框架。  TVMLJS。描述了C&#x2F;S应用中用来加载TVML页面的JavaScript接口。见《TVJS Framework Reference》。 TVMLKit。提供一种整合JavaScript和TVML的方法。见">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442906562201652.gif">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442906672381598.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442906705360875.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442906762334548.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442906809763123.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442906881991924.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442908395480674.gif">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442909567651441.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442909688191112.gif">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442909724308408.gif">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442909757440939.gif">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442909870984127.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442910236670838.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442910064650590.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442910297641674.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442910341541539.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442912940437802.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442913240389791.gif">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442913420361809.gif">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442913457409833.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442913492208183.gif">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442913730969612.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442913828855861.gif">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442913868500209.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442914802239742.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442914923512630.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442915531645629.jpg">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442915861249249.jpg">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442916040930771.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442916241627390.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442916303459539.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442916561409378.gif">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442916762220009.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442916780836929.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442916794574479.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442916805624876.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442917004109421.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442917028782854.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442917048251900.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442917065378014.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150922/1442917166894656.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442971500676686.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442971520766542.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442971604374353.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442971628479190.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442971644182951.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442971660677282.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442971679125845.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442971695259612.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442971714295610.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442971733355443.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442971749473826.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442971764891861.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442971783121012.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442971792168124.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442971869150189.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442971893302254.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442972143265093.jpg">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442972215614219.gif">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442978633761143.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442978822427467.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442979005764492.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442979085517637.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442979144142685.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442979200654357.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442979221864404.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442979263597949.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442979315388912.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442979347729800.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442979387322192.png">
-<meta property="og:image" content="http://api.cocoachina.com/uploads/20150923/1442979741981446.png">
-<meta property="article:published_time" content="2020-12-06T18:33:31.000Z">
-<meta property="article:modified_time" content="2020-12-06T18:35:09.391Z">
+<meta property="article:published_time" content="2020-12-06T18:47:00.000Z">
+<meta property="article:modified_time" content="2020-12-07T05:27:43.772Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://api.cocoachina.com/uploads/20150922/1442906562201652.gif">
 
 
 
@@ -197,7 +125,7 @@
 
 
 
-  <title>Apple TV 人机界面指南 | Thousandth of Dirt</title>
+  <title>tvOS 关于Apple TV开发的注意事项 | Thousandth of Dirt</title>
   
 
 
@@ -341,7 +269,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Apple TV 人机界面指南</h1>
+          <h1 class="post-title" itemprop="name headline">tvOS 关于Apple TV开发的注意事项</h1>
         
 
         <div class="post-meta">
@@ -353,7 +281,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-07T02:33:31+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-07T02:47:00+08:00">
                 2020-12-07
               </time>
             
@@ -363,6 +291,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Swift/" itemprop="url" rel="index">
+                    <span itemprop="name">Swift</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -391,150 +341,89 @@
       
 
       
-        <p>新Apple TV重新定义了起居室的体验，你能将非同凡响而身临其境的内容投放到大屏幕上，这是前所未有的体验。</p>
-<hr>
-<p><strong>一、概述</strong></p>
-<p><strong>1.1 设计原则</strong></p>
-<p>无论你是在开发游戏、媒体流应用，还是家庭实用应用，在构想产品的时候请记住这些设计原则。</p>
-<p><strong>互联 Connected</strong></p>
-<p>Apple TV通过革命性的Siri遥控器为电视带来了触控体验。用户可以在房间的任何一个角落，通过流畅、直观的手势与内容进行交互。 触控板的操作犹如人们熟悉的trackpad，全新的遥控器支持轻触、滑动和点按。 请利用触控的优势，运用令人愉悦、引人入胜的方式，将用户和内容连接在一起。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442906562201652.gif" alt="102.gif"></p>
-<p><strong>明确 Clear</strong></p>
-<p>Apple TV给人自然、直观的感受，令你本能地知道该怎么做。你的应用应该增强这一体验。用布局网格、动作和透明度打造语境。为每个元素赋予空间感，让用户清楚它们在你的应用中的位置。Apple TV的导航采用焦点模型。用户使用遥控器在界面元素间移动，例如电影海报、应用或按钮，通过点按选中某个元素。导航中的当前项是选中态，如果一个元素被选中聚焦，即使远看也该一目了然。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442906672381598.png" alt="103.png"></p>
-<p><strong>沉浸 Immersive</strong></p>
-<p>精美、绵延无边框的艺术画面将用户吞没在丰富多彩的影音体验中。对单个内容的聚焦提升了这种体验，遥控器的触控版会让你觉得自己在直接触摸屏幕，与在iOS设备上操作无异。通过吸引人的内容、令人振奋的影像、以及精巧流畅的动画力求沉浸感。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442906705360875.png" alt="overview-immersive.png"></p>
-<p><strong>1.2 应用 APP</strong></p>
-<p>tvOS为一系列本地运行的应用提供了开发框架，如吸引人的游戏、实用工具和其他Apple TV本地应用。如果你熟悉iOS应用设计，你就已经知道大部分你需要了解的东西了。大部分界面元素和开发框架在tvOS里也同样存在。然而，想创造一个可以遥控、在电视屏幕运转良好的出色影音体验确实需要一些重要而且独特的设计考量。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442906762334548.png" alt="104.png"></p>
-<p>仔细思考用户交互。把你应用的体验设计得直观、简洁、流畅。在iOS里，用户看到的和触摸的是同一个设备。在Apple TV上，用户看着房间另一头的屏幕，同时触摸的是遥控器。寻找机会通过遥控器让用户感到和应用连接在一起，即使他们坐在一定距离之外。</p>
-<p>考虑用户与屏幕的距离，让焦点醒目。你的应用将会是在距离电视10英尺外的沙发上也能被使用的。相应地去设计界面元素，让用户不会感到困惑。并且明确聚焦的事物以及明确在遥控器上操作带来的反馈。</p>
-<p>创造共享体验。用户通常在公共环境中享受电视。考虑你的应用应该怎样吸引一组用户，以及每次打开应用的都是不同的用户。</p>
-<p>应用开发相关信息，参阅<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/General/Conceptual/AppleTV_PG/index.html">tvOS应用编程指南</a>。</p>
-<p><strong>1.3 首页</strong></p>
-<p>Apple TV首页展现已安装的应用。用户浏览网格排列的一系列应用图标，选中一个并通过点击来启动应用。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442906809763123.png" alt="105.png"></p>
-<p>在首页上，你的应用图标是讲述你应用的故事以及与用户建立情感连接的最好机会。你的应用图标应该建立好的第一印象，所以请设计一个独特、动人、便于记忆的图标吧。设计指导参阅 4.2 应用图标。</p>
-<p><strong>1.4 顶部展区 Top Shelf</strong></p>
-<p>顶部展区是首页上位于首行应用列表之上的内容展示区域，用户可以决定顶部展区展示哪些应用。当聚焦这些应用中的一个时，顶部展区展示于此应用相关的特定推荐内容。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442906881991924.png" alt="106.png"></p>
-<p>顶部展区突出展现应用中最新、推荐或者有价值的内容，并且给用户提供直接跳转的独特机会。例如，当聚焦App Store时，横幅突出展现值得关注的新应用。当聚焦iTunes TV Shows时，用户可以看见一系列推荐节目。聚焦并且点击一个节目，就会直接跳转到应用内相关的节目详情页。聚焦到一个节目时，按下遥控器的播放／暂停键即刻开始回放该节目。</p>
-<p>推荐内容的设计指南，参阅 4.3 顶部展区图片。</p>
-<p>**1.5 焦点和视差</p>
-<p>**</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442908395480674.gif" alt="107.gif"></p>
-<p>在Apple TV上，导航过程中当前的界面元素，如某图标、图片、按钮或其他的界面元素，可视为处于聚焦态。当一个元素被聚焦，它会被缓缓的提到前景。在遥控器触控板上轻轻画圆，元素会相应地做出摇摆动作。与此同时，元素上出现照明光泽，制造表面反光的视觉效果。如果用户一段时间内没有操作，非聚焦中的内容转为暗淡而聚焦中的元素变的更大。这些共同作用的效果，与坐在沙发上的用户保持一种联系，并且提供了上下文和一种明确的感受，强调了什么在焦点。</p>
-<p>视差效果是一种贯穿整个系统的精巧视觉效果，它传达了聚焦元素的纵深和动态。通过图片分层、透明度、缩放和动效，视差效果打造了活灵活现的、真实的3D感。为了支持视差效果，提供图像分层是应用图标的要求之一，也是首页顶部展区的动态内容可以支持的。我们提倡应用中任何可被聚焦的图片内容都使用分层图片。</p>
-<p>更多关于焦点的信息，见 3.2 焦点和选择。在 4.5 图像分层 中学习如何为视差设计图片。聚焦和视差实现指南，见<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/General/Conceptual/AppleTV_PG/index.html">tvOS应用编程指南</a>。</p>
-<hr>
-<p>**二、遥控器与交互</p>
-<p>**</p>
-<p><strong>2.1 遥控器**</strong><br>**遥控器为Apple TV最主要的操作设备，创造性地利用遥控器的触控板、加速计以及陀螺仪，为用户提供令人感叹的和直观的体验。用户在客厅使用遥控器时感觉像直接与电视交互一样。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442909567651441.png" alt="108.png"></p>
-<p><strong>2.2手势</strong></p>
-<p>遥控器的触控板可以检测到多种直观的单指手势。利用手势可以与你的内容建立一种实感的联系。</p>
-<p>滑动 Swipe</p>
-<p>用户可以在选项间向上、下、左、右移动焦点。滑动手势的滚动通常带有惯性，即基于滑动的力度，滚动开始快，随后慢下来。通过这种方式，用户可以毫不费劲地在大量内容中移动。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442909688191112.gif" alt="109.gif"></p>
-<p>点击 Click</p>
-<p>点击能激活控件或选择一个选项。点击是一个强意图性的动作，也是触发行动的主要形式。“点击并长按”是用来触发特定情境下的动作。举个例子，点击并长按界面元素可以进入编辑状态。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442909724308408.gif" alt="110.gif"></p>
-<p>轻触 Tap</p>
-<p>轻触能在一系列的元素中逐个浏览。在基于UIKit的标准界面的应用中，轻触导航的不同区域能直接导航。举个例子，轻触触控板的顶部向上导航。一些应用会使用轻触手势来显示隐藏的控件。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442909757440939.gif" alt="111.gif"></p>
+        <h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><p>有能力的小伙伴儿们可以去官方文档了解一下<a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/General/Conceptual/AppleTV_PG/#//apple_ref/doc/uid/TP40015241-CH12-SW1">App Programming Guide for tvOS</a></p>
+<p>接下来说几个tvOS的特别之处。</p>
+<p><strong>1.Apple tvOS引入了一下几个特有的框架。</strong></p>
 <ul>
-<li><strong>为了避免在无意中触发动作，所以要区分点击和轻触。</strong>点击手势是一种强意图的交互行为，常适用于按下按钮，确认选择以及在游戏中发起一个动作。轻触手势适用于导航或者展示一些额外的信息。但需要注意的是用户在拿起遥控器、移动遥控或把遥控器交给他人时，他们的手指可能会自然地放在遥控器上。</li>
-<li><strong>避免使用标准手势执行非标准的行为</strong>，除非你的应用是一个需要手势的互动游戏 (active gameplay)。重新定义标准手势的含义会导致用户困扰和交互复杂性。</li>
-<li><strong>当且仅当必要时，你的应用能定义新手势</strong>。人们熟悉标准的手势，不喜欢被迫学习其他的方法去完成相同的事情。在游戏或者其他沉浸式应用里，定制手势也是体验中有趣味的部分。但在其他应用里，最好还是使用标准手势，这样用户就不需要额外的努力去发现或者记住它们。</li>
-<li><strong>适当时，不同位置的轻触手势能辅助导航和游戏。</strong>遥控器可以区分的触控板上下左右的轻触手势。如果要对不同位置的轻触做出响应，前提是你的应用和对应的情境需要该轻触动作，且这一行为是直观的、可发现的。</li>
+<li>TVMLJS。描述了C/S应用中用来加载TVML页面的JavaScript接口。见<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/TVMLJS/Reference/TVJSFrameworkReference/index.html#//apple_ref/doc/uid/TP40016076">《TVJS Framework Reference》</a>。</li>
+<li>TVMLKit。提供一种整合JavaScript和TVML的方法。见<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/TVMLKit/Reference/TVMLKit_Collection/index.html#//apple_ref/doc/uid/TP40016429">《TVMLKit Framework Reference》</a>。</li>
+<li>TVServices。描述了如何为应用添加顶部扩展<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/TVServices/Reference/TVServices_Ref/index.html#//apple_ref/doc/uid/TP40016412">《TVServices Framework Reference》</a>。</li>
 </ul>
-<p><strong>2.3 游戏手柄</strong></p>
-<p>在游戏里，游戏手柄可以提升可玩性以及增加沉浸感。游戏手柄也能对Apple TV的基于焦点的界面进行导航，省去切换输入设备的需要。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442909870984127.png" alt="112.png"></p>
-<p><strong>重要：</strong>游戏手柄是选购项，用户不一定有购买。但每台Apple TV一定会配置遥控器。如果你的应用可以支持游戏手柄，那么你必须让遥控器也能控制游戏控制。</p>
+<p><strong>2.资源限制</strong></p>
+<p>Apple TV上的应用没有持久化的本地存储。</p>
+<blockquote>
+<p>There’s an inconsistency regarding the Documents folder: you can create files in it when you run your app in the Simulator. But on the actual Apple TV, it just fails.</p>
+</blockquote>
+<p>虽然可以短暂存储在Caches或Temporary文件夹下，但是依然会被系统删除。</p>
+<blockquote>
+<p>You can write data to the Caches directory and the data should stay there as long as your app is running. But when your app exits, that data could be deleted by the system, so be prepared for it to be gone when your app launches again.</p>
+</blockquote>
+<p>这意味着每个应用都应该将数据存放在iCloud，并且通过一种用户体验较好的方式将它们获取到。</p>
+<p>可以用NSUserDefaults存储一些参数，但是不可以存储很大的数据，最大也就512k。</p>
+<blockquote>
+<p>NSUserDefaultsSizeLimitExceededNotification is posted on the main queue when more data is stored in user defaults than is allowed. Currently there is no limit for local user defaults except on tvOS, where a warning notification will be posted at 512kB, and the process terminated at 1MB. For ubiquitous defaults, the limit depends on the logged in iCloud user.</p>
+</blockquote>
+<p>除了缺乏本地存储，Apple TV应用的大小也被限制在200MB。如果一个应用的大小超过了限制，就需要使用按需加载的方式将它们打包。知道什么时候加载以及如何价值新的资源对开发一款成功的应用非常重要。更多关于按需加载资源的信息，见<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/FileManagement/Conceptual/On_Demand_Resources_Guide/index.html#//apple_ref/doc/uid/TP40015083">《On-Demand Resources Guide》</a>。</p>
+<p><strong>3.焦点引擎</strong></p>
+<p>我的个人理解是，tvOS不像iOS是电容屏的设备，可以用手指精准触碰到需要交互的视图上的操作，而是使用遥控器的方式进行焦点的移动，所以有了焦点的概念，例如UICollectionViewCell上的Button等。</p>
+<p>只有焦点引擎能够显式的更新焦点，以为着系统并没有提供API来直接在某个方向操作和移动焦点，只有在用户发送移动事件、系统和应用请求更新的时候，焦点引擎才会更新焦点。更多关于焦点的更新，见<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/General/Conceptual/AppleTV_PG/WorkingwiththeAppleTVRemote.html#//apple_ref/doc/uid/TP40015241-CH5-SW14">《Updating Focus Programmatically》</a>。</p>
+<p>如果焦点引擎找到了一个可以接受焦点的视图，比如Cell或Button，它会通过shouldUpdateFocusInContext:代理方法给应用提供一个评估是否移动焦点的机会。焦点引擎按前一个和下一个的顺序通知每个焦点环境（先通知前一个视图，然后下一个视图，最后通知它们的父视图）。只要有一个视图返回NO，这次移动就会被取消。更多关于焦点环境的信息，见<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UIFocusEnvironment_Protocol/index.html#//apple_ref/doc/uid/TP40015223">《UIFocusEnvironmentProtocol Reference》</a>。</p>
+<p><strong>系统产生的焦点更新动作</strong></p>
+<p>在许多环境下，必要的时候UIKit会自动更新焦点。下面是焦点自动更新的一些示例：</p>
 <ul>
-<li><strong>确认游戏手柄的连接。</strong>你的游戏可能随时启动，甚至在没有游戏手柄连接的情况下。为了确保可靠的用户体验，应用启动时应该检查手柄是否就位，如手柄是必要的，可以友好地提示用户连接手柄，还需要告知用户游戏手柄比遥控器多提供的能力。</li>
-<li><strong>不要让用户在使用你的应用时切换操作设备。</strong>用遥控器和游戏手柄测试你的应用，以及确保它们能在菜单和必要的导航上能使用。考虑一下，在使用遥控器时，你还能使用什么交互。举个例子，在赛车游戏里，你可以让用户在遥控器横屏模式上进行旋转和操作。参阅 2.4 按钮 了解按钮预期行为。</li>
+<li>焦点视图被移除。</li>
+<li>UITableView或UICollectionView重新加载数据。</li>
+<li>弹出一个新的视图控制器。</li>
+<li>用户按<strong>Menu</strong>按钮返回。</li>
 </ul>
-<p>关于游戏手柄支持的相关信息，可以查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/General/Conceptual/AppleTV_PG/index.html">tvOS应用编程指南</a>中的<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/General/Conceptual/AppleTV_PG/WorkingwithGameControllers.html">Working with Game Controllers</a>。了解如何开发游戏，请查阅<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/General/Conceptual/GameplayKit_Guide/index.html">GameplayKit Programming Guide</a>。</p>
-<p><strong>2.4 按钮</strong></p>
-<p>遥控器上除了触控板外，还有些可点击的按钮，例如播放/暂停键也可以用于你的应用或者游戏上。当菜单按钮被按下时，使用游戏控制框架（Game Controller framework）的应用程序也能收到通知并采取适当行动。在你的应用或游戏的情境中，不管用户使用遥控器还是游戏手柄，按钮的行为应该一致且可预测的。</p>
-<p>Siri遥控器的按键操作预期</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442910236670838.png" alt="116.png"></p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442910064650590.png" alt="114.png"></p>
-<p>游戏手柄的按键操作预期</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442910297641674.png" alt="117.png"></p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442910341541539.png" alt="118.png"></p>
-<p>给用户返回到上一屏以及离开你的应用或者游戏的路径。用户预期按下遥控器或者游戏手柄上的菜单按钮时，可以回到上一屏或者Apple TV的首页。当在应用或者游戏首页时，按下菜单按钮应该始终回到Apple TV首页。在游戏过程中，按下菜单按钮应该可以显示或者隐藏游戏中的暂停菜单，里面也应该包括一个选项可以导航回到游戏的主菜单。</p>
-<p>始终可以使用Siri遥控器上的播放/暂停按钮。无用的按钮感觉像坏了一样，所以应该始终为播放/暂停按钮提供合理的行为。举一个例子，让用户使用播放/播放键来开始游戏，跳过一页教程说明，或者直接开始播放媒体。在游戏过程中，如果不需要辅助操作，播放/暂停应执行主操作。在一个应用里，如果没有明显的可播放内容，播放/暂停的操作行为等同于点击，用来激活一个焦点选项（focused item）。</p>
-<hr>
-<p><strong>三、导航和焦点</strong></p>
-<p>运用这些设计准则能帮助你创造运行自然的应用，如同Apple TV身临其境体验的一部分。</p>
-<p><strong>3.1 导航</strong></p>
-<p>用户往往不会注意到一个应用的导航，除非它并不符合他们的预期。你的工作是建立既能支持应用的结构和目标，又不会吸引用户注意力的导航。导航应该是自然而熟悉的，它不应该主宰用户界面或让用户从内容中分心。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442912940437802.png" alt="119.png"></p>
-<p>在Apple TV上，用户在堆叠的页面间移动，浏览内容。每一屏可能放置前往其他屏的入口，并且通过遥控器返回到前一屏或主菜单。一般情况下，使用标准的用户界面元素，如标签栏、表单视图（table views）、内容集视图（collection views）和分屏视图（split views），可以在不同的页面间切换。</p>
+<p><strong>在视图控制器中支持焦点</strong></p>
+<p>因为UIViewController相应UIFocusEnvironment，自定义视图控制器可以覆盖UIFocusEnvironment中的代理方法来实现自定义焦点的行为。</p>
+<p>自定义视图控制器:</p>
 <ul>
-<li><strong>设计一个能快速简单到达内容的信息结构。</strong>用户想用最少的轻触、滑动，迅速地访问到内容。简化你的信息结构，用最少屏数来组织它。</li>
-<li><strong>利用触控来达成流畅性。</strong>提供简单的，用最少手势便能在焦点元素中阻力最低地移动的方法。</li>
+<li>覆盖preferredFocusedView来明确焦点默认从哪里开始。</li>
+<li>覆盖shouldUpdateFocusInContext:定义焦点如何移动。</li>
+<li>覆盖didUpdateFocusInContext:withAnimationCoordinator:响应焦点的更新时机并且改变应用的状态。</li>
 </ul>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442913240389791.gif" alt="120.gif"></p>
+<p>视图控制器可以通过调用setNeedsFocusUpdate请求焦点引擎来重置焦点到当前的preferredFocusedView上。注意，只有当该视图控制器包含一个已经获取焦点的视图时，setNeedsFocusUpdate才会起作用。</p>
+<p><strong>在CollectionView和TableView中支持焦点</strong></p>
+<p>使用UICollectionView和UITableView的时候，我们通过代理对象自定义焦点行为。这个模式同事也用于基于焦点的界面的实现。UITableViewDelegate和UICollectionViewDelegate协议定义了UIFocusEnvironment协议中相同的方法，但是只能给UITableView和UICollectionView使用。</p>
+<p>在UICollectionView和UITableView中支持焦点的技巧：</p>
 <ul>
-<li><strong>考虑焦点。</strong>Apple TV的导航并不总能一步到位。由于电视采用基于焦点的选择模型，用户需要先通过遥控器，把焦点移动到目标界面元素后，才能与其交互。如果你的导航方案需要太多的手势才能实现目标，用户可能会感到沮丧。参阅 3.2 焦点和选择。</li>
-<li><strong>通过菜单按钮实**</strong>现后退导航。**让用户能通过遥控器上的菜单按钮返回，以创建简单和可预期的导航体验。在玩游戏时，点击菜单按钮应该回到游戏主界面或调起有返回至菜单主界面选项的游戏菜单。在应用或游戏的一级界面，点击菜单按钮会退出至Apple TV的主屏幕。</li>
-<li><strong>避免显示**</strong>返回按钮**。用户知道按菜单键能返回，所以不要在你的应用中浪费空间去显示一个额外的重复此功能的控件了。但当界面中只存在购买或删除的按钮时，可以考虑提供取消按钮，便于让用户能返回上一界面。</li>
-<li>内容合集在一屏显示比优于在多屏显示。即使一屏的元素非常多，遥控器的手势也能帮助用户快速移动。如果你有个焦点元素的集合，可以考虑用一屏显示，以保持导航的简单。</li>
-<li><strong>使用标准的导航组件。</strong>如果你的应用用户界面使用UIKit实现，采用标准的导航控件，如页面控制器（page controls）、标签栏（tab bars）、分段控件（segmented controls）、表单视图（table views）、内容集视图（collection views）和分屏视图（split views），用户已经熟悉这些控件，他们将直观地知道如何使用你的应用。 你可以在 6 界面元素 了解这些导航组件。</li>
-<li><strong>支持内容垂直导航。</strong>左右滑动比上下滑动更自然，在选择或设计内容布局时，请考虑这一点。</li>
+<li>使用UICollectionViewDelegate中的collectionView:canFocusItemAtIndexPath:或者UITableViewDelegate中的tableView:canFocusRowAtIndexPath:方法表明一个Cell是否可以获取焦点。这与在自定义视图中重写canBecomeFocused方法的作用一样。</li>
+<li>使用UICollectionView和UITableView中的remembersLastFocusedIndexPath属性表示离开焦点离开后，再次获取焦点时是否应该停留在最后一次的位置。</li>
 </ul>
-<p><strong>3.2 焦点和选择</strong></p>
-<p>在iOS设备上，用户直接通过在触控板上轻触或滑动与用户界面交互。Apple TV没有触屏，用户在房间里，通过遥控器直接与屏幕中的元素交互。 这一交互模式是基于焦点模型的。通过按下按钮或使用遥控器上的手势，用户可以在元素间变换焦点，停留于某一元素，点击到达内容或激活动作。焦点改变时，微妙的动画和视差效果营造的纵深感，能明确标识出此元素现正处于焦点。</p>
-<p>使用标准界面元素，获得相应动效。如果你的应用使用UIKit和focus API实现用户界面，你的界面元素的焦点模式会带有相应的动效和视觉效果，这能使你的应用感觉更像一个平台原生应用，并帮助减少用户在界面移动时的阻力。当用户在你的应用使用Siri遥控器时，他们会发现焦点元素间的转换流畅而直观。</p>
-<p>按用户预期方向移动焦点。在Apple TV中，几乎都是间接操作——手势在元素间移动焦点，系统滚动界面使焦点元素保持可见。如果你的应用使用间接操作，确认焦点与手势方向一致。如果用户在遥控上点按向右或滑动向右，焦点应该向右移动，即内容应该左移。如果用户点击向上或向上滑动，焦点也应该向上移。而全屏幕元素，如照片，应该采用直接操作，手势移动的实体而不是焦点。举例，向右滑应该从左向右移动相片。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442913420361809.gif" alt="124.gif"></p>
-<p>聚焦元素显性化。用户在远处选择并操作屏幕上的元素，因此让他们时刻知道哪个元素正处于焦点中至关重要。通常而言，如果你使用UIKit中的界面元素，系统会自动做到这点。如果你想使用自行开发的焦点模型，请确保焦点元素突出。举例而言，一个图像为主的合集中，图像会有标题，你应该在焦点元素，而不是非焦点元素下显示其标题。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442913457409833.png" alt="123.png"></p>
-<p>使用视差效果，让焦点元素对用户交互响应更迅速。在遥控器上轻柔地画圈，相应的焦点元素也会实时产生柔和的位移。这样的反馈能提高对内容连接的认知，并强调了正处于聚焦态的元素。这种视差效果内置于UIKit，使用分层图像的方式，赋予焦点元素活力感。 使用视差能创造更身临其境的互动体验。要了解更多信息，请参阅 1.5 焦点和视差 和 4.5 图像分层。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442913492208183.gif" alt="125.gif"></p>
+<p>这里可以参考我之前的一篇博客<a target="_blank" rel="noopener" href="https://blog.csdn.net/u012265444/article/details/80161668">tvOS UICollectionViewCell上添加UIButton改变焦点Focus</a>理解。</p>
+<p><strong>在自定义视图中支持焦点</strong></p>
+<p>UIViewController、UIView都实现了UIFocusEnvironment协议，因此所有在<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/General/Conceptual/AppleTV_PG/WorkingwiththeAppleTVRemote.html#//apple_ref/doc/uid/TP40015241-CH5-SW1">在视图控制器中支持焦点</a>提到的都可以在自定义视图中使用。因为视图能够获取焦点，所以实现自定义视图的焦点行为时，还需要考虑一些额外的东西：</p>
 <ul>
-<li><strong>创建尺寸合适的焦点元素。</strong>间距恰当的、较大的元素比较小的元素更易浏览和选择。</li>
-<li><strong>界面元素的焦点和非焦点态都应设计得美观。</strong>在Apple TV上，处于焦点的元素通常会稍微放大。当你设计界面时，应该同时考虑元素的焦点态和非焦点态。为聚焦状态配置较大尺寸，以确保它们看起来始终清晰。你可以在 4 图标和图片 中查看图片尺寸规范。</li>
-<li><strong>焦点的改变应是流畅的。</strong>一个元素转为聚焦状态时，它会发生颜色改变或伴有微妙的动画；当焦点再次发生变化时，记得让它自然地恢复至非焦点态，而不要让这个过渡显得不和谐。</li>
-<li><strong>不要显示光标。</strong>用户预期通过改变焦点导航，而不是尝试移动屏幕上一个小小的光标。使用焦点模型来提供行之有效的、一致的体验。</li>
+<li>如果自定义视图需要能够获取焦点，重写canBecomeFocused方法，并返回YES（默认返回NO）。视图可以是一直都能够获取焦点或者只能在一些条件下获取焦点。例如UIButton在禁用状态是不能获取焦点的。</li>
+<li>如果一个视图需要将焦点重定向到领悟一个焦点（例如子视图），需要重写preferredFocusedView。</li>
+<li>重写didUpdateFocusInContext:withAnimationCoordinator:响应焦点改变事件，并更新程序状态。</li>
 </ul>
-<p>了解更多应用中的焦点运用，请参阅<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/General/Conceptual/AppleTV_PG/index.html">tvOS应用编程指南</a>。</p>
-<hr>
-<p><strong>四、图标和图片</strong></p>
-<p>应用图标和图片对创造沉浸式的用户体验至关重要，这样的体验吸引着用户并让他们充满兴趣。</p>
-<p><strong>4.1 图片尺寸</strong></p>
-<p>总是按照界面所需尺寸提供图片。运行时需要缩小的大尺寸图像需要花更长时间加载，并对渲染性能有负向影响。Apple TV上的所有图片按@1x分辨率提供。</p>
-<p><strong>4.2 应用图标</strong></p>
-<p>每个应用都需要一个漂亮并令人记忆深刻的图标，在App Store中吸引用户的注意，在Apple TV首页能跳出来抓人眼球。一瞥之间，图标是第一个向用户传达应用内容的机会。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442913730969612.png" alt="126.png"></p>
+<p><strong>焦点相关动画</strong></p>
+<p>当焦点发生改变的时候，获取焦点的视图执行动画，而前一个视图动画进入无焦点状态。与应用中的其它动画不一样的是，UIKit会调整焦点动画的时长和动画曲线来达到某种系统级的行为。例如，当焦点快速移动的时候，动画的时长会虽用户的移动而加速。</p>
+<p>UIKit为支持焦点的视图类提供了系统定义的焦点动画。使用UIKit的内置类UIFocusAnimationCoordinator和addCoordinatedAniamtions:completion:方法可以为系统定义的行为创建动画。</p>
+<p>添加到协调器的动画可以在获取焦点或者失去焦点的时候运行（不是同时），这取决于提供给协调器的焦点环境。获取焦点的视图和失去焦点的视图共同的父视图或者焦点获取视图的父视图，在焦点动画执行时，运行自己的动画。而失焦视图的父视图在失去焦点的时候执行动画。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)didUpdateFocusInContext:(<span class="built_in">UIFocusUpdateContext</span> *)context withAnimationCoordinator:(<span class="built_in">UIFocusAnimationCoordinator</span> *)coordinator</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="keyword">super</span> didUpdateFocusInContext:context withAnimationCoordinator:coordinator];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span> == context.nextFocusedView) &#123;</span><br><span class="line"></span><br><span class="line">        [coordinator addCoordinatedAnimations:^&#123;</span><br><span class="line">            <span class="comment">// focusing animations</span></span><br><span class="line">        &#125; completion:^&#123;</span><br><span class="line">            <span class="comment">// completion</span></span><br><span class="line">        &#125;];</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">self</span> == context.previouslyFocusedView) &#123;</span><br><span class="line">        [coordinator addCoordinatedAnimations:^&#123;</span><br><span class="line">            <span class="comment">// unfocusing animations</span></span><br><span class="line">        &#125; completion:^&#123;</span><br><span class="line">            <span class="comment">// completion</span></span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：有许多原因会导致视图不能获取焦点，下面列举了一些例子（但不是全部）：</p>
 <ul>
-<li><strong>提供单一的视觉焦点。</strong>为应用设计单一、中心的视觉焦点，能立刻抓住眼球并能清晰地表现应用。用户不应该需要仔细分析图标才能理解其代表的意思。</li>
-<li><strong>保持背景简洁。</strong>不要用太多背景元素塞满你的图标。给图标绘制一个简洁的背景，能够突出上面的图层，但并不过分压制它周围的应用图标。记住，你不必填满整个图标。</li>
-<li><strong>仅当必要或文字是LOGO一部分的时候，才使用文字。</strong>当图标被选中聚焦时，应用名会出现在图标的下面。不要包含非必须的文字来重复名字或者告诉用户如何使用你的应用，比如观看(Watch)或者玩(Play)之类的。如果你的设计包含文字，可以强调与应用实际功能相关的部分。</li>
-<li><strong>不包括截图。</strong>截图对应用图标来说太复杂，而且通常不能帮助传达应用内容。相反，还是花时间去设计个漂亮、迷人、突出的图标吧。</li>
-<li><strong>保持图标四角是直角。</strong>系统会自动用蒙板来生成圆角。</li>
+<li>视图的canBecomeFocused方法返回NO。</li>
+<li>视图的hidden属性被设置为YES。</li>
+<li>视图的alpha属性被设置为0。</li>
+<li>视图被设置为不能接受用户交互。</li>
+<li>视图被其它视图覆盖。</li>
 </ul>
-<p>分层</p>
-<p>重要：应用图标要求使用分层图片。具体参见 4.5 图像分层。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442913828855861.gif" alt="127.gif"></p>
-<p>应用图标必须有2-5个图层来创造聚焦状态时的纵深感和生动感。</p>
-<p>仔细考虑如何分离图层。如果你的图标包含一个LOGO，把它从背景层中分离出来。如果你的图标包含文本，把文本放在前景层，这样在视差效果下就不会被其他图层所遮盖。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442913868500209.png" alt="128.png"></p>
-<p>效果</p>
-<ul>
-<li>仔细考虑渐变和阴影。背景的渐变和花纹可能会与视差效果有冲突，因此使用时要谨慎。关于渐变，推荐使用上到下、浅到深的渐变，记得它们会影响整个图层。</li>
-</ul>
-<p>应用图标中，阴影最好看起来是锐利、硬线条、融入背景层的着色，当图标静止时不可见。</p>
-<ul>
-<li>利用不同程度的透明度来增强纵深感和活力度。创造性地使用透明度能够使你的图标脱颖而出。举个例子，Photos图标的核心分成多个半透明图层，为设计带来更多活力。</li>
-</ul>
-<p>图标尺寸</p>
-<p>重要：每个应用必须提供一个小尺寸和大尺寸图标。应用图标必须呈递两种尺寸，两者长宽比相同。</p>
+<p>UIKit为UIView提供了一个隐藏的方法_whyIsThisViewNotFocusable来帮助测试上面提到的几种情况。这个方法只在调试器中有用，并且会将可能的原因打印出来。</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(lldb) po [(UIView *)0x148db5234 _whyIsThisViewNotFocusable]</span><br><span class="line">ISSUE: This view has userInteractionEnabled set to NO. Views must allow user interaction to be focusable.</span><br><span class="line">ISSUE: This view returns NO from -canBecomeFocused.</span><br><span class="line">(lldb) po [(UIView *)0x14b644d70 _whyIsThisViewNotFocusable]</span><br><span class="line">ISSUE: One or more ancestors are not eligible for focus, preventing this view from being focusable. Details:</span><br><span class="line"></span><br><span class="line">    &lt;ExampleAncestorView 0x148db5810&gt;:</span><br><span class="line">        ISSUE: This view has userInteractionEnabled set to NO. Views must allow user interaction to be focusable.</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>在UINaviGationController栈中的vc顶部的控件无法获得焦点，可能是UINavigationBar挡住了控件。</p>
+<p>4.界面</p>
+<p> <a target="_blank" rel="noopener" href="https://developer.apple.com/tvos/human-interface-guidelines/">tvOS Human Interface Guidelines</a></p>
+<p>触摸板事件：滑动，点击，轻触。</p>
+<p>Apple TV上的所有图片按@1x分辨率提供。</p>
+<p>每个应用必须提供一个小尺寸和大尺寸图标。应用图标必须呈递两种尺寸，两者长宽比相同。</p>
 <p>小尺寸图标——这个尺寸的图标在Apple TV主屏上使用。</p>
 <p>实际尺寸：400px by 240px</p>
 <p>安全区域尺寸：370px by 222px</p>
@@ -543,472 +432,12 @@
 <p>大尺寸图标——这个尺寸的图标在App Store使用。</p>
 <p>尺寸：1280px by 768px</p>
 <p>大尺寸图标应照搬小尺寸图标的设计。尽管大尺寸图标与小图标使用不同，它仍然是你的应用图标，应该在外观与小图标相匹配。</p>
-<p>应用图标安全区域模板能够帮你把内容放在合适位置，参见<a target="_blank" rel="noopener" href="https://developer.apple.com/tvos/human-interface-guidelines/resources/#app-icon-safe-zone-template">参考资料</a>。</p>
-<p><strong>4.3 顶部展区 (Top Shelf) 图片</strong></p>
-<p>当用户把你的应用放在Apple TV主屏的最上面一行时，顶部展区 (Top Shelf) 是增加可见度的好机会。应用被选中聚焦时，你能够展示迷人的图片，来鼓励用户使用应用去发掘更多。</p>
-<p>重要：最低要求，每个应用至少提供单张顶部展区静态图——当应用在主屏最上面一行且被选中聚焦时使用。</p>
-<ul>
-<li>让用户能直接跳到相关内容。顶部展区通往用户最关心的内容，帮助用户快速到达。用户能通过点击被选中的图片来打开应用并直达相关内容，也能使用遥控器上的播放键直接启动媒体播放或进入游戏。</li>
-<li>展示引人注目的动态内容。你展示在顶部展区上的图片应该吸引用户、让他们渴望更多。尽管你也可以在顶部展区放静态图片，还是要考虑放置更有魅力的动态图片，比如最新的或者评价最高的内容。</li>
-<li>提供视觉丰富的静态图像。当没提供动态图或动态图不可用时，顶部展区展现静态图。静态图不可被选中聚焦，所以利用这个机会展现品牌吧。</li>
-</ul>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442914802239742.png" alt="129.png"></p>
-<p>顶部展区静态图尺寸：1920px by 720px</p>
-<ul>
-<li>个性化内容。用户熟悉他们放在Apple TV主屏最上面一行的应用，他们经常使用这些应用。考虑把体验个性化，在顶部展区展现有针对性的推荐项，比如让用户能够恢复视频播放、继续游戏。</li>
-<li>不显示广告。当用户将你的应用放在主屏的顶行时，你已经成功地把自己推销给他们了。别再对他们进行广告轰炸，这样会把用户推开，怂恿他们把你的应用撤下来。可以在顶部展区展示可购买内容，但是要强调最新、令人激动的内容，千万不要展现价格。</li>
-</ul>
-<p>你可以为顶部展区提供单一图层或多图层的图像。具体参见 4.5 图像分层。</p>
-<p><strong>动态内容布局 Dynamic Content Layouts</strong></p>
-<p>动态顶部图像可以作为一排可聚焦内容或者滚动横幅出现。布局样式为展现你的内容提供了一系列灵活的格式选择。不管使用什么样式，展示用户最为关心的内容，帮助他们快速获得所求。</p>
-<p>分栏内容行 Sectioned Content Row</p>
-<p>这一布局样式展现了一行带标签的内容。它通常用于高亮最近浏览内容、新的内容、或者收藏的内容。</p>
-<p>行内内容可被聚焦，允许用户按自己想要的速度滚动。当一个内容被聚焦选中时，一个标签会出现，同时，在遥控器触控板上轻轻移动，会让图片活过来。如果需要的话，一个分栏内容行也可以被配置多个标签。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442914923512630.png" alt="130.png"></p>
-<p>提供足够的内容,构成完整的一行。最低限度，在分栏内容行至少载入能撑满屏宽的内容。此外，为了平台一致性或展现额外信息，至少包含一个标签。</p>
-<p>分栏内容行支持多种长宽比的图片，包括以下尺寸：</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442915531645629.jpg" alt="133.jpg"></p>
-<p>注意:当多种图片尺寸混合时，可能会发生额外的缩放。如果你的顶部图区含有多种图片尺寸，图片会自动放大去匹配最高图片的高度。例如，当和海报、方图混合在一排中时， HDTV图片会放大到500px高。</p>
-<p>滚动横幅区 Scrolling Inset Banner</p>
-<p>这一布局样式展示一系列几乎整屏宽的大图。在限定的时间内，Apple TV自动从左到右滚动横幅直到其中某个被选中。滚动到最后一张图片后，序列回到开始。</p>
-<p>当一个横幅被选中时，在遥控器触控板上轻轻画圈会触发系统聚焦效果：横幅动起来、打光、产生3D效果（如果横幅由多个图层构成的话）。在触控板上滚动，按次序进入下一个或者上一个横幅。使用这种设计展示丰富、引人注目的内容，比如受欢迎的新电影。</p>
-<ul>
-<li>提供合理数量的内容确保滚动舒适。滚动横幅区中至少要有3张图片；超过8张的话很难手动导航到某张特定图片。</li>
-<li>如果你需要文字，将它加入到你的图片中。这种布局样式在内容下面不显示标签，因此任何文本必须是图像自身的一部分。在分层图片中，应考虑把文字放在最顶层突出出来。</li>
-</ul>
-<p>滚动横幅区支持以下尺寸的图片：</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442915861249249.jpg" alt="135.jpg"></p>
-<p><strong>4.4 游戏中心图片</strong></p>
-<p>如果你的应用是一款游戏，游戏中心会给你更多让用户沉浸在抢眼图像中的机会。</p>
-<p>成就图标</p>
-<p>每个成就都需要一张不透明的图标，来直观地表现用户在游戏中达成的成就。系统会自动把成就图标裁切成圆形，所以你需要确保核心内容在图片正中。成就图标是用来展示的，没法被选中。</p>
-<p>可见尺寸：200px by 200px</p>
-<p>实际尺寸：320px by 320px</p>
-<p>控制面板 (Dashboard) 插图</p>
-<p>这种可选图像出现在你游戏控制面板的顶部。透明度可能被用于让背景从图像中显示出来。控制面板插图不能被选中。</p>
-<p>最大尺寸：923px by 150px</p>
-<p>排行榜插图</p>
-<p>你必须为游戏中的排行榜或排行榜集合提供1-3张单层或多层、长宽比为16：9的图像。插图的底层必须是不透明的。在运行时，深色渐变可能会从下往上覆盖图片，你可以在图片右下角放置文本。这些图像可被选中，在遥控器触控板上轻轻画圈会触发聚焦效果。</p>
-<p>实际插图尺寸：659px by 371px</p>
-<p>安全区域尺寸：618px by 348px</p>
-<p>未聚焦尺寸：548px by 309px</p>
-<p>聚焦尺寸：618px by 348px</p>
-<p>如需在应用中实现对游戏中心的支持，参见 游戏中心编程指南。</p>
-<p><strong>4.5 图像分层</strong></p>
-<p>图像分层是Apple TV用户体验中的精髓。结合视差效果一起，能够产生真实、有活力的体验，并且能随着用户与屏幕上内容的交互唤起实体联系感。</p>
-<p>一张分层图片由2-5个不同图层叠加而成。通过分离图层和使用透明度来创造景深的感觉。当用户与图片互动时，靠前的图层升起并变大，同时靠后的图层进一步后退，产生3D效果。</p>
-<p>重要：应用图标要求使用分层图片。应用中其他可被选中的图像，包括顶部图区图片，并非必需使用分层图片，但我们强烈建议使用。</p>
-<ul>
-<li>使用标准的界面元素来显示分层图像。如果应用的用户界面使用UIKit框架和focus API，当分层图像被选中聚焦时，会自动被处理成带有视差效果的。</li>
-<li>合理地区分前景、中景、背景元素。在前景层展现重要突出的元素，比如游戏中的角色、专辑封面或电影海报中的文字。中景层尤其适合展现次要内容和效果，比如阴影。背景层是不透明的幕布，能够衬出上面的图层、但又不抢风头。</li>
-<li>通常，把文字放在前景层。把文字放在最上层以便清晰展现，除非你需要文字是模糊的。</li>
-<li>背景层是不透明的。使用不同级别的透明度并让靠下层的内容透出来没问题，但背景层必须是不透明的，否则你会得到错误提示。不透明的背景会确保你的设计在视差效果下、投阴影时、在系统背景上使用时都看起来很好。</li>
-<li>保持简单精致的分层。视差被设计成几乎注意不到的效果，过度的3D效果看上去不真实、不和谐。保持图像景深的简洁，让你的设计充满生命力和惊喜。</li>
-<li>在核心内容周围预留安全区域。选中时和视差效果中，靠近边缘的图层内容会被裁切或在图像缩放移动时难以看清。为了确保核心内容总是可见的，不要把它摆放的太靠近边缘。安全区域的大小随图片尺寸、图层前后顺序和移动动作变化。前景层会比背景层裁切得更厉害。</li>
-</ul>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442916040930771.png" alt="136.png"></p>
-<ul>
-<li>总是预览你的分层图像。设计在Apple TV上看起来很棒的分层图像，你需要在设计过程中通过Xcode预览。重点关注缩放和裁切，如果需要的话调整图像直到重要的内容总在可视范围内。分层图像成稿后，你还需要在Apple TV上预览用户实际会见到的效果。</li>
-</ul>
-<p>分层图像的大小</p>
-<p>在确定分层图像合适的尺寸时，同时需要考虑选中态和非选中态。在视差效果中，背景图层可能会被少量裁切，所以把核心内容设计在安全区域以内，并在区域内适当留白，以确保你的设计在各种情况下都看起来很好。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442916241627390.png" alt="137.png"></p>
-<p>推荐使用以下公式来计算分层图像的大小，这一算法根据图像非选中态的尺寸来计算。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442916303459539.png" alt="138.png"></p>
-<p>创建分层图像<br>Apple TV使用CAR和LCR文件加载分层图像。</p>
-<ul>
-<li>CAR文件</li>
-</ul>
-<p>CAR是苹果定义的一种专有的资源目录运行时文件格式。你并不直接创建CAR文件，Xcode会在编译项目的LSR文件和图像栈时自动为你建立。</p>
-<p>LSR图像。LSR是苹果定义的一种专有的分层文件格式。除了在应用当中使用，LSR文件还可以被导入iTunes Connect用作媒体图像，比如电影电视剧海报。Parallax Previewer工具和Parallax Exporter Photoshop插件能让你预览并以LSR格式导出分层图像。在<a target="_blank" rel="noopener" href="https://developer.apple.com/tvos/human-interface-guidelines/resources/#app-icon-safe-zone-template">参考资料</a>可以下载这些工具。</p>
-<p>图像栈。任何标准PNG文件都可以导入并作为图像栈中的独立图层。与所有分层图像一样，图像栈不超过5层。Xcode还可以把图像栈导出成LSR文件。</p>
-<ul>
-<li>LCR文件</li>
-</ul>
-<p>LCR是苹果定义的一种专有的运行时分层文件格式，并在内容服务器上使用。如果你的应用运行时需要从服务器获取分层图片，就必须要用LCR格式提供这些图片。LCR图像不应该嵌入在应用本地。</p>
-<p>你并不直接创建LCR文件，而是使用Xcode中的layerutil命令行工具，通过LSR文件或Photoshop文件建立。</p>
-<p>如果需要在Xcode应用项目中运用分层图像的指南，请查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/General/Conceptual/AppleTV_PG/index.html">tvOS应用编程指南</a>。</p>
-<p><strong>4.6 启动图像</strong></p>
-<p>启动图像在应用启动时展现，即时出现并很快被应用的首屏替代，让用户感觉应用响应速度很快。启动图像并不是艺术表达的窗口，它唯一的意图是增强这样的用户认知：你的应用启动很快，立即就可以使用。启动图像是静态图、不分层。</p>
-<p>重要：每个应用必须提供启动图。</p>
-<p>尺寸：1920px by 1080px</p>
-<p>把启动图设计成与应用首屏几乎一样。如果启动图中含有不同的元素，当启动完成时，用户能够感知到从启动图切换到应用首屏的闪动。</p>
-<p>在启动图中避免避免使用文字。因为启动图是静态图，所以任何文字展现不会经过本地适配。</p>
-<p>淡化启动效果。用户可能会频繁切换应用，所以设计引导图时请不要意图引起用户对启动过程的关注。</p>
-<p>别做广告。启动图并不是做品牌宣传的机会。不要设计得像闪屏或“关于”窗口，也不要使用LOGO或其他品牌元素，除非它们本来就是应用首屏的一部分。</p>
-<hr>
-<p><strong>五、视觉设计</strong></p>
-<p>Apple TV充满了一些设计独到并且兼顾体验的应用。以下这些原则可以帮助你设计出可以向用户传达品牌理念的应用。</p>
-<p><strong>5.1 动效</strong></p>
-<p>Apple TV通过UIKit的方式，内置了很多适用于获得焦点、选择、和转场的动画，你可以在自己的应用中利用他们。这些微妙的动画为用户和屏幕内容建立了视觉感受上的联系。内置的动画效果与有品位的自定义动画的结合使用，可以增强内容的沉浸式体验。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442916561409378.gif" alt="139.gif"></p>
-<ul>
-<li><strong>避免使用无意义的动画。</strong>屏幕上的动画应该只是用于响应用户的操作。非用户行为触发的动画会造成体验的中断和注意力的分散，不要仅仅是为了使用动画而使用动画。</li>
-<li><strong>避免过分夸张的动画</strong>。多余的跳动或弹簧效果也许让动画在电脑频幕上看起来非常棒，但是呈现在更大的屏幕上的时候，会是非常让人恼火的。考虑下用优雅温和的动画来替代吧。请务必经常测试你的设计，以确保在电视上看起来也棒棒哒。</li>
-<li><strong>追求真实可信的动画。</strong>Apple TV的设计理念是轻量化，关键的界面组件都在体现轻薄的质感。这些轻量化的组件动起来不应该表现的像有质量似的，比如可以反弹到某个地方或者是从某个地方冒出来。虽然用户乐于接受艺术化的处理，但不合理的或是违背物理定律的运动效果，会让人感到迷惑。</li>
-</ul>
-<p><strong>5.2 品牌传达</strong></p>
-<p>成功的品牌传达不仅是将品牌元素添加到应用中这么简单。成功的应用需要通过明智的选择字体、色彩、配图，来传达品牌独一无二的理念。在应用中应当适度的向用户提供品牌内容，但不要过量。</p>
-<ul>
-<li><strong>优雅并潜移默化的传达品牌。</strong>用户使用应用是有目标的，为了得到讯息或是处理事务，而不是为了看广告。在应用的设计中向用户柔和的提示品牌信息，才能达到最好的使用体验。比如，在应用的界面中使用和应用图标一样的的色彩，就是呈现品牌内容的一种好方法。</li>
-<li><strong>内容为先，而不是品牌。</strong>一条一直存在的顶部栏，除了用来展示品牌什么也做不了，而且还会限制内容的空间。内容为先（的设计方式）则是用一种弱化干扰的方式来呈现品牌。此外还可以考虑去自定义色彩、字体、或者巧妙定义背景。</li>
-<li><strong>抵住在应用中到处展现品牌标志的诱惑</strong>。除非品牌标志的呈现对使用情景很必要，否则请避免在应用中频繁出现。</li>
-</ul>
-<p><strong>5.3 色彩</strong></p>
-<p>Apple TV的平台采用轻量简约的设计风格。色彩应当用于让用户更沉浸式的体验，引导用户关注内容，而不是界面本身。当面临决定选用哪种色彩和在哪里使用色彩时，请考虑它是否可以起到增强内容的作用。色彩同样有助于传达品牌，通常，可以使用应用标志的填充色。</p>
-<ul>
-<li><strong>在真实的电视上预览色彩。</strong>用户在计算机上和电视上看到的色彩并不总是一样的。为了获得最佳的效果，请使用sRGB的色彩格式，并且需要在真实电视上经常测试，可以通过这样的方式熟悉如何选择色彩以及将色彩转投到大屏幕上。如果条件允许，请在多台电视上预览你的应用，因为不同的电视型号可能导致很明显的色彩差异。</li>
-<li><strong>柔和的色彩更优。</strong>如果你的应用使用自定义色彩模式，请避免使用高饱和度色彩。这些色彩在电视的大屏幕上看上去会非常炫目和喧宾夺主，如果用户调整了他们的显示设置，则更甚。</li>
-<li><strong>请考虑色盲以及文化差异对色彩认知的影响。</strong>用户看待色彩的方式是不同的。比如有些色盲的人很难区分红色和绿色。所以请避免仅使用红绿色彩差异来区分状态或数值。一些图片编辑工具软件有提供可以验证色盲人群是否可以识别（当前的色彩）的功能。</li>
-<li><strong>不仅仅通过色彩来告知焦点状态。</strong>在Apple TV上，当元素获得焦点时，微妙的缩放以及响应式的动画是表示可交互的主要手段。</li>
-<li><strong>在不同的显示级别上预览色彩。</strong>电视的色彩效果取决于不同的生产商，亮度以及显示设置。如果某些设置会导致应用中的内容会混在一起或者变得看不清楚，请考虑重新选择色彩。</li>
-</ul>
-<p><strong>5.4 内容</strong></p>
-<p>Apple TV提供了一种可以在客厅中和各个年龄段的家人共享的家庭影院式体验。整个平台的页面和内容非常的丰富、美观、简单、可参与，相比科技感它更强调那种人和人联系起来的感觉。</p>
-<ul>
-<li><strong>尊重家长的控制。</strong>请记住一些家庭会使用家长模式来控制色情和限制级的内容。你的应用应当在适当的时候遵循这些限制。对于实施指南，请参阅IOS应用指南的限制条款相关内容。</li>
-</ul>
-<p><strong>5.5 布局</strong></p>
-<p>电视有很多不同的尺寸。Apple TV上的应用和在IOS上一样不会自动适应屏幕的大小。相反的，应用在每一个显示器上都会呈现完全一样的界面。设计的时候要格外注意，这样应用才能够在各种尺寸的屏幕上都呈现非常赞的布局。</p>
-<p><strong>优化大屏显示效果。</strong>将你的应用的界面分辨率设置为1920 x 1080 (1080p)像素，这意味着16:9的界面宽高比。所有得比例都应该是@1x 分辨率的。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442916762220009.png" alt="140.png"></p>
-<p><strong>保持主要内容远离屏幕的边缘。</strong>留意距离界面顶部和底部60像素，以及距离侧边90像素的区域。在这个接近边缘的区域内很难看清楚内容。在一些旧的电视中，为了适应界面尺寸也会裁掉边缘的内容。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442916780836929.png" alt="141.png"></p>
-<p><strong>有焦点状态的元素之间注意保留适当的间距。</strong>如果你使用UIKit或者focus API，元素在获得焦点的时候尺寸会增大。请注意元素在获得焦点时候的视觉样式，确保它们不会无意中遮盖了重要信息。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442916794574479.png" alt="142.png"></p>
-<p><strong>通过显示一部分当前屏外的内容来暗示隐藏了更多的内容。</strong>呈现大量内容时，会遇到单独一屏不能承载全部内容的情况，可以通过展示一部分当前屏以外的内容来暗示还有更多的内容</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442916805624876.png" alt="143.png"></p>
-<p><strong>构建媒体为主的应用时，使用布局模板。</strong>如果你的应用布局需要少量的定制并且内容呈现要精美。请考虑使用预设的布局模板。详见<a target="_blank" rel="noopener" href="https://developer.apple.com/tvos/human-interface-guidelines/visual-design/#layout-templates">布局模板</a>。</p>
-<p>网格</p>
-<p>在Apple TV上，网格有助于更好地呈现内容。这些内容不仅在远距离很容易浏览，还可以使用遥控器快捷地导航，呈现效果非常理想。</p>
-<p>以下的网格布局和界面宽度提供了最佳视觉体验。请确保元素在非焦点状态保持适当间距，以防止他们在获得焦点的时候内容重叠。</p>
-<p>3栏网格</p>
-<p>内容宽度：548像素</p>
-<p>水平间距：48像素</p>
-<p>垂直间距：100像素</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442917004109421.png" alt="144.png"></p>
-<p>5栏网格</p>
-<p>内容宽度：308像素</p>
-<p>水平间距：50像素</p>
-<p>垂直间距：100像素</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442917028782854.png" alt="145.png"></p>
-<p>6栏网格</p>
-<p>内容宽度：250像素</p>
-<p>水平间距：48像素</p>
-<p>垂直间距：100像素</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442917048251900.png" alt="146.png"></p>
-<p>9栏网格</p>
-<p>内容宽度：148像素</p>
-<p>水平间距：51像素</p>
-<p>垂直间距：100像素</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442917065378014.png" alt="147.png"></p>
-<p>如果你使用UIKit提供的内容流的集合样式，网格栏数会根据内容的宽度和间距自动确定。详细的内容请参见<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UICollectionViewFlowLayout_class/index.html">UICollectionViewFlowLayout Class Reference</a>。</p>
-<ul>
-<li>考虑屏幕的安全区域。牢记将内容左右缩进90像素，上下缩进60像素。可以通过在缩进造成的区域中，用溢出的方式展示未在当前屏出现的内容。</li>
-<li>为标题行留出额外的垂直间距。如果一行内容有标题，请确定非焦点状态的上一行底部和当前标题行的中间有适当间距。然后，确定该行非焦点状态下标题底部和内容顶部的有适当距离。</li>
-<li>请使用一致的间距。不一致的间距会让网格看起来不像网格。</li>
-<li>余光的内容保持左右对称。为了可见内容更直观的获得焦点，请保持屏幕安全区域外的溢出内容在各个边缘都保持相同的宽度。</li>
-</ul>
-<p>布局模板</p>
-<p>Apple TV提供了样式美观、布局一致、并且凸显内容的模板。这些模板是基于JavaScript和Apple TV的编程语言(TVML)开发的。当应用启用时，它们会动态加载内容。这些模板可以灵活创建丰富的内容，并且这些内容可以很好地在电视屏幕上呈现，非常适合流媒体。</p>
-<ul>
-<li>有品位的自定义模板。布局模板的可定制程度很高，你可以控制背景、文字、色彩、尺寸、布局甚至更多。在设计应用的时候，请无论何时都遵从于内容，避免出现分散注意的、跳跃的或突兀的定制内容。</li>
-<li>在使用之前了解模板的使用意图。如果你的定制化使得基本模板无法识别，请考虑换个模板或者使用完全自定义的界面。</li>
-</ul>
-<p>更多应用中模板整合方面的内容详见<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/LanguagesUtilities/Conceptual/ATV_Template_Guide/index.html">Apple TV Markup Language Reference</a>。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150922/1442917166894656.png" alt="148.png"></p>
-<p>提醒模板 Alert Template</p>
-<p>提醒模板用于在屏幕上呈现相关信息并询问是否执行操作，比如确定购买或删除等负向操作。</p>
-<p>另请参阅 6 界面元素 中的 6.9 提醒。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442971500676686.png" alt="149.png"></p>
-<p>目录模板 Catalog Template</p>
-<p>目录模板用于呈现内容相关的组内容，比如电影或电视节目的流派的分组。浏览左边的分组列表，聚焦于其中一项的时候右侧可以看到对应的内容。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442971520766542.png" alt="150.png"></p>
-<p>专辑模板 Compilation Template</p>
-<p>专辑模板用于呈现元素包含的内容，比如专辑中的歌曲或者播放列表的轨迹。它最常用于显示音频相关的内容。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442971604374353.png" alt="151.png"></p>
-<p>描述性提示模板 Descriptive Alert Template</p>
-<p>描述性提示模板用于显示大段的长内容，可能要求用户同意某一项操作，比如同意条款或者许可协议。</p>
-<p>保持简短，避免滚动。远距离在屏幕上阅读大量文字一点都不好玩，对眼睛简直是折磨。所以请认真斟酌应用需要呈现的文字内容。</p>
-<p>显示，而不是讲述。如果可能，避免描述提示内容，可以考虑用更容易理解的方式来展现相同的信息，比如用图片。</p>
-<p>按键要仔细摆放。当文字内容可滚动展示时候，请横向并排摆放按键。这样一来，可以通过上下滚动来阅读文字，通过左右滚动来切换按钮的焦点状态。</p>
-<p>另请参阅 6 界面元素 中的 6.9 提醒。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442971628479190.png" alt="152.png"></p>
-<p>表单模板 Form Template</p>
-<p>表单模板用于显示一个或者多个输入框比如名字和邮件地址，包括键盘。</p>
-<p>另请参见 6 界面元素中 的 6.3 文本和搜索。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442971644182951.png" alt="153.png"></p>
-<p>列表模板 List Template</p>
-<p>列表模板用于以列表的形式在屏幕右方呈现电影或电视的节目列表。当聚焦与一项内容时，左边会呈现其对应的内容，比如它的图片或者描述。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442971660677282.png" alt="154.png"></p>
-<p>加载模板 Loading Template</p>
-<p>当内容在服务器中检索的时候，会出现加载模板，它会时时显示一个进度显示器和一些文字描述。它让用户知道有一些行为正在进行，应用看上去并没有终止。</p>
-<p>保持加载文案的简练和准确。如果加载很快，用户也许来不及在文案消失前读完很长的内容，这会让他们以为遗漏了一些信息。</p>
-<p>另请参阅 6 界面元素 的 6.7 进度指示器。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442971679125845.png" alt="155.png"></p>
-<p>主菜单模板 Main Menu Template</p>
-<p>主菜单模板会展示一个带底部菜单的全屏图像。它通常出现在电影的首页，有一个可以播放电影和访问特定章节或其它功能的菜单。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442971695259612.png" alt="156.png"></p>
-<p>菜单栏模板 Menu Bar Template</p>
-<p>菜单栏模板是为了一级页面而设计，作为内容的入门页。它包含一个贯穿顶部的菜单。当一个元素获得焦点时，它相关的内容会在下方呈现。</p>
-<p>保持菜单栏的整洁。每增加一个元素都会导致更多的选择，并且还增加了应用的复杂度。</p>
-<p>将菜单元素保持在屏幕上。当菜单栏获得焦点的时候，它所有的元素都应当可见。一般情况下，短标签应当限制在7个以内，这样能避免由于内容拥挤导致的元素超出当前屏。</p>
-<p>另请参见 6 界面元素 的 6.1 标签栏。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442971714295610.png" alt="157.png"></p>
-<p>展览式模板 Parade Template</p>
-<p>展览式模板通过将当前焦点状态下的组内容，通过旋转的方式进行预览。组内容列表会呈现在右边。聚焦与其中的一项内容，左侧用旋转的方式呈现其内容。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442971733355443.png" alt="158.png"></p>
-<p>产品模板 Product Template</p>
-<p>产品模板用于电影、电视或其他产品的展示。它通常包括产品图片、背景和描述信息。在产品内容下方会提供产品的相关信息，用户可以通过向下滚动来获取更多信息，比如演员列表，打分和评论。</p>
-<p>自定义背景时，请仔细考虑图片和文字信息的颜色。默认情况下，背景会呈现出一个产品图片的投影，来制造互补的视觉效果。如果你决定使用自定义背景，请确保他不会与其它内容造成冲突。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442971749473826.png" alt="159.png"></p>
-<p>产品集合模板 Product Bundle Template</p>
-<p>产品集合模板用于呈现系列电视节目，电影和其他产品。通常情况下它包括图片，背景和描述信息。内容下方提供了包内的全部产品，比如一季的电视剧。用户可以通过向下滚动的方式获取更多的信息，比如演员列表，打分和评论。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442971764891861.png" alt="160.png"></p>
-<p>评分模板 Rating Template</p>
-<p>评分模板用于让用户对特定元素进行评价，比如电影或一首歌。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442971783121012.png" alt="161.png"></p>
-<p>搜索模板 Search Template</p>
-<p>搜索模板用于让用户搜索应用中的内容和查看搜索结果。它包括搜索框，键盘和结果列表。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442971792168124.png" alt="162.png"></p>
-<p>堆栈模板 Stack Template</p>
-<p>堆栈模板用于成组的展示产品，比如不同流派的电影。每组产品都直接在前一组的下方展示。</p>
-<p><strong>5.6 质感纹理</strong></p>
-<p>在整个系统中，柔软细腻，半透明质感的窗口的呈现，是为了传达一种深度和层次感。这些设计同样也给人沉浸感，但并不引人注意，也不会造成内容的分心。这些质感纹理有多种色彩，适用在多种场景中，看上去非常棒。</p>
-<p>考虑使用系统的质感。系统质感能带给你原生应用的感觉，当用户从其它应用切换到你的应用的时候，过渡会非常平滑。下面的质感样式可供选择：</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442971869150189.png" alt="163.png"></p>
-<p>超轻薄</p>
-<p>UIBlurEffectStyleExtraLight</p>
-<p>大部分全屏模式中会使用这种纹理，效果非常棒。如果你的应用采用透明窗口的背景，系统会默认自动呈现此样式。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442971893302254.png" alt="164.png"></p>
-<p>轻薄</p>
-<p>UIBlurEffectStyleLight<br>这种纹理适用于覆盖层，它会模糊屏幕上的部分内容。</p>
-<p>使用更轻薄，半透明的质感来提升内容，让它有新鲜感。深色的质感会导致沉重的感觉，这样的质感使内容显得陈旧，与背景混为一体且看不到投影，从而降低了页面纵深感和活力。当你看不到投影的时候，很难区分哪个元素处于获得焦点的状态。</p>
-<p><strong>5.7 字体排版</strong></p>
-<p>San Francisco是Apple TV的系统字体。这个字体有两个变体：San Francisco Text 和 San Francisco Display，在大屏幕上易读性都很高。</p>
-<p>在标签或其他界面元素中使用系统字体时，Apple TV会根据选择的磅值自动应用最合适的文本样式。它也会按需自动更改字体并遵循辅助设置。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442972143265093.jpg" alt="165.jpg"></p>
-<p><strong>尽可能减少应用中的文字数量</strong>。展示给用户，而不是通过文字来说明。阅读房间对面屏幕上的大量文字十分费劲也并不好玩。认真考虑你的应用实际需要展示的文本数量，尝试用更容易理解的方式来呈现信息，比如使用图片或动画。</p>
-<p><strong>在设计时选择合适的系统字体。</strong>最重要的是，文字在远处必须清晰易读。当设计应用时，39点或更小的字适合用San Francisco Text，40点或更大的字用San Francisco Display更好些。</p>
-<p><strong>尽量使用内置的文本样式。</strong>内置的文本样式允许你用不同的视觉效果来表达内容，同时保留最优易读性。这些样式使用系统字体并且允许你利用重要的排版功能，比如动态排版（为不同字号自动调整字距和行距）。主要内容使用正文样式，标签和次要内容可以使用注脚样式和说明样式。</p>
-<p><strong>使用自定义字体时，在远处需要清晰易读。</strong>Apple TV支持自定义字体，但在远处可能难以阅读，尤其当字体笔画过细时。所以，除非你有必须使用自定义字体的理由，比如为了品牌推广或创造沉浸式的游戏体验，否则还是坚持用系统字体吧。</p>
-<p><strong>使用自定义字体时，支持辅助特性。</strong>系统字体自动会对辅助特性作出反应，比如字体加粗。使用自定义字体的应用，应该检查是否启用了辅助特性并在特性发生变化时接收通知，实现与系统字体相同的行为。</p>
-<p>请在<a target="_blank" rel="noopener" href="https://developer.apple.com/tvos/human-interface-guidelines/resources/">参考资料</a>下载San Francisco字体。</p>
-<p><strong>5.8 视频</strong></p>
-<p>Apple TV的视频播放器让用户能在应用内欣赏视频，而且它专为触屏设计。与Siri遥控器的无缝集成让用户能够流畅、直觉地使用手势来浏览多媒体。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442972215614219.gif" alt="166.gif"></p>
-<p>用户可以使用遥控器做这些事：</p>
-<ul>
-<li>快速翻看视频：拇指在触控板上滑动。</li>
-<li>视频的快进和快退：点击触控板的左侧或右侧。</li>
-<li>视频节点上快进和快退：点击唤起视频播放进度条，然后点击触控板的左侧或右侧。</li>
-<li>连续快进或后退：点击并按住触控板的左侧或右侧。</li>
-<li>展现额外信息：向下滑动，能够展现字幕、小节、音轨、扬声器输出选项。</li>
-</ul>
-<p><strong>使用系统视频播放器。</strong>内置的视频播放器能够提供很棒的视频播放体验。它的控件极简而低调，让媒体本身成为注意力的中心。除非你的应用确实需要一个自定义播放器，否则请使用系统视频播放器，会创造跨平台统一的多媒体浏览体验。</p>
-<p><strong>在视频上展现LOGO或非交互的浮层时，内容为先</strong>。一个小小的不引人注目的LOGO或倒计时可能适合放在视频上，避免使用与观看体验无关的又大又让人分心的浮层。用户期望在观看内容时不受打扰，他们会欣赏干净整洁的观看体验。</p>
-<p><strong>优雅地在视频顶部显示互动元素。</strong>一些视频中会展现可交互浮层，比如小测试、调研、进度签到等。为了体验更佳，暂停播放中的视屏，需要精确到仅有0.5秒的延迟，然后<strong>展现可交互浮层。</strong>提供清晰的关闭浮层的方式，一旦用户完成交互就恢复视频播放。</p>
-<p>提供额外的增值信息。通过提供图片，标题，描述和其它有用的信息，来实现视频附加信息的定制化。一般来说，这些内容的高度应当限制在8行以内，以免影响到视频播放。</p>
-<hr>
-<p><strong>六、界面元素</strong></p>
-<p>界面元素是构成应用的基石。用界面元素来展示信息、促进与应用内容的互动。</p>
-<p><strong>6.1 标签栏 Tab Bars</strong></p>
-<p>对于Apple TV的多数应用而言，导航主要以屏幕顶部的标签栏形式呈现。内容区域位于标签栏之下，显示当前选中标签的内容。标签栏让用户知道当前处于应用哪个位置；同时提供一种便捷路径，让用户在不同页面和内容之间移动，或者触发操作行为，如搜索。</p>
-<p>当遥控聚焦标签栏时，标签栏出现在屏幕顶部，高度是140px。标签栏默认半透明，可以看到标签栏覆盖区域下的内容。 一般而言，标签栏总是位于屏幕顶部，移开聚焦的标签栏时，标签栏消失，屏幕展现完整内容。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442978633761143.png" alt="167.png"></p>
-<ul>
-<li>使用标签栏，有逻辑的来组织应用内容。标签栏可以很好地扁平化信息层级，快速访问同级信息模块。一些特殊信息不够明确时，采用角标补充说明。与当前视图或模式相关联的新信息或重要信息，需要解释说明时，通常在某个选项上使用以下角标 – 一个包含白色数字或解释说明文字的红色椭圆角标。</li>
-<li>对角标进行管理。一个页面不要试图展示大量的新信息或重要信息，这样会让用户无所适从。</li>
-<li>对选项数量进行管理。每增加一个选项，既增加应用本身的复杂性、又增大用户选择认知困难。</li>
-<li>当聚焦标签栏时，所有的选项都应该要在屏幕内。选项应该使用短标题，从而避免拥挤或者导致有选项超出屏幕显示范围。</li>
-<li>保证所有选项都可访问。如果一个选项可见、可用，而其他选项不可见、不可用，那么应用界面状况将不可控。</li>
-</ul>
-<p>保证所有选项位于屏幕上，且随时可用。当选项下没有内容展现时，给出相关说明。例如，iTunes的音乐选项下，当没有歌曲列表时，给出了如何下载音乐的引导说明。</p>
-<ul>
-<li>标签栏适配应用风格。采用颜色提取，或调整透明度，来适配应用的配色方案和风格。</li>
-</ul>
-<p>更多的实施细则，请查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UITabBarController_Class/index.html">UITabBarController Class Reference</a>和<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/featuredarticles/ViewControllerPGforiPhoneOS/index.html">View Controller Programming Guide for iOS</a>。</p>
-<p><strong>标签栏选项 Tab Bar Items</strong></p>
-<p>选项标题通常使用文字。一般而言，相比于易被曲解的图标，简明的书面文字更干净、更直接。</p>
-<p>采用短的、有意义的名词或动词作为选项标题。标题清晰定义了当前选项内容类型。一般而言，标题应该是名词（如音乐、电影和流派），但某些情况下，动词可能更加合适（如播放和搜索）。</p>
-<p><strong>6.2 表单和内容集 Tables and Collections</strong></p>
-<p>Apple TV包含了一些关于组织和呈现内容集合的标准，帮助用户理解以及导航。</p>
-<p><strong>表单 Tables</strong></p>
-<p>单列表单以滚动形式来呈现数据，可以将它们划分成多个区域或组别。不同量级的信息，使用表单的形式来更清晰有效地展现。</p>
-<p>一般来说，单列表单是一个很好的承载文字信息的载体，而且经常以导航形式出现在页面一边，同时页面另一边呈现相关联的内容。更多可查看 分屏视图。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442978822427467.png" alt="168.png"></p>
-<ul>
-<li>考虑单列表单宽度。窄的列表导致列表标题截断和重叠，让用户很难阅读和快速浏览。同样地，宽的列表也很难阅读和浏览，且占据了内容区域空间。</li>
-<li>页面内容采用优先加载模式。不要等待全部内容读取完成后一起加载，而应先加载一部分。优先先加载文字部分，待图片数据读取完毕后，再加载图片内容。这种技术让用户尽可能快的获取有用信息，同时提升应用的用户感知反应。某些情况下，页面没有刷新时，显示旧数据可能是有意义的。</li>
-<li>内容加载状态。 如果一个列表内容加载时间较长，需要一个加载进度条或动态的指示图标来告知用户应用仍在加载中。</li>
-</ul>
-<p>更多的实施细则，请查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UITableViewController_Class/index.html">UITableViewController Class Reference</a>。</p>
-<p><strong>单列表单 Table Celss</strong></p>
-<p>你可以采用标准的单列表单样式，定义表单中内容如何出现。</p>
-<ul>
-<li>默认样式。单列表单的左侧为“可选图像+左对齐标题”。对于不需要补充信息的内容来讲，这是一个很好的选择。更多的实施细则，请查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UITableViewCell_Class/index.html#/apple_ref/c/econst/UITableViewCellStyleDefault">UITableViewCellStyleDefault</a>。</li>
-<li>小标题模式。 内容左对齐，大标题在上，小标题在下。采用小标题模式可以很好分行。 更多的实施细则，请查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UITableViewCell_Class/index.html#/apple_ref/c/econst/UITableViewCellStyleSubtitle">UITableViewCellStyleSubtitle</a>。</li>
-<li>补充说明1. 单列表单中，标题左对齐，小标题右对齐，且小标题采用更小的字号。 更多的实施细则，请查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UITableViewCell_Class/index.html#/apple_ref/c/econst/UITableViewCellStyleValue1">UITableViewCellStyleValue1</a>。</li>
-<li>补充说明2. 单列表单中，标题右对齐，小标题左对齐，且小标题采用更小的字号。更多的实施细则，请查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UITableViewCell_Class/index.html#/apple_ref/c/econst/UITableViewCellStyleValue2">UITableViewCellStyleValue2</a>。</li>
-</ul>
-<p>标准的单列表单样式也允许存在图形元素，如复选标签或标记。当然，增加这些图形元素，会减少列表标题和小标题的显示空间。</p>
-<ul>
-<li>保持标题文字简洁性，避免被截断。被截断的词句很难被理解。标准单列表单样式中，标题文字是被自动截断的。而由于文字截断产生问题的多少，取决于采用哪种单列表单样式和定义截断何时发生（给出最大文字字符数，超出截断）。</li>
-<li>测试选中态。选中表单内某行内容时，该行内容放大高亮。同时选中态样式包含圆角，这直接影响到该行中图形样式。基于此，如需使用图形元素，可直接采用表单圆角样式，而不增加额外的圆角。</li>
-<li>考虑是否增加表单编辑功能。在Apple TV 上进行删除和重新排序操作，是一个缓慢而乏味的过程。因此需要考虑是否值得提供此类功能。</li>
-<li>为用户定制个性化表单。用标准单列表单样式，满足绝大多数用户和使用场景，但是你的内容可能需要满足更多操作。这种情况下，相比于调整标准样式，为用户特别需求定制表单是一个更好的选择。 了解如何创建个性化表单，参考 Table View Programming Guide for iOS 中的 Customizing Cells。</li>
-</ul>
-<p>更多的实施细则，请查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UITableViewCell_Class/index.html">UITableViewCell Class Reference</a>。</p>
-<p><strong>内容集 Collections</strong></p>
-<p>内容集有序的管理一组内容，并在一个可自定义、高度可视化的页面中呈现。内容集不强制要求呈现线性格式，因此特别适合显示大小不同的内容。一般而言，内容集适合呈现图片相关内容。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442979005764492.png" alt="169.png"></p>
-<ul>
-<li>当标准样式或网格布局足够满足需求时，避免进行全新设计。一个内容集应该提升用户体验，而非变成视觉焦点。</li>
-<li>更容易的聚焦选项。在用户找到感兴趣的内容前，如果很难找到想找的内容选项，他将感到沮丧和丧失兴趣。 给图片周围足够留白，以保持内容清晰聚焦，同时避免内容重叠。</li>
-<li>考虑使用表单组织文字，代替文字堆叠。在电视屏幕上，滚动列表中的文字信息，通常更简单和更易理解。</li>
-</ul>
-<p>如果应用内容丰富，需要一个标准的网格布局呈现内容集，请考虑使用模板。详见<a target="_blank" rel="noopener" href="https://developer.apple.com/tvos/human-interface-guidelines/visual-design/#layout-templates">Templates</a>和<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/LanguagesUtilities/Conceptual/ATV_Template_Guide/index.html">Apple TV Markup Language Reference</a>。更多实施细则，请查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UICollectionViewController_clas/index.html">UICollectionViewController Class Reference</a>。</p>
-<p><strong>分屏视图 Split Views</strong></p>
-<p>分屏视图决定相邻2个内容面板的呈现样式。每个内容面板都可包含多种元素，如列表、内容集、图像和自定义视图。分屏视图中，一级面板显示固定的、可聚焦的内容；二级面板显示与之相关联的信息。分屏视图经常伴随着可筛选内容使用，一级面板中显示可筛选类别列表，二级面板中展示选中类别的具体内容。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442979085517637.png" alt="170.png"></p>
-<ul>
-<li>根据内容选择效果最好的分屏视图。默认情况下，分屏视图以1:3的比例分隔屏幕空间，一级面板占据屏幕的1/3，二级面板占据2/3。当然屏幕也可按照1:1的比例分隔。基于内容本身，选择适当的分隔比例，以确保面板看上去均衡。</li>
-<li>高亮一级面板中选中项。二级面板中内容是可变的，总是对应一级面板中选中项。这有助于用户理解面板之间关系。</li>
-<li>每个分屏视图显示单独标题。 对于屏幕中多个标题，用户很难找出当前内容。相反，显示单独标题，提供了一个视图对应关系框架。</li>
-</ul>
-<p>当二级视图显示了一个内容集合，考虑使用一个聚焦的标题。当二级视图包含了重要内容，考虑在一级视图上显示标题，这样就有更多的空间用来显示内容。</p>
-<p>更多实施细则，请查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UISplitViewController_class/index.html">UISplitViewController Class Reference</a>。</p>
-<p><strong>6.3 文本和搜索 Text and Search</strong></p>
-<p>如果必要，你的应用可以申请基于文本信息来执行搜索、登录服务等等。需要留意的是，除非物理键盘连接，在Apple TV上的文本输入任务的体验可能较为乏味。</p>
-<p><strong>文本框 Text Field</strong></p>
-<p>输入区域是一个固定高度、带有圆角的单行文本框，在用户点击输入区域的时候可以自动调起一个键盘屏幕。通过使用输入框获取少量信息，例如电子邮件地址。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442979144142685.png" alt="171.png"></p>
-<ul>
-<li>在应用中最小化文字输入。键入长段文本内容或是填写大量文字在Apple TV上是极为耗时的。减少输入并且考虑有效的收集展示信息，比如说带有按钮的形式。</li>
-<li>文本框中的提示信息增强用户理解。当输入框内没有键入其他文字内容的时候，一个文本框可以展示占位文本 – 例如邮件地址或是密码。当占位提示文本内容足够清晰时，不要使用单独的标签来描述文本字段。</li>
-<li>在条件允许的情况下，使用安全输入框。当你的应用需要获取一些敏感信息的时候，例如密码输入，尽量使用安全输入。</li>
-</ul>
-<p>更多实施细节，请参见<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UITextField_Class/index.html">UITextField Class Reference</a>。</p>
-<p><strong>键盘 Keyboards</strong></p>
-<p>任何时候点击文本框都会自动弹起一个输入面板。屏幕风格由当时使用的输入设备决定。</p>
-<ul>
-<li>线性面板。当用户使用Siri遥控器的触摸板时，线性的键盘会展现在屏幕上。这种风格优化了触控体验，使用户更快速更流畅的输入文字。</li>
-<li>网格面板。当用户使用Siri遥控器以外的设备时，网格状的键盘会展现在屏幕上。内容布局会基于键盘类型自适应。</li>
-</ul>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442979200654357.png" alt="172.png"></p>
-<p>虽然你不能控制键盘屏幕风格，但是你可以指定键盘类型。</p>
-<ul>
-<li>根据选择的内容，制定相应的输入面板类型。为特定类型的内容，Apple TV提供几种不同类型的键盘设计，使输入更加便利。相对应的键盘让输入过程更轻松，比如输入名字，邮箱地址或是数字。有关可用键盘类型的列表，请参阅UITextInputTraits Protocol Reference的UIKeyboardType。要了解你的应用内的键盘管理，请参考 Text Programming Guide for iOS的 Managing the Keyboard。</li>
-<li>在适当的时候选择使用附属视图。键盘屏幕包含一个可选的附属视图。使用此区域提供有关您所收集的数据上下文和其他信息。例如，您可以添加您的应用程序标识和标签到附属视图，告知用户“请输入您的电子邮件地址登录到您的MyApp的帐户”。更多实施细节，请参阅Text Programming Guide for iOS的 Custom Views for Data Input。</li>
-</ul>
-<p><strong>搜索 Search</strong></p>
-<p>搜索屏幕是一个专用键盘屏幕，用来执行搜索输入操作。在此屏幕上，搜索结果将以可定制视图形式，显示在键盘下呈现。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442979221864404.png" alt="173.png"></p>
-<ul>
-<li>允许用户使用近期搜索记录。用户经常在Apple TV上搜索重复内容。在用户开始输入前，通过在键盘下方罗列出流行或近期搜索结果，减少重复输入。</li>
-<li>简化搜索结果。不提供需要大量滚动查看的冗长搜索结果列表。使信息易于获取，例如，将搜索结果分为多列，或呈现最匹配的搜索结果信息集合。</li>
-<li>考虑让用户手动过滤搜索结果。如果可以，在搜索结果区域设置一个筛选区，以帮助人们方便快捷的过滤搜索结果。</li>
-</ul>
-<p>更多实施细节，请参见<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UISearchController/index.html">UISearchController Class Reference</a>。</p>
-<p><strong>6.4 按钮 Buttons</strong></p>
-<p>应用特定的启动按钮可以包含一个标题和图标。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442979263597949.png" alt="174.png"></p>
-<ul>
-<li>一般情况下，使用标题名称或图标来传达按钮的语义。由于按钮空间有限，为了避免拥挤和视觉复杂性，尽量不合并文本和图标。</li>
-<li>明确标签和破坏性操作。如果点击一个按钮操作，导致不可逆转的结果，如删除内容，请确保这个按钮的指示性是非常明确的。使用明确描述的标签，如“删除”或相应的图标。在执行破坏性操作之前显示一个警告要求确认，也是很好的做法。</li>
-<li>不要使用后退按钮。用户习惯于通过点击遥控器上的菜单按键带他们返回上一级界面或回到主菜单。除非你的应用有正当的理由去使用额外的后退按钮，尽量不要在你的页面上加入返回按钮。</li>
-</ul>
-<p>对于实施细节，参见<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UIButton_Class/index.html">UIButton Class Reference</a>。</p>
-<p>按钮图标 Button Icons</p>
-<ul>
-<li>使用简单、可识别图形作为按钮图标。在电视屏幕上，太多细节的图标很难解释。保持图标简洁更好的传达信息。有可能的话，使用通用图标帮助理解，例如放大镜图标代表执行搜索。</li>
-</ul>
-<p>按钮文字 Button Text</p>
-<ul>
-<li>如果合适的话，在图标下方显示描述性文本。一个图标通常足够表达含义。但如果附加的文字描述提供了有用的信息内容，则把它放在按钮下方。</li>
-<li>使用动词或动词短语来描述一个按钮的操作。以操作行为为特定标题，表示交互性，并且明确了单击该按钮时会发生什么。</li>
-<li>使用大写式标题。除了文章以外，大写按钮上的每一个字，并列连词，和四个字母以下的介词。</li>
-<li>确保按钮文本简短，重点突出。过长的文字可能被截断，从而使其难以阅读。</li>
-</ul>
-<p><strong>6.5 导航栏 Navigation Bars</strong></p>
-<p>你可以在视窗的顶部增加一个导航栏，用来展示标题、导航按钮、以及其他交互元素。应用设置使用一个导航栏，导航栏的标题用来提供内容信息，让用户随时知道处于应用的哪个位置。</p>
-<ul>
-<li>请注意透明度。导航栏默认就是透明的，所以所有在导航栏下面滚动的内容都是清晰可见的。确保导航栏里的交互元素不要与底下内容元素有所冲突。当内容滚动时，考虑把导航栏下的内容元素淡化，从视觉上将它们与导航栏上的元素区分开。</li>
-</ul>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442979315388912.png" alt="175.png"></p>
-<p><strong>6.6 页面控制器 Page Controls</strong></p>
-<p>有些应用会把内容分散到多个页面上呈现，一个页面控制器可以清楚地告诉用户总共的页面数量，以及现在处于哪个页面。它的呈现方式就是有一连串小的空心的指示原点，可以从左边滑动到右边，同时呈现出页面数量及顺序。一个实心原点指示的是当前页面。视觉上来说，这些小点的间隔是相同的，如果点数太多的话，屏幕上会省略掉一部分。</p>
-<p>页面控制器它本身是一个非交互的元素，只是作为信息呈现的功能使用。它并不真正的具有导航的作用－比如说，你不能点击一个小点去到一个特定的页面。相对应的，真正的页面之间的导航会使用其他的交互机制，比如说手势控制以及分离按钮的按压／点击。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442979347729800.png" alt="176.png"></p>
-<ul>
-<li>请在完整的屏幕页面上使用页面控制器。当全屏页面的内容很多且是同级情况下，使用页面控制器。在页面间切换时，尽量避免使用额外的交互方式，保持用户注意力集中。</li>
-<li>不要展示太多的页面。超过10个小点，用户很难让一眼就数过来；然后超过大约20页的话，用户查看起来就会非常耗时。如果你的应用需要展示超过20个同级页面时，请考虑使用不同的设计方式，比如网格，因为网格不需要按照既定顺序来导航。</li>
-</ul>
-<p>更多的实施细则，请查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UIPageControl_Class/index.html">UIPageControl Class Reference</a>。</p>
-<p><strong>6.7 进度指示器 Progress Indicators</strong></p>
-<p>不要让用户坐在那死盯着一个静止的屏幕，等待应用加载内容或者呈现冗长的数据处理操作过程。利用动态的指示图标还有进度指示条来让用户知道应用正在加载中，同时告诉他们还要等多久。</p>
-<p>动态的指示图标 Activity Indicators</p>
-<p>一个动态的旋转指示图标用来表示比较难测量时间的任务的加载，比如说正在加载或者同步复杂的数据。当任务完成时，这个图标就会消失。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442979387322192.png" alt="177.png"></p>
-<ul>
-<li>相比于动态指示图标，多使用进度指示条。如果任务是可以被计算测量时间的，请不要使用指示图标（就是那个旋转的小圈圈），请使用进度指示条，这样用户就能更好的评估正在发生什么，还需要等待多少时间。</li>
-<li>保证指示图标是动态显示的。用户会自然而然地将静止的活动图标（也就是本应该活动的东西）当作是死机的迹象，所以让那个小圈圈一直转着可以让他们知道应用正在运作。</li>
-<li>在用户等待加载的时候，可以给他们提供一些有用的信息。这些有用的信息可以是在动态指示图标上增加的文字信息。不要增加意思模糊的术语，比如说正在加载或者正在授权这样的字眼，因为它们并不会更好地帮助用户理解。</li>
-</ul>
-<p>想看更多的细节信息，可以参考<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UIActivityIndicatorView_Class/index.html">UIActivityIndicatorView Class Reference</a>。</p>
-<p>进度指示条 Progress Bars</p>
-<p>进度指示条是用来显示可测量任务的加载进度的，表现为一条从左到右填充的轨迹。</p>
-<ul>
-<li>精准告知用户任务的加载进度。不要为了让应用看起来很忙，而显示不精准的进度信息。如果任务是可被测量时间的，使用进度指示条，否则使用动态指示图标。</li>
-<li>进度指示条适用于可测量时间的任务。进度指示条有益于显示任务状态，尤其是它能告知用户完成当前任务，还需多长时间。</li>
-</ul>
-<p>更多实施细则，请查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UIProgressView_Class/index.html">UIProgressView Class Reference</a>。</p>
-<p><strong>6.8 分段控件 Segmented Controls</strong></p>
-<p>分段控件是指一串线性排布的控件，每个控件都作为一个按钮来呈现不同的视图。分段控件包含两个或两个以上、统一比例的控件，单个控件包含了标题或图标。利用一个分段控件来提供功能联系非常紧密，但是又互不兼容的一些功能，比如说播放列表和唱片集。</p>
-<ul>
-<li>不要把其他很容易被用户注意到的元素放在分段控件旁边。只要聚焦到这些控件上，就会被选中，所以要十分注意它与其他交互元素位置摆放，尤其是当这个分段控件与页面的其他交互元素是相关联的。如果其他容易被注意到的元素和分段控件太近，用户在切换不同控件时，可能会容易引起误操作。</li>
-<li>考虑在屏幕上，将内容以控件形式分割成多个模块，帮助用户进行信息过滤。在分离模块环境下，用户操作导航定位和内容筛选时，会来得更加轻松。一个控件操作的难易程度，取决于该控件的放置位置。</li>
-<li>控制好控件数量。超过7个控件就会使用户很难一眼分辨出来，而且在定位时也会变得非常费时。</li>
-<li>另外，尽量保证各个控件的大小与它所包含的内容匹配。因为所有的的控件是相同的宽度，如果一些控件里有内容，一些控件里没什么内容，这样看起来就不是很舒服。</li>
-<li>避免把文本和图标混在一起。单独的控件可以包含文字标题或者图标，但是不要同时涵盖。最好避免在一些控件里使用文字标题，然后在其他控件里使用图标。否则，你的应用界面内容看起来就会非常多且琐碎。</li>
-<li>在定制化分段控件中，适当地排布内容。如果你定制化了分段控件的样式，请确保内容——尤其当它们居中的时候——仍然美观。</li>
-</ul>
-<p>更多的实施细则，请查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UISegmentedControl_Class/index.html">UISegmentedControl Class Reference</a>。</p>
-<p>控件图标 Segment Icons</p>
-<ul>
-<li>利用简单、可识别的图形来来作为控件图标。在电视屏幕上，太多细节的图标很难解释。保持图标简洁更好的传达信息。有可能的话，使用通用图标帮助理解。</li>
-</ul>
-<p>控件文本 Segment Text</p>
-<ul>
-<li>使用短的，具有含义的名词作为控件标题。一个控件的标题清楚地传达出当控件被选中后，它所呈现的内容类型。一般来说，标题应该使用名词。</li>
-<li>使用大写式标题。除了文章以外，大写按钮上的每一个字，并列连词，和四个字母以下的介词。</li>
-<li>确保文本简短，重点突出。过长的文字可能被截断，从而使其难以阅读。</li>
-</ul>
-<p><strong>6.9 提醒 Alerts</strong></p>
-<p>与应用或设备所处的状态相关的重要信息，且需要用户反馈时，弹出全屏提醒弹窗。提醒弹窗包含一个标题、一个或多个按钮、以及可以附加文字说明。除了上述的内容元素，提醒弹窗的样式应该是静止的，且与系统统一。</p>
-<p><img src="http://api.cocoachina.com/uploads/20150923/1442979741981446.png" alt="178.png"></p>
-<p>尽量减少提醒弹窗的使用。提醒弹窗会阻断用户体验，除非在非常重要紧急的情况下使用，比如执行毁灭性操作（删除等）、购买、或者出现问题需要告知用户时。提醒弹窗的不时出现会帮助用户对于当前动作提高注意力，设计者要确保每一个提醒都提供非常重要的信息以及有用的选择。<br>更多的实行细则，请查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UIAlertController_class/index.html">UIAlertController Class Reference</a>。</p>
-<p>提醒标题和信息 Alert Title and Messages</p>
-<ul>
-<li>提醒标题使用多词。单个词的标题，比如说“看”或者“租”，很少能够提供有用的信息。</li>
-<li>使用一个描述性的提醒标题，就可以代替文字段描述。用户在屏幕上所读取到的文字内容越少越好。考虑使用问问题的方式或者使用两个短句子来作为你的提醒标题，以此来避免增加附加文字段信息。</li>
-<li>如果你必须要提供附加文字段提醒信息，保持精简，使用完整的句子。理想话来讲，要确保信息足够短，只需要在1行或者2行内展示，避免滚动查看，使用大写和合适的标点符号。</li>
-</ul>
-<p>提醒按钮 Alert Buttons</p>
-<p>一般来说，使用含有两个按钮的提醒弹窗。提醒弹窗包含2个简单的选项。如果只有单个按钮，使得用户没有选择的余地；大于等于3个按钮就会增加操作的复杂性。提醒弹窗的按钮应该简洁明了，且标题具有逻辑性。按钮标题最好由1到2个描述结果的单词组成，以下是一些是在设计提醒弹窗按钮时的一些准则：</p>
-<ul>
-<li>所有的按钮标题，应该大写且结尾没有标点符号</li>
-<li>尽可能使用与提醒弹窗标题与附加文字信息相关的动词或者动词短语，比如说“查看全部”、“回复”、“忽略”</li>
-<li>简单的接受操作使用ok。避免使用yes或no</li>
-<li>按钮标题避免使用你、你的、我、我的这类人称代词，因为这些字眼看起来模棱两可，且有时候用户会认为带有侮辱性</li>
-</ul>
-<p>提醒弹窗的取消标签要易操作。取消提醒弹窗的按钮标签，应该足够明显，比如使用取消或撤销的字眼。</p>
-<p>如果提醒弹窗的某个按钮操作具有破坏性，其按钮样式应该具有高辨识度。一个不可逆操作的提醒按钮，比如删除，在样式设计上强化，使其与系统相一致。更多的实行细则，请查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UIAlertAction_Class/index.html#//apple_ref/c/econst/UIAlertActionStyleDestructive">UIAlertActionStyleDestructive</a>。</p>
-<p>允许使用遥控器来取消提醒弹窗。按下遥控器上的菜单按钮可以产生与单击取消按钮一样的效果，也就是说，你按下遥控器上的菜单按钮也可以退出提醒。如果你的提醒弹窗没有一个取消按钮，可以考虑给你的菜单按钮添加退出提醒弹窗的代码。</p>
-<hr>
-<p>原文地址：<a target="_blank" rel="noopener" href="https://developer.apple.com/tvos/human-interface-guidelines/">https://developer.apple.com/tvos/human-interface-guidelines/</a></p>
-<p>译文仅作学习用途，如有其它用途请联系原作者。</p>
-<p>译文转载请注明：本文来自MUX</p>
+<p>应用图标安全区域模板能够帮你把内容放在合适位置</p>
+<p>顶部展区(<strong>Top Shelf</strong>)图片</p>
+<p>最低要求：每个应用至少提供单张顶部展区静态图——当应用在主屏最上面一行且被选中聚焦时使用。</p>
+<p><strong>顶部展区静态图</strong> 尺寸：1920px by 720px</p>
+<p><strong>启动图像</strong> 尺寸：1920px by 1080px </p>
+<p><strong>标签栏 Tab Bars</strong> 高度：140px</p>
 
       
     </div>
@@ -1042,6 +471,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/12/07/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="prev" title="推荐系统的112条实战经验">
+                推荐系统的112条实战经验 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -1093,8 +526,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -1109,7 +551,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1120,7 +562,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">categories</span>
                 
               </div>
@@ -1131,7 +573,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -1154,6 +596,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AD%A3%E6%96%87"><span class="nav-number">1.</span> <span class="nav-text">正文</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
