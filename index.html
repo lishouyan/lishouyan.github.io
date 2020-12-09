@@ -249,6 +249,259 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/09/Spark-%E6%99%AE%E9%80%9A%E6%96%87%E4%BB%B6%E5%A4%9A%E8%B7%AF%E8%BE%93%E5%87%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thousandth of Dirt">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/12/09/Spark-%E6%99%AE%E9%80%9A%E6%96%87%E4%BB%B6%E5%A4%9A%E8%B7%AF%E8%BE%93%E5%87%BA/" itemprop="url">Spark saveAsHadoopFile 文件多路输出</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-09T20:42:25+08:00">
+                2020-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h6 id="RDD-collect-："><a href="#RDD-collect-：" class="headerlink" title="RDD.collect()："></a>RDD.collect()：</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">	&#123;</span><br><span class="line">		&quot;_1&quot;:&quot;a&quot;,</span><br><span class="line">		&quot;_2&quot;:&quot;this is a record&quot;</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		&quot;_1&quot;:&quot;b&quot;,</span><br><span class="line">		&quot;_2&quot;:&quot;this is b record&quot;</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		&quot;_1&quot;:&quot;c&quot;,</span><br><span class="line">		&quot;_2&quot;:&quot;this is c record&quot;</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		&quot;_1&quot;:&quot;e&quot;,</span><br><span class="line">		&quot;_2&quot;:&quot;this is d record&quot;</span><br><span class="line">	&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h6 id="自定义多路输出类："><a href="#自定义多路输出类：" class="headerlink" title="自定义多路输出类："></a>自定义多路输出类：</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import org.apache.hadoop.mapred.lib.MultipleTextOutputFormat;</span><br><span class="line"></span><br><span class="line">public class RDDMultipleTextOutputFormat extends MultipleTextOutputFormat&lt;String, String&gt; &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected String generateFileNameForKeyValue(String key, String value, String name) &#123;</span><br><span class="line"></span><br><span class="line">        name &#x3D; key + &quot;&#x2F;&quot; + name;</span><br><span class="line">        return  name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h6 id="保存文件（rdd-saveAsHadoopFile）："><a href="#保存文件（rdd-saveAsHadoopFile）：" class="headerlink" title="保存文件（rdd.saveAsHadoopFile）："></a>保存文件（rdd.saveAsHadoopFile）：</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.saveAsHadoopFile(path, String.class, String.class, RDDMultipleTextOutputFormat.class);</span><br></pre></td></tr></table></figure>
+
+<h6 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$hadoop fs -ls &#x2F;user&#x2F;shouyan.li&#x2F;freq&#x2F;</span><br><span class="line">Found 5 items</span><br><span class="line">-rw-rw-r--   3 shouyan.li work          0 2020-12-09 20:27 &#x2F;user&#x2F;shouyan.li&#x2F;freq&#x2F;_SUCCESS</span><br><span class="line">drwxrwxr-x   - shouyan.li work          0 2020-12-09 20:27 &#x2F;user&#x2F;shouyan.li&#x2F;freq&#x2F;a</span><br><span class="line">drwxrwxr-x   - shouyan.li work          0 2020-12-09 20:27 &#x2F;user&#x2F;shouyan.li&#x2F;freq&#x2F;b</span><br><span class="line">drwxrwxr-x   - shouyan.li work          0 2020-12-09 20:27 &#x2F;user&#x2F;shouyan.li&#x2F;freq&#x2F;c</span><br><span class="line">drwxrwxr-x   - shouyan.li work          0 2020-12-09 20:27 &#x2F;user&#x2F;shouyan.li&#x2F;freq&#x2F;e</span><br><span class="line"></span><br><span class="line">$ hadoop fs -ls &#x2F;user&#x2F;shouyan.li&#x2F;freq&#x2F;a</span><br><span class="line">Found 1 items</span><br><span class="line">-rw-rw-r--   3 shouyan.li work         24 2020-12-09 20:27 &#x2F;user&#x2F;shouyan.li&#x2F;freq&#x2F;a&#x2F;part-00000</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/09/Spark-%E5%A4%9A%E8%B7%AF%E8%BE%93%E5%87%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thousandth of Dirt">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/12/09/Spark-%E5%A4%9A%E8%B7%AF%E8%BE%93%E5%87%BA/" itemprop="url">Spark中Dataset Schema分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-09T16:37:36+08:00">
+                2020-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Spark中Dataset Schema分析</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Console.log(rowstr);</span><br><span class="line">&#123;</span><br><span class="line">	&quot;freq&quot;:1,</span><br><span class="line">	&quot;text&quot;:&quot;a&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ds.schema();</span><br><span class="line">&#123;</span><br><span class="line">	&quot;empty&quot;:false,</span><br><span class="line">	&quot;traversableAgain&quot;:true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ds.schema().toString();</span><br><span class="line">StructType(</span><br><span class="line">	StructField(freq,LongType,true), </span><br><span class="line">    StructField(text,StringType,true)</span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ds.printSchema();</span><br><span class="line">root</span><br><span class="line"> |-- freq: long (nullable &#x3D; true)</span><br><span class="line"> |-- text: string (nullable &#x3D; true)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">Configuration conf &#x3D; new Configuration();</span><br><span class="line">conf.set(&quot;parquet.write.support.class&quot;, GroupWriteSupport.class.getName());</span><br><span class="line">conf.set(&quot;spark.sql.parquet.writeLegacyFormat&quot;, &quot;false&quot;);</span><br><span class="line">conf.set(&quot;spark.sql.parquet.outputTimestampType&quot;, &quot;INT96&quot;);</span><br><span class="line">conf.set(&quot;parquet.enable.dictionary&quot;, &quot;false&quot;);</span><br><span class="line">conf.set(&quot;parquet.compression&quot;, &quot;snappy&quot;);</span><br><span class="line">MessageType mt &#x3D; new SparkToParquetSchemaConverter(configuration).convert(ds.schema());</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">	&quot;columns&quot;:[</span><br><span class="line">		&#123;</span><br><span class="line">			&quot;maxDefinitionLevel&quot;:1,</span><br><span class="line">			&quot;maxRepetitionLevel&quot;:0,</span><br><span class="line">			&quot;path&quot;:[&quot;freq&quot;],</span><br><span class="line">			&quot;type&quot;:&quot;INT64&quot;,</span><br><span class="line">			&quot;typeLength&quot;:0</span><br><span class="line">		&#125;,</span><br><span class="line">		&#123;</span><br><span class="line">			&quot;maxDefinitionLevel&quot;:1,</span><br><span class="line">			&quot;maxRepetitionLevel&quot;:0,</span><br><span class="line">			&quot;path&quot;:[&quot;text&quot;],</span><br><span class="line">			&quot;type&quot;:&quot;BINARY&quot;,</span><br><span class="line">			&quot;typeLength&quot;:0</span><br><span class="line">		&#125;</span><br><span class="line">	],</span><br><span class="line">	&quot;fieldCount&quot;:2,</span><br><span class="line">	&quot;fields&quot;:[</span><br><span class="line">		&#123;</span><br><span class="line">			&quot;decimalMetadata&quot;:null,</span><br><span class="line">			&quot;id&quot;:null,</span><br><span class="line">			&quot;name&quot;:&quot;freq&quot;,</span><br><span class="line">			&quot;originalType&quot;:null,</span><br><span class="line">			&quot;primitive&quot;:true,</span><br><span class="line">			&quot;primitiveTypeName&quot;:&quot;INT64&quot;,</span><br><span class="line">			&quot;repetition&quot;:&quot;OPTIONAL&quot;,</span><br><span class="line">			&quot;typeLength&quot;:0</span><br><span class="line">		&#125;,</span><br><span class="line">		&#123;</span><br><span class="line">			&quot;decimalMetadata&quot;:null,</span><br><span class="line">			&quot;id&quot;:null,</span><br><span class="line">			&quot;name&quot;:&quot;text&quot;,</span><br><span class="line">			&quot;originalType&quot;:&quot;UTF8&quot;,</span><br><span class="line">			&quot;primitive&quot;:true,</span><br><span class="line">			&quot;primitiveTypeName&quot;:&quot;BINARY&quot;,</span><br><span class="line">			&quot;repetition&quot;:&quot;OPTIONAL&quot;,</span><br><span class="line">			&quot;typeLength&quot;:0</span><br><span class="line">		&#125;</span><br><span class="line">	],</span><br><span class="line">	&quot;id&quot;:null,</span><br><span class="line">	&quot;name&quot;:&quot;spark_schema&quot;,</span><br><span class="line">	&quot;originalType&quot;:null,</span><br><span class="line">	&quot;paths&quot;:[</span><br><span class="line">		[&quot;freq&quot;],</span><br><span class="line">		[&quot;text&quot;]</span><br><span class="line">	],</span><br><span class="line">	&quot;primitive&quot;:false,</span><br><span class="line">	&quot;repetition&quot;:&quot;REPEATED&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mt.toString();</span><br><span class="line">&quot;message spark_schema &#123;\n  optional int64 freq;\n  optional binary text (UTF8);\n&#125;\n&quot;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/08/Spark%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1888,7 +2141,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

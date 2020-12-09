@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="java," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,17 +79,16 @@
 
 
 
-<meta name="description" content="一 Class类简介： 取信息方法">
+<meta name="description" content="Spark中Dataset Schema分析 12345Console.log(rowstr);&amp;#123;	&quot;freq&quot;:1,	&quot;text&quot;:&quot;a&quot;&amp;#125; 12345ds.schema();&amp;#123;	&quot;empty&quot;:false,	&quot;traversableAgain&quot;:true&amp;#125;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JAVA笔记： 类，反射，动态编译">
-<meta property="og:url" content="http://example.com/2020/12/04/JAVA%E5%AD%A6%E4%B9%A0%EF%BC%9A-Class-forName/index.html">
+<meta property="og:title" content="Spark中Dataset Schema分析">
+<meta property="og:url" content="http://example.com/2020/12/09/Spark-%E5%A4%9A%E8%B7%AF%E8%BE%93%E5%87%BA/index.html">
 <meta property="og:site_name" content="Thousandth of Dirt">
-<meta property="og:description" content="一 Class类简介： 取信息方法">
+<meta property="og:description" content="Spark中Dataset Schema分析 12345Console.log(rowstr);&amp;#123;	&quot;freq&quot;:1,	&quot;text&quot;:&quot;a&quot;&amp;#125; 12345ds.schema();&amp;#123;	&quot;empty&quot;:false,	&quot;traversableAgain&quot;:true&amp;#125;">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-12-04T06:13:00.000Z">
-<meta property="article:modified_time" content="2020-12-04T10:39:50.469Z">
+<meta property="article:published_time" content="2020-12-09T08:37:36.000Z">
+<meta property="article:modified_time" content="2020-12-09T09:01:23.081Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="java">
 <meta name="twitter:card" content="summary">
 
 
@@ -120,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2020/12/04/JAVA学习：-Class-forName/"/>
+  <link rel="canonical" href="http://example.com/2020/12/09/Spark-多路输出/"/>
 
 
 
 
 
-  <title>JAVA笔记： 类，反射，动态编译 | Thousandth of Dirt</title>
+  <title>Spark中Dataset Schema分析 | Thousandth of Dirt</title>
   
 
 
@@ -253,7 +252,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/04/JAVA%E5%AD%A6%E4%B9%A0%EF%BC%9A-Class-forName/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/09/Spark-%E5%A4%9A%E8%B7%AF%E8%BE%93%E5%87%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -270,7 +269,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">JAVA笔记： 类，反射，动态编译</h1>
+          <h1 class="post-title" itemprop="name headline">Spark中Dataset Schema分析</h1>
         
 
         <div class="post-meta">
@@ -282,8 +281,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-04T14:13:00+08:00">
-                2020-12-04
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-09T16:37:36+08:00">
+                2020-12-09
               </time>
             
 
@@ -292,28 +291,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -342,10 +319,13 @@
       
 
       
-        <h6 id="一-Class类简介："><a href="#一-Class类简介：" class="headerlink" title="一 Class类简介："></a>一 Class类简介：</h6><ol>
-<li>取信息方法</li>
-<li></li>
-</ol>
+        <p>Spark中Dataset Schema分析</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Console.log(rowstr);</span><br><span class="line">&#123;</span><br><span class="line">	&quot;freq&quot;:1,</span><br><span class="line">	&quot;text&quot;:&quot;a&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ds.schema();</span><br><span class="line">&#123;</span><br><span class="line">	&quot;empty&quot;:false,</span><br><span class="line">	&quot;traversableAgain&quot;:true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ds.schema().toString();</span><br><span class="line">StructType(</span><br><span class="line">	StructField(freq,LongType,true), </span><br><span class="line">    StructField(text,StringType,true)</span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ds.printSchema();</span><br><span class="line">root</span><br><span class="line"> |-- freq: long (nullable &#x3D; true)</span><br><span class="line"> |-- text: string (nullable &#x3D; true)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">Configuration conf &#x3D; new Configuration();</span><br><span class="line">conf.set(&quot;parquet.write.support.class&quot;, GroupWriteSupport.class.getName());</span><br><span class="line">conf.set(&quot;spark.sql.parquet.writeLegacyFormat&quot;, &quot;false&quot;);</span><br><span class="line">conf.set(&quot;spark.sql.parquet.outputTimestampType&quot;, &quot;INT96&quot;);</span><br><span class="line">conf.set(&quot;parquet.enable.dictionary&quot;, &quot;false&quot;);</span><br><span class="line">conf.set(&quot;parquet.compression&quot;, &quot;snappy&quot;);</span><br><span class="line">MessageType mt &#x3D; new SparkToParquetSchemaConverter(configuration).convert(ds.schema());</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">	&quot;columns&quot;:[</span><br><span class="line">		&#123;</span><br><span class="line">			&quot;maxDefinitionLevel&quot;:1,</span><br><span class="line">			&quot;maxRepetitionLevel&quot;:0,</span><br><span class="line">			&quot;path&quot;:[&quot;freq&quot;],</span><br><span class="line">			&quot;type&quot;:&quot;INT64&quot;,</span><br><span class="line">			&quot;typeLength&quot;:0</span><br><span class="line">		&#125;,</span><br><span class="line">		&#123;</span><br><span class="line">			&quot;maxDefinitionLevel&quot;:1,</span><br><span class="line">			&quot;maxRepetitionLevel&quot;:0,</span><br><span class="line">			&quot;path&quot;:[&quot;text&quot;],</span><br><span class="line">			&quot;type&quot;:&quot;BINARY&quot;,</span><br><span class="line">			&quot;typeLength&quot;:0</span><br><span class="line">		&#125;</span><br><span class="line">	],</span><br><span class="line">	&quot;fieldCount&quot;:2,</span><br><span class="line">	&quot;fields&quot;:[</span><br><span class="line">		&#123;</span><br><span class="line">			&quot;decimalMetadata&quot;:null,</span><br><span class="line">			&quot;id&quot;:null,</span><br><span class="line">			&quot;name&quot;:&quot;freq&quot;,</span><br><span class="line">			&quot;originalType&quot;:null,</span><br><span class="line">			&quot;primitive&quot;:true,</span><br><span class="line">			&quot;primitiveTypeName&quot;:&quot;INT64&quot;,</span><br><span class="line">			&quot;repetition&quot;:&quot;OPTIONAL&quot;,</span><br><span class="line">			&quot;typeLength&quot;:0</span><br><span class="line">		&#125;,</span><br><span class="line">		&#123;</span><br><span class="line">			&quot;decimalMetadata&quot;:null,</span><br><span class="line">			&quot;id&quot;:null,</span><br><span class="line">			&quot;name&quot;:&quot;text&quot;,</span><br><span class="line">			&quot;originalType&quot;:&quot;UTF8&quot;,</span><br><span class="line">			&quot;primitive&quot;:true,</span><br><span class="line">			&quot;primitiveTypeName&quot;:&quot;BINARY&quot;,</span><br><span class="line">			&quot;repetition&quot;:&quot;OPTIONAL&quot;,</span><br><span class="line">			&quot;typeLength&quot;:0</span><br><span class="line">		&#125;</span><br><span class="line">	],</span><br><span class="line">	&quot;id&quot;:null,</span><br><span class="line">	&quot;name&quot;:&quot;spark_schema&quot;,</span><br><span class="line">	&quot;originalType&quot;:null,</span><br><span class="line">	&quot;paths&quot;:[</span><br><span class="line">		[&quot;freq&quot;],</span><br><span class="line">		[&quot;text&quot;]</span><br><span class="line">	],</span><br><span class="line">	&quot;primitive&quot;:false,</span><br><span class="line">	&quot;repetition&quot;:&quot;REPEATED&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mt.toString();</span><br><span class="line">&quot;message spark_schema &#123;\n  optional int64 freq;\n  optional binary text (UTF8);\n&#125;\n&quot;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -361,12 +341,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/java/" rel="tag"># java</a>
-          
-        </div>
-      
 
       
       
@@ -376,14 +350,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2020/12/08/Spark%E7%AC%94%E8%AE%B0/" rel="next" title="Spark的driver理解和executor理解">
+                <i class="fa fa-chevron-left"></i> Spark的driver理解和executor理解
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/12/06/Github-Stars/" rel="prev" title="视差框架">
-                视差框架 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/12/09/Spark-%E6%99%AE%E9%80%9A%E6%96%87%E4%BB%B6%E5%A4%9A%E8%B7%AF%E8%BE%93%E5%87%BA/" rel="prev" title="Spark saveAsHadoopFile 文件多路输出">
+                Spark saveAsHadoopFile 文件多路输出 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -436,17 +414,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -506,22 +475,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%B8%80-Class%E7%B1%BB%E7%AE%80%E4%BB%8B%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">一 Class类简介：</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

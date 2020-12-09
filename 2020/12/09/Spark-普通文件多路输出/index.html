@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="java," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,17 +79,16 @@
 
 
 
-<meta name="description" content="一 Class类简介： 取信息方法">
+<meta name="description" content="RDD.collect()：123456789101112131415161718[	&amp;#123;		&quot;_1&quot;:&quot;a&quot;,		&quot;_2&quot;:&quot;this is a record&quot;	&amp;#125;,	&amp;#123;		&quot;_1&quot;:&quot;b&quot;,		&quot;_2&quot;:&quot;this i">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JAVA笔记： 类，反射，动态编译">
-<meta property="og:url" content="http://example.com/2020/12/04/JAVA%E5%AD%A6%E4%B9%A0%EF%BC%9A-Class-forName/index.html">
+<meta property="og:title" content="Spark saveAsHadoopFile 文件多路输出">
+<meta property="og:url" content="http://example.com/2020/12/09/Spark-%E6%99%AE%E9%80%9A%E6%96%87%E4%BB%B6%E5%A4%9A%E8%B7%AF%E8%BE%93%E5%87%BA/index.html">
 <meta property="og:site_name" content="Thousandth of Dirt">
-<meta property="og:description" content="一 Class类简介： 取信息方法">
+<meta property="og:description" content="RDD.collect()：123456789101112131415161718[	&amp;#123;		&quot;_1&quot;:&quot;a&quot;,		&quot;_2&quot;:&quot;this is a record&quot;	&amp;#125;,	&amp;#123;		&quot;_1&quot;:&quot;b&quot;,		&quot;_2&quot;:&quot;this i">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-12-04T06:13:00.000Z">
-<meta property="article:modified_time" content="2020-12-04T10:39:50.469Z">
+<meta property="article:published_time" content="2020-12-09T12:42:25.000Z">
+<meta property="article:modified_time" content="2020-12-09T12:55:23.469Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="java">
 <meta name="twitter:card" content="summary">
 
 
@@ -120,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2020/12/04/JAVA学习：-Class-forName/"/>
+  <link rel="canonical" href="http://example.com/2020/12/09/Spark-普通文件多路输出/"/>
 
 
 
 
 
-  <title>JAVA笔记： 类，反射，动态编译 | Thousandth of Dirt</title>
+  <title>Spark saveAsHadoopFile 文件多路输出 | Thousandth of Dirt</title>
   
 
 
@@ -253,7 +252,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/04/JAVA%E5%AD%A6%E4%B9%A0%EF%BC%9A-Class-forName/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/09/Spark-%E6%99%AE%E9%80%9A%E6%96%87%E4%BB%B6%E5%A4%9A%E8%B7%AF%E8%BE%93%E5%87%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -270,7 +269,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">JAVA笔记： 类，反射，动态编译</h1>
+          <h1 class="post-title" itemprop="name headline">Spark saveAsHadoopFile 文件多路输出</h1>
         
 
         <div class="post-meta">
@@ -282,8 +281,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-04T14:13:00+08:00">
-                2020-12-04
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-09T20:42:25+08:00">
+                2020-12-09
               </time>
             
 
@@ -292,28 +291,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -342,10 +319,14 @@
       
 
       
-        <h6 id="一-Class类简介："><a href="#一-Class类简介：" class="headerlink" title="一 Class类简介："></a>一 Class类简介：</h6><ol>
-<li>取信息方法</li>
-<li></li>
-</ol>
+        <h6 id="RDD-collect-："><a href="#RDD-collect-：" class="headerlink" title="RDD.collect()："></a>RDD.collect()：</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">	&#123;</span><br><span class="line">		&quot;_1&quot;:&quot;a&quot;,</span><br><span class="line">		&quot;_2&quot;:&quot;this is a record&quot;</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		&quot;_1&quot;:&quot;b&quot;,</span><br><span class="line">		&quot;_2&quot;:&quot;this is b record&quot;</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		&quot;_1&quot;:&quot;c&quot;,</span><br><span class="line">		&quot;_2&quot;:&quot;this is c record&quot;</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		&quot;_1&quot;:&quot;e&quot;,</span><br><span class="line">		&quot;_2&quot;:&quot;this is d record&quot;</span><br><span class="line">	&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h6 id="自定义多路输出类："><a href="#自定义多路输出类：" class="headerlink" title="自定义多路输出类："></a>自定义多路输出类：</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import org.apache.hadoop.mapred.lib.MultipleTextOutputFormat;</span><br><span class="line"></span><br><span class="line">public class RDDMultipleTextOutputFormat extends MultipleTextOutputFormat&lt;String, String&gt; &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected String generateFileNameForKeyValue(String key, String value, String name) &#123;</span><br><span class="line"></span><br><span class="line">        name &#x3D; key + &quot;&#x2F;&quot; + name;</span><br><span class="line">        return  name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h6 id="保存文件（rdd-saveAsHadoopFile）："><a href="#保存文件（rdd-saveAsHadoopFile）：" class="headerlink" title="保存文件（rdd.saveAsHadoopFile）："></a>保存文件（rdd.saveAsHadoopFile）：</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.saveAsHadoopFile(path, String.class, String.class, RDDMultipleTextOutputFormat.class);</span><br></pre></td></tr></table></figure>
+
+<h6 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$hadoop fs -ls &#x2F;user&#x2F;shouyan.li&#x2F;freq&#x2F;</span><br><span class="line">Found 5 items</span><br><span class="line">-rw-rw-r--   3 shouyan.li work          0 2020-12-09 20:27 &#x2F;user&#x2F;shouyan.li&#x2F;freq&#x2F;_SUCCESS</span><br><span class="line">drwxrwxr-x   - shouyan.li work          0 2020-12-09 20:27 &#x2F;user&#x2F;shouyan.li&#x2F;freq&#x2F;a</span><br><span class="line">drwxrwxr-x   - shouyan.li work          0 2020-12-09 20:27 &#x2F;user&#x2F;shouyan.li&#x2F;freq&#x2F;b</span><br><span class="line">drwxrwxr-x   - shouyan.li work          0 2020-12-09 20:27 &#x2F;user&#x2F;shouyan.li&#x2F;freq&#x2F;c</span><br><span class="line">drwxrwxr-x   - shouyan.li work          0 2020-12-09 20:27 &#x2F;user&#x2F;shouyan.li&#x2F;freq&#x2F;e</span><br><span class="line"></span><br><span class="line">$ hadoop fs -ls &#x2F;user&#x2F;shouyan.li&#x2F;freq&#x2F;a</span><br><span class="line">Found 1 items</span><br><span class="line">-rw-rw-r--   3 shouyan.li work         24 2020-12-09 20:27 &#x2F;user&#x2F;shouyan.li&#x2F;freq&#x2F;a&#x2F;part-00000</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -361,12 +342,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/java/" rel="tag"># java</a>
-          
-        </div>
-      
 
       
       
@@ -376,15 +351,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2020/12/09/Spark-%E5%A4%9A%E8%B7%AF%E8%BE%93%E5%87%BA/" rel="next" title="Spark中Dataset Schema分析">
+                <i class="fa fa-chevron-left"></i> Spark中Dataset Schema分析
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/12/06/Github-Stars/" rel="prev" title="视差框架">
-                视差框架 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -516,7 +491,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%B8%80-Class%E7%B1%BB%E7%AE%80%E4%BB%8B%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">一 Class类简介：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#RDD-collect-%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">RDD.collect()：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%A4%9A%E8%B7%AF%E8%BE%93%E5%87%BA%E7%B1%BB%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">自定义多路输出类：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%EF%BC%88rdd-saveAsHadoopFile%EF%BC%89%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">保存文件（rdd.saveAsHadoopFile）：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E7%BB%93%E6%9E%9C"><span class="nav-number">4.</span> <span class="nav-text">输出结果</span></a></li></ol></div>
             
 
           </div>
