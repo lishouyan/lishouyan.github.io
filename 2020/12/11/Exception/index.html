@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="引言Java设置了异常，旨在鼓励将方法中可能出现的异常告知给使用此方法的程序员（你和我！）。当然了，这种方法是比较优雅的，让我们确切的知道是在哪里出了错，并提供了异常捕获。本篇文章主要对Java中的异常进行介绍与区分。这是异常的类图。 Throwable是Error和Exception的父类，用来定义所有可以作为异常被抛出来的类。UML图如下： 说明1.Error和Exception区分： Err">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RuntimeException和Exception区别">
+<meta property="og:url" content="http://example.com/2020/12/11/Exception/index.html">
+<meta property="og:site_name" content="Thousandth of Dirt">
+<meta property="og:description" content="引言Java设置了异常，旨在鼓励将方法中可能出现的异常告知给使用此方法的程序员（你和我！）。当然了，这种方法是比较优雅的，让我们确切的知道是在哪里出了错，并提供了异常捕获。本篇文章主要对Java中的异常进行介绍与区分。这是异常的类图。 Throwable是Error和Exception的父类，用来定义所有可以作为异常被抛出来的类。UML图如下： 说明1.Error和Exception区分： Err">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019061821400045.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpeHBqaXRhMzk=,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190509163805888.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpeHBqaXRhMzk=,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2020-12-11T05:21:28.000Z">
+<meta property="article:modified_time" content="2020-12-11T05:22:32.381Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/2019061821400045.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpeHBqaXRhMzk=,size_16,color_FFFFFF,t_70">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2020/12/11/Exception/"/>
+
+
+
+
+
+  <title>RuntimeException和Exception区别 | Thousandth of Dirt</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Thousandth of Dirt</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/11/Exception/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thousandth of Dirt">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RuntimeException和Exception区别</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-11T13:21:28+08:00">
+                2020-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>Java设置了异常，旨在鼓励将方法中可能出现的异常告知给使用此方法的程序员（你和我！）。当然了，这种方法是<strong>比较优雅</strong>的，让我们确切的知道是在哪里出了错，并提供了异常捕获。本篇文章主要对Java中的异常进行介绍与区分。<br><img src="https://img-blog.csdnimg.cn/2019061821400045.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpeHBqaXRhMzk=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这是异常的类图。</p>
+<p>Throwable是Error和Exception的父类，用来定义所有可以作为异常被抛出来的类。<br>UML图如下：<br><img src="https://img-blog.csdnimg.cn/20190509163805888.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpeHBqaXRhMzk=,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><h4 id="1-Error和Exception区分："><a href="#1-Error和Exception区分：" class="headerlink" title="1.Error和Exception区分："></a>1.Error和Exception区分：</h4><blockquote>
+<p><strong>Error</strong>是编译时错误和系统错误，系统错误在除特殊情况下，都不需要你来关心，基本不会出现。而编译时错误，如果你使用了编译器，那么编译器会提示。</p>
+</blockquote>
+<blockquote>
+<p><strong>Exception</strong>则是可以被抛出的基本类型，我们需要主要关心的也是这个类。<br><strong>Exception</strong>又分为<strong>RunTimeException</strong>和<strong>其他Exception</strong>。</p>
+</blockquote>
+<h4 id="2-RunTimeException和其他Exception区分："><a href="#2-RunTimeException和其他Exception区分：" class="headerlink" title="2.RunTimeException和其他Exception区分："></a>2.RunTimeException和其他Exception区分：</h4><blockquote>
+<p><strong>其他Exception</strong>，受检查异常。可以理解为错误，必须要开发者解决以后才能编译通过，解决的方法有两种，<br>1：throw到上层，<br>2，try-catch处理。</p>
+</blockquote>
+<blockquote>
+<p><strong>RunTimeException</strong>：运行时异常，又称不受检查异常，不受检查！<br>不受检查！！不受检查！！！重要的事情说三遍，因为不受检查，所以在代码中可能会有RunTimeException时Java编译检查时不会告诉你有这个异常，但是在实际运行代码时则会暴露出来，比如经典的1/0，空指针等。如果不处理也会被Java自己处理。</p>
+</blockquote>
+<h3 id="异常的分类"><a href="#异常的分类" class="headerlink" title="异常的分类"></a>异常的分类</h3><p>Error：一般为底层的不可恢复的类；<br>Exception：分为未检查异常(RuntimeException)和已检查异常(非RuntimeException)。<br>未检查异常是因为程序员没有进行必需要的检查，因为疏忽和错误而引起的错误。几个经典的RunTimeException如下：</p>
+<p>1.java.lang.NullPointerException;<br>2.java.lang.ArithmaticException;<br>3.java.lang.ArrayIndexoutofBoundsException</p>
+<h4 id="Runtime-Exception："><a href="#Runtime-Exception：" class="headerlink" title="Runtime Exception："></a>Runtime Exception：</h4><p>在定义方法时不需要声明会抛出runtime exception； 在调用这个方法时不需要捕获这个runtime exception； runtime exception是从java.lang.RuntimeException或java.lang.Error类衍生出来的。 例如：nullpointexception，IndexOutOfBoundsException就属于runtime exception</p>
+<h4 id="Exception"><a href="#Exception" class="headerlink" title="Exception:"></a>Exception:</h4><p>定义方法时必须声明所有可能会抛出的exception； 在调用这个方法时，必须捕获它的checked exception，不然就得把它的exception传递下去；exception是从java.lang.Exception类衍生出来的。例如：IOException，SQLException就属于Exception</p>
+<p>Exception 属于应用程序级别的异常，这类异常必须捕捉,Exception体系包括RuntimeException体系和其他非RuntimeException的体系</p>
+<p>RuntimeException 表示系统异常，比较严重，如果出现RuntimeException，那么一定是程序员的错误</p>
+<p>什么是unchecked异常?</p>
+<p>即RuntimeException（运行时异常）<br>不需要try…catch…或throws 机制去处理的异常</p>
+<h3 id="Android异常大全"><a href="#Android异常大全" class="headerlink" title="Android异常大全"></a>Android异常大全</h3><h6 id="java-lang-NullPointerException"><a href="#java-lang-NullPointerException" class="headerlink" title="java.lang.NullPointerException"></a>java.lang.NullPointerException</h6><p>这个异常的解释是 “程序遇上了空指针 “，简单地说就是调用了未经初始化的对象或者是不存在的对象，这个错误经常出现在创建图片，调用数组这些操作中，比如图片未经初始化，或者图片创建时的路径错误等等。对数组操作中出现空指针，即把数组的初始化和数组元素的初始化混淆起来了。数组的初始化是对数组分配需要的空间，而初始化后的数组，其中的元素并没有实例化，依然是空的，所以还需要对每个元素都进行初始化（如果要调用的话）。</p>
+<h6 id="java-lang-ClassNotFoundException"><a href="#java-lang-ClassNotFoundException" class="headerlink" title="java.lang.ClassNotFoundException"></a>java.lang.ClassNotFoundException</h6><p>异常的解释是”指定的类不存在”，这里主要考虑一下类的名称和路径是否正确即可</p>
+<h6 id="java-lang-ArithmeticException"><a href="#java-lang-ArithmeticException" class="headerlink" title="java.lang.ArithmeticException"></a>java.lang.ArithmeticException</h6><p>这个异常的解释是”数学运算异常”，比如程序中出现了除以零这样的运算就会出这样的异常，对这种异常，大家就要好好检查一下自己程序中涉及到数学运算的地方，公式是不是有不妥了。</p>
+<h6 id="java-lang-ArrayIndexOutOfBoundsException"><a href="#java-lang-ArrayIndexOutOfBoundsException" class="headerlink" title="java.lang.ArrayIndexOutOfBoundsException"></a>java.lang.ArrayIndexOutOfBoundsException</h6><p>这个异常的解释是”数组下标越界”，现在程序中大多都有对数组的操作，因此在调用数组的时候一定要认真检查，看自己调用的下标是不是超出了数组的范围，一般来说，显示（即直接用常数当下标）调用不太容易出这样的错，但隐式（即用变量表示下标）调用就经常出错了，还有一种情况，是程序中定义的数组的长度是通过某些特定方法决定的，不是事先声明的，这个时候，最好先查看一下数组的length，以免出现这个异常。</p>
+<h6 id="java-lang-IllegalArgumentException"><a href="#java-lang-IllegalArgumentException" class="headerlink" title="java.lang.IllegalArgumentException"></a>java.lang.IllegalArgumentException</h6><p>这个异常的解释是”方法的参数错误”，很多j2me的类库中的方法在一些情况下都会引发这样的错误，比如音量调节方法中的音量参数如果写成负数就会出现这个异常，再比如g.setcolor(int red,int green,int blue)这个方法中的三个值，如果有超过255的也会出现这个异常，因此一旦发现这个异常，我们要做的，就是赶紧去检查一下方法调用中的参数传递是不是出现了错误。</p>
+<h6 id="java-lang-IllegalAccessException"><a href="#java-lang-IllegalAccessException" class="headerlink" title="java.lang.IllegalAccessException"></a>java.lang.IllegalAccessException</h6><p>这个异常的解释是”没有访问权限”，当应用程序要调用一个类，但当前的方法即没有对该类的访问权限便会出现这个异常。对程序中用了package的情况下要注意这个异常。<br>其他还有很多异常，我就不一一列举了，我要说明的是，一个合格的程序员，需要对程序中常见的问题有相当的了解和相应的解决办法，否则仅仅停留在写程序而不会改程序的话，会极大影响到自己的开发的。关于异常的全部说明，在api里都可以查阅。</p>
+<p>算术异常类：ArithmeticExecption<br>空指针异常类：NullPointerException<br>类型强制转换异常：ClassCastException<br>数组负下标异常：NegativeArrayException<br>数组下标越界异常：ArrayIndexOutOfBoundsException<br>违背安全原则异常：SecturityException<br>文件已结束异常：EOFException<br>文件未找到异常：FileNotFoundException<br>字符串转换为数字异常：NumberFormatException<br>操作数据库异常：SQLException<br>输入输出异常：IOException<br>方法未找到异常：NoSuchMethodException</p>
+<h6 id="java-lang-AbstractMethodError"><a href="#java-lang-AbstractMethodError" class="headerlink" title="java.lang.AbstractMethodError"></a>java.lang.AbstractMethodError</h6><p>抽象方法错误。当应用试图调用抽象方法时抛出。</p>
+<h6 id="java-lang-AssertionError"><a href="#java-lang-AssertionError" class="headerlink" title="java.lang.AssertionError"></a>java.lang.AssertionError</h6><p>断言错。用来指示一个断言失败的情况。</p>
+<h6 id="java-lang-ClassCircularityError"><a href="#java-lang-ClassCircularityError" class="headerlink" title="java.lang.ClassCircularityError"></a>java.lang.ClassCircularityError</h6><p>类循环依赖错误。在初始化一个类时，若检测到类之间循环依赖则抛出该异常。</p>
+<h6 id="java-lang-ClassFormatError"><a href="#java-lang-ClassFormatError" class="headerlink" title="java.lang.ClassFormatError"></a>java.lang.ClassFormatError</h6><p>类格式错误。当Java虚拟机试图从一个文件中读取Java类，而检测到该文件的内容不符合类的有效格式时抛出。</p>
+<h6 id="java-lang-Error"><a href="#java-lang-Error" class="headerlink" title="java.lang.Error"></a>java.lang.Error</h6><p>错误。是所有错误的基类，用于标识严重的程序运行问题。这些问题通常描述一些不应被应用程序捕获的反常情况。</p>
+<h6 id="java-lang-ExceptionInInitializerError"><a href="#java-lang-ExceptionInInitializerError" class="headerlink" title="java.lang.ExceptionInInitializerError"></a>java.lang.ExceptionInInitializerError</h6><p>初始化程序错误。当执行一个类的静态初始化程序的过程中，发生了异常时抛出。静态初始化程序是指直接包含于类中的static语句段。</p>
+<h6 id="java-lang-IllegalAccessError"><a href="#java-lang-IllegalAccessError" class="headerlink" title="java.lang.IllegalAccessError"></a>java.lang.IllegalAccessError</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">违法访问错误。当一个应用试图访问、修改某个类的域（Field）或者调用其方法，但是又违反域或方法的可见性声明，则抛出该异常。</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<h6 id="java-lang-IncompatibleClassChangeError"><a href="#java-lang-IncompatibleClassChangeError" class="headerlink" title="java.lang.IncompatibleClassChangeError"></a>java.lang.IncompatibleClassChangeError</h6><p>不兼容的类变化错误。当正在执行的方法所依赖的类定义发生了不兼容的改变时，抛出该异常。一般在修改了应用中的某些类的声明定义而没有对整个应用重新编译而直接运行的情况下，容易引发该错误。</p>
+<h6 id="java-lang-InstantiationError"><a href="#java-lang-InstantiationError" class="headerlink" title="java.lang.InstantiationError"></a>java.lang.InstantiationError</h6><p>实例化错误。当一个应用试图通过Java的new操作符构造一个抽象类或者接口时抛出该异常.</p>
+<h6 id="java-lang-InternalError"><a href="#java-lang-InternalError" class="headerlink" title="java.lang.InternalError"></a>java.lang.InternalError</h6><p>内部错误。用于指示Java虚拟机发生了内部错误。</p>
+<h6 id="java-lang-LinkageError"><a href="#java-lang-LinkageError" class="headerlink" title="java.lang.LinkageError"></a>java.lang.LinkageError</h6><p>链接错误。该错误及其所有子类指示某个类依赖于另外一些类，在该类编译之后，被依赖的类改变了其类定义而没有重新编译所有的类，进而引发错误的情况。</p>
+<h6 id="java-lang-NoClassDefFoundError"><a href="#java-lang-NoClassDefFoundError" class="headerlink" title="java.lang.NoClassDefFoundError"></a>java.lang.NoClassDefFoundError</h6><p>未找到类定义错误。当Java虚拟机或者类装载器试图实例化某个类，而找不到该类的定义时抛出该错误。</p>
+<h6 id="java-lang-NoSuchFieldError"><a href="#java-lang-NoSuchFieldError" class="headerlink" title="java.lang.NoSuchFieldError"></a>java.lang.NoSuchFieldError</h6><p>域不存在错误。当应用试图访问或者修改某类的某个域，而该类的定义中没有该域的定义时抛出该错误。</p>
+<h6 id="java-lang-NoSuchMethodError"><a href="#java-lang-NoSuchMethodError" class="headerlink" title="java.lang.NoSuchMethodError"></a>java.lang.NoSuchMethodError</h6><p>方法不存在错误。当应用试图调用某类的某个方法，而该类的定义中没有该方法的定义时抛出该错误。</p>
+<h6 id="java-lang-OutOfMemoryError"><a href="#java-lang-OutOfMemoryError" class="headerlink" title="java.lang.OutOfMemoryError"></a>java.lang.OutOfMemoryError</h6><p>内存不足错误。当可用内存不足以让Java虚拟机分配给一个对象时抛出该错误。</p>
+<h6 id="java-lang-StackOverflowError"><a href="#java-lang-StackOverflowError" class="headerlink" title="java.lang.StackOverflowError"></a>java.lang.StackOverflowError</h6><p>堆栈溢出错误。当一个应用递归调用的层次太深而导致堆栈溢出时抛出该错误。</p>
+<h6 id="java-lang-ThreadDeath"><a href="#java-lang-ThreadDeath" class="headerlink" title="java.lang.ThreadDeath"></a>java.lang.ThreadDeath</h6><p>线程结束。当调用Thread类的stop方法时抛出该错误，用于指示线程结束。</p>
+<h6 id="java-lang-UnknownError"><a href="#java-lang-UnknownError" class="headerlink" title="java.lang.UnknownError"></a>java.lang.UnknownError</h6><p>未知错误。用于指示Java虚拟机发生了未知严重错误的情况。</p>
+<h6 id="java-lang-UnsatisfiedLinkError"><a href="#java-lang-UnsatisfiedLinkError" class="headerlink" title="java.lang.UnsatisfiedLinkError"></a>java.lang.UnsatisfiedLinkError</h6><p>未满足的链接错误。当Java虚拟机未找到某个类的声明为native方法的本机语言定义时抛出。</p>
+<h6 id="java-lang-UnsupportedClassVersionError"><a href="#java-lang-UnsupportedClassVersionError" class="headerlink" title="java.lang.UnsupportedClassVersionError"></a>java.lang.UnsupportedClassVersionError</h6><p>不支持的类版本错误。当Java虚拟机试图从读取某个类文件，但是发现该文件的主、次版本号不被当前Java虚拟机支持的时候，抛出该错误。</p>
+<h6 id="java-lang-VerifyError"><a href="#java-lang-VerifyError" class="headerlink" title="java.lang.VerifyError"></a>java.lang.VerifyError</h6><p>验证错误。当验证器检测到某个类文件中存在内部不兼容或者安全问题时抛出该错误。</p>
+<h6 id="java-lang-VirtualMachineError"><a href="#java-lang-VirtualMachineError" class="headerlink" title="java.lang.VirtualMachineError"></a>java.lang.VirtualMachineError</h6><p>虚拟机错误。用于指示虚拟机被破坏或者继续执行操作所需的资源不足的情况。</p>
+<h6 id="java-lang-ArithmeticException-1"><a href="#java-lang-ArithmeticException-1" class="headerlink" title="java.lang.ArithmeticException"></a>java.lang.ArithmeticException</h6><p>算术条件异常。譬如：整数除零等。</p>
+<h6 id="java-lang-ArrayIndexOutOfBoundsException-1"><a href="#java-lang-ArrayIndexOutOfBoundsException-1" class="headerlink" title="java.lang.ArrayIndexOutOfBoundsException"></a>java.lang.ArrayIndexOutOfBoundsException</h6><p>数组索引越界异常。当对数组的索引值为负数或大于等于数组大小时抛出。</p>
+<h6 id="java-lang-ArrayStoreException"><a href="#java-lang-ArrayStoreException" class="headerlink" title="java.lang.ArrayStoreException"></a>java.lang.ArrayStoreException</h6><p>数组存储异常。当向数组中存放非数组声明类型对象时抛出。</p>
+<h6 id="java-lang-ClassCastException"><a href="#java-lang-ClassCastException" class="headerlink" title="java.lang.ClassCastException"></a>java.lang.ClassCastException</h6><p>类造型异常。假设有类A和B（A不是B的父类或子类），O是A的实例，那么当强制将O构造为类B的实例时抛出该异常。该异常经常被称为强制类型转换异常。</p>
+<h6 id="java-lang-ClassNotFoundException-1"><a href="#java-lang-ClassNotFoundException-1" class="headerlink" title="java.lang.ClassNotFoundException"></a>java.lang.ClassNotFoundException</h6><p>找不到类异常。当应用试图根据字符串形式的类名构造类，而在遍历 CLASSPAH之后找不到对应名称的class文件时，抛出该异常。</p>
+<h6 id="java-lang-CloneNotSupportedException"><a href="#java-lang-CloneNotSupportedException" class="headerlink" title="java.lang.CloneNotSupportedException"></a>java.lang.CloneNotSupportedException</h6><p>不支持克隆异常。当没有实现Cloneable接口或者不支持克隆方法时,调用其clone()方法则抛出该异常。</p>
+<h6 id="java-lang-EnumConstantNotPresentException"><a href="#java-lang-EnumConstantNotPresentException" class="headerlink" title="java.lang.EnumConstantNotPresentException"></a>java.lang.EnumConstantNotPresentException</h6><p>枚举常量不存在异常。当应用试图通过名称和枚举类型访问一个枚举对象，但该枚举对象并不包含常量时，抛出该异常。</p>
+<h6 id="java-lang-Exception"><a href="#java-lang-Exception" class="headerlink" title="java.lang.Exception"></a>java.lang.Exception</h6><p>根异常。用以描述应用程序希望捕获的情况。</p>
+<h6 id="java-lang-IllegalAccessException-1"><a href="#java-lang-IllegalAccessException-1" class="headerlink" title="java.lang.IllegalAccessException"></a>java.lang.IllegalAccessException</h6><p>违法的访问异常。当应用试图通过反射方式创建某个类的实例、访问该类属性、调用该类方法，而当时又无法访问类的、属性的、方法的或构造方法的定义时抛出该异常。</p>
+<h6 id="java-lang-IllegalMonitorStateException"><a href="#java-lang-IllegalMonitorStateException" class="headerlink" title="java.lang.IllegalMonitorStateException"></a>java.lang.IllegalMonitorStateException</h6><p>违法的监控状态异常。当某个线程试图等待一个自己并不拥有的对象（O）的监控器或者通知其他线程等待该对象（O）的监控器时，抛出该异常。</p>
+<h6 id="java-lang-IllegalStateException"><a href="#java-lang-IllegalStateException" class="headerlink" title="java.lang.IllegalStateException"></a>java.lang.IllegalStateException</h6><p>违法的状态异常。当在Java环境和应用尚未处于某个方法的合法调用状态，而调用了该方法时，抛出该异常。</p>
+<h6 id="java-lang-IllegalThreadStateException"><a href="#java-lang-IllegalThreadStateException" class="headerlink" title="java.lang.IllegalThreadStateException"></a>java.lang.IllegalThreadStateException</h6><p>违法的线程状态异常。当县城尚未处于某个方法的合法调用状态，而调用了该方法时，抛出异常。</p>
+<h6 id="java-lang-IndexOutOfBoundsException"><a href="#java-lang-IndexOutOfBoundsException" class="headerlink" title="java.lang.IndexOutOfBoundsException"></a>java.lang.IndexOutOfBoundsException</h6><p>索引越界异常。当访问某个序列的索引值小于0或大于等于序列大小时，抛出该异常。</p>
+<h6 id="java-lang-InstantiationException"><a href="#java-lang-InstantiationException" class="headerlink" title="java.lang.InstantiationException"></a>java.lang.InstantiationException</h6><p>实例化异常。当试图通过 newInstance()方法创建某个类的实例，而该类是一个抽象类或接口时，抛出该异常。</p>
+<h6 id="java-lang-InterruptedException"><a href="#java-lang-InterruptedException" class="headerlink" title="java.lang.InterruptedException"></a>java.lang.InterruptedException</h6><p>被中止异常。当某个线程处于长时间的等待、休眠或其他暂停状态，而此时其他的线程通过Thread的###### interrupt方法终止该线程时抛出该异常。</p>
+<h6 id="java-lang-NegativeArraySizeException"><a href="#java-lang-NegativeArraySizeException" class="headerlink" title="java.lang.NegativeArraySizeException"></a>java.lang.NegativeArraySizeException</h6><p>数组大小为负值异常。当使用负数大小值创建数组时抛出该异常。</p>
+<h6 id="java-lang-NoSuchFieldException"><a href="#java-lang-NoSuchFieldException" class="headerlink" title="java.lang.NoSuchFieldException"></a>java.lang.NoSuchFieldException</h6><p>属性不存在异常。当访问某个类的不存在的属性时抛出该异常。</p>
+<h6 id="java-lang-NoSuchMethodException"><a href="#java-lang-NoSuchMethodException" class="headerlink" title="java.lang.NoSuchMethodException"></a>java.lang.NoSuchMethodException</h6><p>方法不存在异常。当访问某个类的不存在的方法时抛出该异常。</p>
+<h6 id="java-lang-NullPointerException-1"><a href="#java-lang-NullPointerException-1" class="headerlink" title="java.lang.NullPointerException"></a>java.lang.NullPointerException</h6><p>空指针异常。当应用试图在要求使用对象的地方使用了 null时，抛出该异常。譬如：调用null对象的实例方法、访问null对象的属性、计算null对象的长度、使用throw语句抛出null等等。</p>
+<h6 id="java-lang-NumberFormatException"><a href="#java-lang-NumberFormatException" class="headerlink" title="java.lang.NumberFormatException"></a>java.lang.NumberFormatException</h6><p>数字格式异常。当试图将一个String转换为指定的数字类型，而该字符串确不满足数字类型要求的格式时，抛出该异常。</p>
+<h6 id="java-lang-RuntimeException"><a href="#java-lang-RuntimeException" class="headerlink" title="java.lang.RuntimeException"></a>java.lang.RuntimeException</h6><p>运行时异常。是所有 Java虚拟机正常操作期间可以被抛出的异常的父类。</p>
+<h6 id="java-lang-SecurityException"><a href="#java-lang-SecurityException" class="headerlink" title="java.lang.SecurityException"></a>java.lang.SecurityException</h6><p>安全异常。由安全管理器抛出，用于指示违反安全情况的异常。</p>
+<h6 id="java-lang-StringIndexOutOfBoundsException"><a href="#java-lang-StringIndexOutOfBoundsException" class="headerlink" title="java.lang.StringIndexOutOfBoundsException"></a>java.lang.StringIndexOutOfBoundsException</h6><p>字符串索引越界异常。当使用索引值访问某个字符串中的字符，而该索引值小于0或大于等于序列大小时，抛出该异常。</p>
+<h6 id="java-lang-TypeNotPresentException"><a href="#java-lang-TypeNotPresentException" class="headerlink" title="java.lang.TypeNotPresentException"></a>java.lang.TypeNotPresentException</h6><p>类型不存在异常。当应用试图</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/09/Spark-%E6%99%AE%E9%80%9A%E6%96%87%E4%BB%B6%E5%A4%9A%E8%B7%AF%E8%BE%93%E5%87%BA/" rel="next" title="Spark saveAsHadoopFile 文件多路输出">
+                <i class="fa fa-chevron-left"></i> Spark saveAsHadoopFile 文件多路输出
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">说明</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Error%E5%92%8CException%E5%8C%BA%E5%88%86%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">1.Error和Exception区分：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-RunTimeException%E5%92%8C%E5%85%B6%E4%BB%96Exception%E5%8C%BA%E5%88%86%EF%BC%9A"><span class="nav-number">2.2.</span> <span class="nav-text">2.RunTimeException和其他Exception区分：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">3.</span> <span class="nav-text">异常的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Runtime-Exception%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">Runtime Exception：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exception"><span class="nav-number">3.2.</span> <span class="nav-text">Exception:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android%E5%BC%82%E5%B8%B8%E5%A4%A7%E5%85%A8"><span class="nav-number">4.</span> <span class="nav-text">Android异常大全</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-NullPointerException"><span class="nav-number">4.0.0.1.</span> <span class="nav-text">java.lang.NullPointerException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-ClassNotFoundException"><span class="nav-number">4.0.0.2.</span> <span class="nav-text">java.lang.ClassNotFoundException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-ArithmeticException"><span class="nav-number">4.0.0.3.</span> <span class="nav-text">java.lang.ArithmeticException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-ArrayIndexOutOfBoundsException"><span class="nav-number">4.0.0.4.</span> <span class="nav-text">java.lang.ArrayIndexOutOfBoundsException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-IllegalArgumentException"><span class="nav-number">4.0.0.5.</span> <span class="nav-text">java.lang.IllegalArgumentException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-IllegalAccessException"><span class="nav-number">4.0.0.6.</span> <span class="nav-text">java.lang.IllegalAccessException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-AbstractMethodError"><span class="nav-number">4.0.0.7.</span> <span class="nav-text">java.lang.AbstractMethodError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-AssertionError"><span class="nav-number">4.0.0.8.</span> <span class="nav-text">java.lang.AssertionError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-ClassCircularityError"><span class="nav-number">4.0.0.9.</span> <span class="nav-text">java.lang.ClassCircularityError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-ClassFormatError"><span class="nav-number">4.0.0.10.</span> <span class="nav-text">java.lang.ClassFormatError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-Error"><span class="nav-number">4.0.0.11.</span> <span class="nav-text">java.lang.Error</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-ExceptionInInitializerError"><span class="nav-number">4.0.0.12.</span> <span class="nav-text">java.lang.ExceptionInInitializerError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-IllegalAccessError"><span class="nav-number">4.0.0.13.</span> <span class="nav-text">java.lang.IllegalAccessError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-IncompatibleClassChangeError"><span class="nav-number">4.0.0.14.</span> <span class="nav-text">java.lang.IncompatibleClassChangeError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-InstantiationError"><span class="nav-number">4.0.0.15.</span> <span class="nav-text">java.lang.InstantiationError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-InternalError"><span class="nav-number">4.0.0.16.</span> <span class="nav-text">java.lang.InternalError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-LinkageError"><span class="nav-number">4.0.0.17.</span> <span class="nav-text">java.lang.LinkageError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-NoClassDefFoundError"><span class="nav-number">4.0.0.18.</span> <span class="nav-text">java.lang.NoClassDefFoundError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-NoSuchFieldError"><span class="nav-number">4.0.0.19.</span> <span class="nav-text">java.lang.NoSuchFieldError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-NoSuchMethodError"><span class="nav-number">4.0.0.20.</span> <span class="nav-text">java.lang.NoSuchMethodError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-OutOfMemoryError"><span class="nav-number">4.0.0.21.</span> <span class="nav-text">java.lang.OutOfMemoryError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-StackOverflowError"><span class="nav-number">4.0.0.22.</span> <span class="nav-text">java.lang.StackOverflowError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-ThreadDeath"><span class="nav-number">4.0.0.23.</span> <span class="nav-text">java.lang.ThreadDeath</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-UnknownError"><span class="nav-number">4.0.0.24.</span> <span class="nav-text">java.lang.UnknownError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-UnsatisfiedLinkError"><span class="nav-number">4.0.0.25.</span> <span class="nav-text">java.lang.UnsatisfiedLinkError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-UnsupportedClassVersionError"><span class="nav-number">4.0.0.26.</span> <span class="nav-text">java.lang.UnsupportedClassVersionError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-VerifyError"><span class="nav-number">4.0.0.27.</span> <span class="nav-text">java.lang.VerifyError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-VirtualMachineError"><span class="nav-number">4.0.0.28.</span> <span class="nav-text">java.lang.VirtualMachineError</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-ArithmeticException-1"><span class="nav-number">4.0.0.29.</span> <span class="nav-text">java.lang.ArithmeticException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-ArrayIndexOutOfBoundsException-1"><span class="nav-number">4.0.0.30.</span> <span class="nav-text">java.lang.ArrayIndexOutOfBoundsException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-ArrayStoreException"><span class="nav-number">4.0.0.31.</span> <span class="nav-text">java.lang.ArrayStoreException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-ClassCastException"><span class="nav-number">4.0.0.32.</span> <span class="nav-text">java.lang.ClassCastException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-ClassNotFoundException-1"><span class="nav-number">4.0.0.33.</span> <span class="nav-text">java.lang.ClassNotFoundException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-CloneNotSupportedException"><span class="nav-number">4.0.0.34.</span> <span class="nav-text">java.lang.CloneNotSupportedException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-EnumConstantNotPresentException"><span class="nav-number">4.0.0.35.</span> <span class="nav-text">java.lang.EnumConstantNotPresentException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-Exception"><span class="nav-number">4.0.0.36.</span> <span class="nav-text">java.lang.Exception</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-IllegalAccessException-1"><span class="nav-number">4.0.0.37.</span> <span class="nav-text">java.lang.IllegalAccessException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-IllegalMonitorStateException"><span class="nav-number">4.0.0.38.</span> <span class="nav-text">java.lang.IllegalMonitorStateException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-IllegalStateException"><span class="nav-number">4.0.0.39.</span> <span class="nav-text">java.lang.IllegalStateException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-IllegalThreadStateException"><span class="nav-number">4.0.0.40.</span> <span class="nav-text">java.lang.IllegalThreadStateException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-IndexOutOfBoundsException"><span class="nav-number">4.0.0.41.</span> <span class="nav-text">java.lang.IndexOutOfBoundsException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-InstantiationException"><span class="nav-number">4.0.0.42.</span> <span class="nav-text">java.lang.InstantiationException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-InterruptedException"><span class="nav-number">4.0.0.43.</span> <span class="nav-text">java.lang.InterruptedException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-NegativeArraySizeException"><span class="nav-number">4.0.0.44.</span> <span class="nav-text">java.lang.NegativeArraySizeException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-NoSuchFieldException"><span class="nav-number">4.0.0.45.</span> <span class="nav-text">java.lang.NoSuchFieldException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-NoSuchMethodException"><span class="nav-number">4.0.0.46.</span> <span class="nav-text">java.lang.NoSuchMethodException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-NullPointerException-1"><span class="nav-number">4.0.0.47.</span> <span class="nav-text">java.lang.NullPointerException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-NumberFormatException"><span class="nav-number">4.0.0.48.</span> <span class="nav-text">java.lang.NumberFormatException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-RuntimeException"><span class="nav-number">4.0.0.49.</span> <span class="nav-text">java.lang.RuntimeException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-SecurityException"><span class="nav-number">4.0.0.50.</span> <span class="nav-text">java.lang.SecurityException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-StringIndexOutOfBoundsException"><span class="nav-number">4.0.0.51.</span> <span class="nav-text">java.lang.StringIndexOutOfBoundsException</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#java-lang-TypeNotPresentException"><span class="nav-number">4.0.0.52.</span> <span class="nav-text">java.lang.TypeNotPresentException</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
