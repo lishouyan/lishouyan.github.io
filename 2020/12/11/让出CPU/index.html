@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在Linux C语言程序开发中，这个场景经常出现：进程 A 负责驱动数据采集装置获取数据，进程 B 则负责接收数据并处理。显然，进程 B 需要等待进程 A 将一次数据采集完毕才可以进行下一步工作，因此约定进程 A 采集一次数据完毕时，将 ready 位由 0 置 1，进程 B 监测 ready 位，若发现数据采集完毕，就开始数据处理。 适时地让出 CPU如果数据到达之前，进程 B 的工作无法展开，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言陷阱与技巧第3节，怎样主动让出CPU？如何为C语言函数增加超时检测功能">
+<meta property="og:url" content="http://example.com/2020/12/11/%E8%AE%A9%E5%87%BACPU/index.html">
+<meta property="og:site_name" content="Thousandth of Dirt">
+<meta property="og:description" content="在Linux C语言程序开发中，这个场景经常出现：进程 A 负责驱动数据采集装置获取数据，进程 B 则负责接收数据并处理。显然，进程 B 需要等待进程 A 将一次数据采集完毕才可以进行下一步工作，因此约定进程 A 采集一次数据完毕时，将 ready 位由 0 置 1，进程 B 监测 ready 位，若发现数据采集完毕，就开始数据处理。 适时地让出 CPU如果数据到达之前，进程 B 的工作无法展开，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://blog.popkx.com/usr/uploads/2018/10/721f8a1e9987ec6ea71e0948293ca151.png">
+<meta property="og:image" content="https://blog.popkx.com/usr/uploads/2019/03/0bdf0a656852bf55d0d623ac397ad4c3.png">
+<meta property="og:image" content="https://blog.popkx.com/usr/uploads/2019/03/7d233974628db2ead2a78e6f2b1e0bd3.png">
+<meta property="og:image" content="https://blog.popkx.com/usr/uploads/2019/03/d57f13464e46db866b00002ad77dd0b2.png">
+<meta property="og:image" content="https://blog.popkx.com/usr/uploads/2019/03/8e15d05d8a56df6d0a1371ea088ae553.png">
+<meta property="og:image" content="https://blog.popkx.com/usr/uploads/2019/03/13b9c701edb3c097c3be270e6802dea3.png">
+<meta property="article:published_time" content="2020-12-11T07:39:49.000Z">
+<meta property="article:modified_time" content="2020-12-11T07:40:51.792Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.popkx.com/usr/uploads/2018/10/721f8a1e9987ec6ea71e0948293ca151.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2020/12/11/让出CPU/"/>
+
+
+
+
+
+  <title>C语言陷阱与技巧第3节，怎样主动让出CPU？如何为C语言函数增加超时检测功能 | Thousandth of Dirt</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Thousandth of Dirt</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/11/%E8%AE%A9%E5%87%BACPU/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thousandth of Dirt">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C语言陷阱与技巧第3节，怎样主动让出CPU？如何为C语言函数增加超时检测功能</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-11T15:39:49+08:00">
+                2020-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在Linux C语言程序开发中，这个场景经常出现：进程 A 负责驱动数据采集装置获取数据，进程 B 则负责接收数据并处理。显然，进程 B 需要等待进程 A 将一次数据采集完毕才可以进行下一步工作，因此约定进程 A 采集一次数据完毕时，将 ready 位由 0 置 1，进程 B 监测 ready 位，若发现数据采集完毕，就开始数据处理。</p>
+<h2 id="适时地让出-CPU"><a href="#适时地让出-CPU" class="headerlink" title="适时地让出 CPU"></a>适时地让出 CPU</h2><p><strong>如果数据到达之前，进程 B 的工作无法展开</strong>，那进程 B 显然应该时刻监测 ready 位由 0 变为 1，这样才能在数据准备完毕的<strong>第一时间</strong>开始处理数据的工作，这样的需求可以用类似下面这样的C语言代码解决，请看：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(!ready);</span><br><span class="line"><span class="comment">/** 下一步工作 */</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的C语言代码使用 while 循环不断检测 ready 位，一旦发现 ready 位被置 1，就立刻进行下一步的工作。这么做似乎绝对不会浪费一点点时间，因此是最好的做法。真的是这样吗？</p>
+<p>如果整个系统只有进程 A 和进程 B，这么做的确很好。遗憾的是，如果系统里还有其他进程，上面这种做法就不太合适了，C语言程序遇到 while(!ready); 时，CPU 除了判断 ready 的值，其他什么都不做，这时，整个系统的效率就被拖累了。</p>
+<blockquote>
+<p>虽然现代操作系统大都拥有“抢占式”的内核，但一般都是通过时间片轮转调度的，在 Linux 中，调度程序的周期一般在 10ms 量级。10ms 的时间，已经够 CPU 处理很多事情了。</p>
+</blockquote>
+<p>如果数据的处理工作对时间的要求没有苛刻到连 10ms 都不能浪费，那么进程 B 在发现 ready 位没有被置位时，主动的将 CPU 让出给其他进程使用，显然可以提升整个系统的效率。因此，进程 B 等待 ready 置位的 C语言代码，按照下面这样写更加合适，请看：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(!ready)</span><br><span class="line">    usleep(<span class="number">10</span>);</span><br><span class="line"><span class="comment">/** 下一步工作 */</span></span><br></pre></td></tr></table></figure>
+
+<p>usleep(10) 可以让进程 B 进入睡眠 10 us（微秒），但在 Linux 中，这么做能够使进程 B 将 CPU 暂时让出，交给操作系统分配给其他进程使用，进程 B 损失一点点时间效率，换来整个系统的效率提升。</p>
+<h2 id="超时判断，以及-usleep-的陷阱"><a href="#超时判断，以及-usleep-的陷阱" class="headerlink" title="超时判断，以及 usleep 的陷阱"></a>超时判断，以及 usleep 的陷阱</h2><p>如果进程 A 因为某种原因退出了，那 ready 位永远都不会被置 1，这将导致进程 B 卡死在下面这两行C语言代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(!ready)</span><br><span class="line">    usleep(<span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p>避免这种情况的一个好方法是增加<strong>超时判断</strong>，如果超过一段时间，进程 B 发现 ready 仍然没有被置位，就结束等待。要是进程 A 采集数据的周期是 t 秒，那超时时间就可以设置为 t+1 秒，这样就不会在进程 A 意外退出时，进程 B 仍然傻傻的等待 ready 位了。</p>
+<p>不过，C语言并没有提供“超时”语法，这就需要程序员自己实现<strong>超时等待</strong>功能了。这种功能也并不难实现，假设超时时间为 5 秒，那相关的C语言代码可以如下实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> cnt = <span class="number">50000</span>;</span><br><span class="line"><span class="keyword">while</span>(!ready &amp;&amp; cnt--)</span><br><span class="line">    usleep(<span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+
+<p>使用上面这段C语言代码实现“超时等待”功能足够简单，但是可靠吗？假设 ready 位始终为 0，那上面这几行C语言代码就相当于下面这几行：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> cnt = <span class="number">50000</span>;</span><br><span class="line"><span class="keyword">while</span>(!ready &amp;&amp; cnt--)</span><br><span class="line">    usleep(<span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://blog.popkx.com/usr/uploads/2018/10/721f8a1e9987ec6ea71e0948293ca151.png"><img src="https://blog.popkx.com/usr/uploads/2018/10/721f8a1e9987ec6ea71e0948293ca151.png" alt="img"></a><br>现在在 main() 函数中测试上述方法的实际睡眠时间，相关C语言代码如下，请看：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">get_cur_ms</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">tv</span>;</span></span><br><span class="line">     gettimeofday(&amp;tv, <span class="literal">NULL</span>);</span><br><span class="line">     <span class="keyword">return</span> tv.tv_sec*<span class="number">1000</span> + tv.tv_usec/<span class="number">1000</span>;</span><br><span class="line">&#125;   </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     <span class="keyword">long</span> otime = get_cur_ms();</span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;cur ms: %ld\n&quot;</span>, otime);</span><br><span class="line"></span><br><span class="line">     <span class="keyword">int</span> cnt = <span class="number">50000</span>;</span><br><span class="line">     <span class="keyword">while</span>(cnt--)</span><br><span class="line">         usleep(<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;err ms: %ld\n&quot;</span>, get_cur_ms()-otime);</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://blog.popkx.com/usr/uploads/2019/03/0bdf0a656852bf55d0d623ac397ad4c3.png"><img src="https://blog.popkx.com/usr/uploads/2019/03/0bdf0a656852bf55d0d623ac397ad4c3.png" alt="img"></a><br>上述C语言代码中的 get_cur_ms() 函数可以获得当前时间的毫秒数，在测试“超时”代码之前，先使用 otime 记录当前时间 ms 数，然后在使用“超时”代码后的时间 ms 数减去 otime，就可以得到“超时”代码实际的等待时间了。编译这段C语言代码并执行，得到如下结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># .&#x2F;a.out </span><br><span class="line">cur ms: 1553603227960</span><br><span class="line">err ms: 8406</span><br></pre></td></tr></table></figure>
+
+<p>根据“超时”C语言代码段，预期时间差输出应该是 5 秒，也即 err ms 应该等于 5000，但是输出却是 8406，与预期相差 68%， 这是怎么回事呢？其实查看 usleep 的使用说明就可以得到答案了：<br><a target="_blank" rel="noopener" href="https://blog.popkx.com/usr/uploads/2019/03/7d233974628db2ead2a78e6f2b1e0bd3.png"><img src="https://blog.popkx.com/usr/uploads/2019/03/7d233974628db2ead2a78e6f2b1e0bd3.png" alt="img"></a><br>根据上述文档说明，usleep(usec) 会将线程挂起<strong>至少</strong> usec 秒，而不是严格的 usec 秒，具体多少时间则取决于系统的调度。如果系统比较繁忙，那么 usleep(usec) 的实际睡眠时间可能会被延长，这就解释了预期睡眠 5 秒的C语言代码，最终却睡眠了 8 秒多。</p>
+<p>那“超时”代码该怎么写呢？应该明白 gettimeofday() 函数可以获取微秒量级的时间，用于“超时”估计是非常合适的，请看下面的C语言代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(get_cur_ms()-otime &lt; <span class="number">5000</span>)</span><br><span class="line">        usleep(<span class="number">100</span>); </span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://blog.popkx.com/usr/uploads/2019/03/d57f13464e46db866b00002ad77dd0b2.png"><img src="https://blog.popkx.com/usr/uploads/2019/03/d57f13464e46db866b00002ad77dd0b2.png" alt="img"></a><br>编译上述C语言代码并执行，可以得到如下输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># .&#x2F;a.out </span><br><span class="line">cur ms: 1553608462083</span><br><span class="line">err ms: 5000</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，以上C语言代码的确提供了更加精确的“超时”功能。</p>
+<blockquote>
+<p>感兴趣的读者可以自己掐秒表测试这两种“超时”C语言代码。</p>
+</blockquote>
+<h2 id="测试自定义的超时功能"><a href="#测试自定义的超时功能" class="headerlink" title="测试自定义的超时功能"></a>测试自定义的超时功能</h2><p>请看下面的C语言代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;                          </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/time.h&gt;                       </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;                         </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;                        </span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> ready = <span class="number">0</span>;                              </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">get_cur_ms</span><span class="params">()</span>                           </span></span><br><span class="line"><span class="function"></span>&#123;           </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">tv</span>;</span>                      </span><br><span class="line">    gettimeofday(&amp;tv, <span class="literal">NULL</span>);                </span><br><span class="line">    <span class="keyword">return</span> tv.tv_sec*<span class="number">1000</span> + tv.tv_usec/<span class="number">1000</span>;</span><br><span class="line">&#125;           </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">thread</span><span class="params">(<span class="keyword">void</span> *p)</span>                       </span></span><br><span class="line"><span class="function"></span>&#123;           </span><br><span class="line">    sleep(<span class="number">3</span>);                               </span><br><span class="line">    ready = <span class="number">1</span>;                              </span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;                            </span><br><span class="line">&#125;           </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;           </span><br><span class="line">    <span class="keyword">pthread_t</span> pid;                          </span><br><span class="line">    pthread_create(&amp;pid, <span class="literal">NULL</span>, thread, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">long</span> otime = get_cur_ms();              </span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>( !ready &amp;&amp; get_cur_ms()-otime &lt; <span class="number">5000</span>)</span><br><span class="line">        usleep(<span class="number">100</span>);                        </span><br><span class="line">    <span class="keyword">if</span>(get_cur_ms()-otime &gt;= <span class="number">5000</span>)           </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;time out\n&quot;</span>);               </span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;err ms: %ld\n&quot;</span>, get_cur_ms()-otime);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://blog.popkx.com/usr/uploads/2019/03/8e15d05d8a56df6d0a1371ea088ae553.png"><img src="https://blog.popkx.com/usr/uploads/2019/03/8e15d05d8a56df6d0a1371ea088ae553.png" alt="img"></a><br>上述C语言代码使用 thread() 线程函数模拟进程 A 对 ready 标志位 3 秒后置 1，main() 函数若 5 秒仍未检测到 ready 被置 1，就提示 “time out”。编译上述C语言代码并执行，得到如下输出:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># gcc t.c -lpthread</span><br><span class="line"># .&#x2F;a.out </span><br><span class="line">err ms: 3000</span><br></pre></td></tr></table></figure>
+
+<p>因为 thread() 函数 3 秒后将 ready 置 1了，所以没有超时。现在将 thread() 中的 sleep(3) 改为 sleep(6)，编译修改后的C语言代码并执行，得到如下输出：<br><a target="_blank" rel="noopener" href="https://blog.popkx.com/usr/uploads/2019/03/13b9c701edb3c097c3be270e6802dea3.png"><img src="https://blog.popkx.com/usr/uploads/2019/03/13b9c701edb3c097c3be270e6802dea3.png" alt="img"></a><br>一切与预期一致。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>从本节可知，在 Linux C语言程序开发中，需要使用 while 循环不断检查某标志位是否置位时，若对时间的要求不是特别苛刻，可以适当调用 usleep() 函数主动让出 CPU，以提升系统的整体效率。另外，若需要增加超时功能，使用 usleep() 函数误差常常会比较大，应该借助别的方法实现。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/11/Sleep%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" rel="next" title="Sleep的实现原理">
+                <i class="fa fa-chevron-left"></i> Sleep的实现原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%82%E6%97%B6%E5%9C%B0%E8%AE%A9%E5%87%BA-CPU"><span class="nav-number">1.</span> <span class="nav-text">适时地让出 CPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B6%85%E6%97%B6%E5%88%A4%E6%96%AD%EF%BC%8C%E4%BB%A5%E5%8F%8A-usleep-%E7%9A%84%E9%99%B7%E9%98%B1"><span class="nav-number">2.</span> <span class="nav-text">超时判断，以及 usleep 的陷阱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84%E8%B6%85%E6%97%B6%E5%8A%9F%E8%83%BD"><span class="nav-number">3.</span> <span class="nav-text">测试自定义的超时功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
