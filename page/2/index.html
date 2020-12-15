@@ -249,6 +249,244 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/07/a/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thousandth of Dirt">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/12/07/a/" itemprop="url">tvOS 关于Apple TV开发的注意事项</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-07T02:47:00+08:00">
+                2020-12-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Swift/" itemprop="url" rel="index">
+                    <span itemprop="name">Swift</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><p>有能力的小伙伴儿们可以去官方文档了解一下<a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/documentation/General/Conceptual/AppleTV_PG/#//apple_ref/doc/uid/TP40015241-CH12-SW1">App Programming Guide for tvOS</a></p>
+<p>接下来说几个tvOS的特别之处。</p>
+<p><strong>1.Apple tvOS引入了一下几个特有的框架。</strong></p>
+<ul>
+<li>TVMLJS。描述了C/S应用中用来加载TVML页面的JavaScript接口。见<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/TVMLJS/Reference/TVJSFrameworkReference/index.html#//apple_ref/doc/uid/TP40016076">《TVJS Framework Reference》</a>。</li>
+<li>TVMLKit。提供一种整合JavaScript和TVML的方法。见<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/TVMLKit/Reference/TVMLKit_Collection/index.html#//apple_ref/doc/uid/TP40016429">《TVMLKit Framework Reference》</a>。</li>
+<li>TVServices。描述了如何为应用添加顶部扩展<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/TVServices/Reference/TVServices_Ref/index.html#//apple_ref/doc/uid/TP40016412">《TVServices Framework Reference》</a>。</li>
+</ul>
+<p><strong>2.资源限制</strong></p>
+<p>Apple TV上的应用没有持久化的本地存储。</p>
+<blockquote>
+<p>There’s an inconsistency regarding the Documents folder: you can create files in it when you run your app in the Simulator. But on the actual Apple TV, it just fails.</p>
+</blockquote>
+<p>虽然可以短暂存储在Caches或Temporary文件夹下，但是依然会被系统删除。</p>
+<blockquote>
+<p>You can write data to the Caches directory and the data should stay there as long as your app is running. But when your app exits, that data could be deleted by the system, so be prepared for it to be gone when your app launches again.</p>
+</blockquote>
+<p>这意味着每个应用都应该将数据存放在iCloud，并且通过一种用户体验较好的方式将它们获取到。</p>
+<p>可以用NSUserDefaults存储一些参数，但是不可以存储很大的数据，最大也就512k。</p>
+<blockquote>
+<p>NSUserDefaultsSizeLimitExceededNotification is posted on the main queue when more data is stored in user defaults than is allowed. Currently there is no limit for local user defaults except on tvOS, where a warning notification will be posted at 512kB, and the process terminated at 1MB. For ubiquitous defaults, the limit depends on the logged in iCloud user.</p>
+</blockquote>
+<p>除了缺乏本地存储，Apple TV应用的大小也被限制在200MB。如果一个应用的大小超过了限制，就需要使用按需加载的方式将它们打包。知道什么时候加载以及如何价值新的资源对开发一款成功的应用非常重要。更多关于按需加载资源的信息，见<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/FileManagement/Conceptual/On_Demand_Resources_Guide/index.html#//apple_ref/doc/uid/TP40015083">《On-Demand Resources Guide》</a>。</p>
+<p><strong>3.焦点引擎</strong></p>
+<p>我的个人理解是，tvOS不像iOS是电容屏的设备，可以用手指精准触碰到需要交互的视图上的操作，而是使用遥控器的方式进行焦点的移动，所以有了焦点的概念，例如UICollectionViewCell上的Button等。</p>
+<p>只有焦点引擎能够显式的更新焦点，以为着系统并没有提供API来直接在某个方向操作和移动焦点，只有在用户发送移动事件、系统和应用请求更新的时候，焦点引擎才会更新焦点。更多关于焦点的更新，见<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/General/Conceptual/AppleTV_PG/WorkingwiththeAppleTVRemote.html#//apple_ref/doc/uid/TP40015241-CH5-SW14">《Updating Focus Programmatically》</a>。</p>
+<p>如果焦点引擎找到了一个可以接受焦点的视图，比如Cell或Button，它会通过shouldUpdateFocusInContext:代理方法给应用提供一个评估是否移动焦点的机会。焦点引擎按前一个和下一个的顺序通知每个焦点环境（先通知前一个视图，然后下一个视图，最后通知它们的父视图）。只要有一个视图返回NO，这次移动就会被取消。更多关于焦点环境的信息，见<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/UIKit/Reference/UIFocusEnvironment_Protocol/index.html#//apple_ref/doc/uid/TP40015223">《UIFocusEnvironmentProtocol Reference》</a>。</p>
+<p><strong>系统产生的焦点更新动作</strong></p>
+<p>在许多环境下，必要的时候UIKit会自动更新焦点。下面是焦点自动更新的一些示例：</p>
+<ul>
+<li>焦点视图被移除。</li>
+<li>UITableView或UICollectionView重新加载数据。</li>
+<li>弹出一个新的视图控制器。</li>
+<li>用户按<strong>Menu</strong>按钮返回。</li>
+</ul>
+<p><strong>在视图控制器中支持焦点</strong></p>
+<p>因为UIViewController相应UIFocusEnvironment，自定义视图控制器可以覆盖UIFocusEnvironment中的代理方法来实现自定义焦点的行为。</p>
+<p>自定义视图控制器:</p>
+<ul>
+<li>覆盖preferredFocusedView来明确焦点默认从哪里开始。</li>
+<li>覆盖shouldUpdateFocusInContext:定义焦点如何移动。</li>
+<li>覆盖didUpdateFocusInContext:withAnimationCoordinator:响应焦点的更新时机并且改变应用的状态。</li>
+</ul>
+<p>视图控制器可以通过调用setNeedsFocusUpdate请求焦点引擎来重置焦点到当前的preferredFocusedView上。注意，只有当该视图控制器包含一个已经获取焦点的视图时，setNeedsFocusUpdate才会起作用。</p>
+<p><strong>在CollectionView和TableView中支持焦点</strong></p>
+<p>使用UICollectionView和UITableView的时候，我们通过代理对象自定义焦点行为。这个模式同事也用于基于焦点的界面的实现。UITableViewDelegate和UICollectionViewDelegate协议定义了UIFocusEnvironment协议中相同的方法，但是只能给UITableView和UICollectionView使用。</p>
+<p>在UICollectionView和UITableView中支持焦点的技巧：</p>
+<ul>
+<li>使用UICollectionViewDelegate中的collectionView:canFocusItemAtIndexPath:或者UITableViewDelegate中的tableView:canFocusRowAtIndexPath:方法表明一个Cell是否可以获取焦点。这与在自定义视图中重写canBecomeFocused方法的作用一样。</li>
+<li>使用UICollectionView和UITableView中的remembersLastFocusedIndexPath属性表示离开焦点离开后，再次获取焦点时是否应该停留在最后一次的位置。</li>
+</ul>
+<p>这里可以参考我之前的一篇博客<a target="_blank" rel="noopener" href="https://blog.csdn.net/u012265444/article/details/80161668">tvOS UICollectionViewCell上添加UIButton改变焦点Focus</a>理解。</p>
+<p><strong>在自定义视图中支持焦点</strong></p>
+<p>UIViewController、UIView都实现了UIFocusEnvironment协议，因此所有在<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/General/Conceptual/AppleTV_PG/WorkingwiththeAppleTVRemote.html#//apple_ref/doc/uid/TP40015241-CH5-SW1">在视图控制器中支持焦点</a>提到的都可以在自定义视图中使用。因为视图能够获取焦点，所以实现自定义视图的焦点行为时，还需要考虑一些额外的东西：</p>
+<ul>
+<li>如果自定义视图需要能够获取焦点，重写canBecomeFocused方法，并返回YES（默认返回NO）。视图可以是一直都能够获取焦点或者只能在一些条件下获取焦点。例如UIButton在禁用状态是不能获取焦点的。</li>
+<li>如果一个视图需要将焦点重定向到领悟一个焦点（例如子视图），需要重写preferredFocusedView。</li>
+<li>重写didUpdateFocusInContext:withAnimationCoordinator:响应焦点改变事件，并更新程序状态。</li>
+</ul>
+<p><strong>焦点相关动画</strong></p>
+<p>当焦点发生改变的时候，获取焦点的视图执行动画，而前一个视图动画进入无焦点状态。与应用中的其它动画不一样的是，UIKit会调整焦点动画的时长和动画曲线来达到某种系统级的行为。例如，当焦点快速移动的时候，动画的时长会虽用户的移动而加速。</p>
+<p>UIKit为支持焦点的视图类提供了系统定义的焦点动画。使用UIKit的内置类UIFocusAnimationCoordinator和addCoordinatedAniamtions:completion:方法可以为系统定义的行为创建动画。</p>
+<p>添加到协调器的动画可以在获取焦点或者失去焦点的时候运行（不是同时），这取决于提供给协调器的焦点环境。获取焦点的视图和失去焦点的视图共同的父视图或者焦点获取视图的父视图，在焦点动画执行时，运行自己的动画。而失焦视图的父视图在失去焦点的时候执行动画。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)didUpdateFocusInContext:(<span class="built_in">UIFocusUpdateContext</span> *)context withAnimationCoordinator:(<span class="built_in">UIFocusAnimationCoordinator</span> *)coordinator</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="keyword">super</span> didUpdateFocusInContext:context withAnimationCoordinator:coordinator];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span> == context.nextFocusedView) &#123;</span><br><span class="line"></span><br><span class="line">        [coordinator addCoordinatedAnimations:^&#123;</span><br><span class="line">            <span class="comment">// focusing animations</span></span><br><span class="line">        &#125; completion:^&#123;</span><br><span class="line">            <span class="comment">// completion</span></span><br><span class="line">        &#125;];</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">self</span> == context.previouslyFocusedView) &#123;</span><br><span class="line">        [coordinator addCoordinatedAnimations:^&#123;</span><br><span class="line">            <span class="comment">// unfocusing animations</span></span><br><span class="line">        &#125; completion:^&#123;</span><br><span class="line">            <span class="comment">// completion</span></span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：有许多原因会导致视图不能获取焦点，下面列举了一些例子（但不是全部）：</p>
+<ul>
+<li>视图的canBecomeFocused方法返回NO。</li>
+<li>视图的hidden属性被设置为YES。</li>
+<li>视图的alpha属性被设置为0。</li>
+<li>视图被设置为不能接受用户交互。</li>
+<li>视图被其它视图覆盖。</li>
+</ul>
+<p>UIKit为UIView提供了一个隐藏的方法_whyIsThisViewNotFocusable来帮助测试上面提到的几种情况。这个方法只在调试器中有用，并且会将可能的原因打印出来。</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(lldb) po [(UIView *)0x148db5234 _whyIsThisViewNotFocusable]</span><br><span class="line">ISSUE: This view has userInteractionEnabled set to NO. Views must allow user interaction to be focusable.</span><br><span class="line">ISSUE: This view returns NO from -canBecomeFocused.</span><br><span class="line">(lldb) po [(UIView *)0x14b644d70 _whyIsThisViewNotFocusable]</span><br><span class="line">ISSUE: One or more ancestors are not eligible for focus, preventing this view from being focusable. Details:</span><br><span class="line"></span><br><span class="line">    &lt;ExampleAncestorView 0x148db5810&gt;:</span><br><span class="line">        ISSUE: This view has userInteractionEnabled set to NO. Views must allow user interaction to be focusable.</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>在UINaviGationController栈中的vc顶部的控件无法获得焦点，可能是UINavigationBar挡住了控件。</p>
+<p>4.界面</p>
+<p> <a target="_blank" rel="noopener" href="https://developer.apple.com/tvos/human-interface-guidelines/">tvOS Human Interface Guidelines</a></p>
+<p>触摸板事件：滑动，点击，轻触。</p>
+<p>Apple TV上的所有图片按@1x分辨率提供。</p>
+<p>每个应用必须提供一个小尺寸和大尺寸图标。应用图标必须呈递两种尺寸，两者长宽比相同。</p>
+<p>小尺寸图标——这个尺寸的图标在Apple TV主屏上使用。</p>
+<p>实际尺寸：400px by 240px</p>
+<p>安全区域尺寸：370px by 222px</p>
+<p>非聚焦态尺寸：300px by 180px</p>
+<p>聚焦态尺寸：370px by 222px</p>
+<p>大尺寸图标——这个尺寸的图标在App Store使用。</p>
+<p>尺寸：1280px by 768px</p>
+<p>大尺寸图标应照搬小尺寸图标的设计。尽管大尺寸图标与小图标使用不同，它仍然是你的应用图标，应该在外观与小图标相匹配。</p>
+<p>应用图标安全区域模板能够帮你把内容放在合适位置</p>
+<p>顶部展区(<strong>Top Shelf</strong>)图片</p>
+<p>最低要求：每个应用至少提供单张顶部展区静态图——当应用在主屏最上面一行且被选中聚焦时使用。</p>
+<p><strong>顶部展区静态图</strong> 尺寸：1920px by 720px</p>
+<p><strong>启动图像</strong> 尺寸：1920px by 1080px </p>
+<p><strong>标签栏 Tab Bars</strong> 高度：140px</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/07/AppleTV%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97%E4%BA%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1209,7 +1447,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

@@ -79,17 +79,21 @@
 
 
 
-<meta name="description" content="假设现在是 20018-12-03 12:00:00.000，如果我调用一下 Thread.Sleep(1000) ，在 20018-12-03 12:00:01.000 的时候，这个线程会不会被唤醒？ 某人的代码中用了一句看似莫明其妙的话：Thread.Sleep(0) 。既然是 Sleep 0 毫秒，那么他跟去掉这句代码相比，有啥区别么？  对于第一个问题，答案是：不一定。因为你只是告诉操作">
+<meta name="description" content="刚刚接触Spark的时候对这些概念没有好好思考，走马观花似的扫过去了，后面碰到master、worker、executor和driver的时候，也就没想太多，最近刚刚跑通了一个spark项目，准备好好研究一下程序的运行原理，却突然发现对于master、worker、executor和driver一知半解，对这些概念没有很好地理解，实在难以深入学习spark，于是，查了一些资料，做了一些简单的记载供">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Sleep的实现原理">
-<meta property="og:url" content="http://example.com/2020/12/11/Sleep%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:title" content="Spark中master、worker、executor和driver的关系">
+<meta property="og:url" content="http://example.com/2020/12/15/S/index.html">
 <meta property="og:site_name" content="Thousandth of Dirt">
-<meta property="og:description" content="假设现在是 20018-12-03 12:00:00.000，如果我调用一下 Thread.Sleep(1000) ，在 20018-12-03 12:00:01.000 的时候，这个线程会不会被唤醒？ 某人的代码中用了一句看似莫明其妙的话：Thread.Sleep(0) 。既然是 Sleep 0 毫秒，那么他跟去掉这句代码相比，有啥区别么？  对于第一个问题，答案是：不一定。因为你只是告诉操作">
+<meta property="og:description" content="刚刚接触Spark的时候对这些概念没有好好思考，走马观花似的扫过去了，后面碰到master、worker、executor和driver的时候，也就没想太多，最近刚刚跑通了一个spark项目，准备好好研究一下程序的运行原理，却突然发现对于master、worker、executor和driver一知半解，对这些概念没有很好地理解，实在难以深入学习spark，于是，查了一些资料，做了一些简单的记载供">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-12-11T05:25:36.000Z">
-<meta property="article:modified_time" content="2020-12-11T05:26:36.131Z">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181128192241304.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181128194151526.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181128194550101.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2020-12-15T07:43:51.000Z">
+<meta property="article:modified_time" content="2020-12-15T07:44:33.980Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20181128192241304.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70">
 
 
 
@@ -119,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2020/12/11/Sleep的实现原理/"/>
+  <link rel="canonical" href="http://example.com/2020/12/15/S/"/>
 
 
 
 
 
-  <title>Sleep的实现原理 | Thousandth of Dirt</title>
+  <title>Spark中master、worker、executor和driver的关系 | Thousandth of Dirt</title>
   
 
 
@@ -252,7 +256,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/11/Sleep%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/15/S/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -269,7 +273,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Sleep的实现原理</h1>
+          <h1 class="post-title" itemprop="name headline">Spark中master、worker、executor和driver的关系</h1>
         
 
         <div class="post-meta">
@@ -281,8 +285,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-11T13:25:36+08:00">
-                2020-12-11
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-15T15:43:51+08:00">
+                2020-12-15
               </time>
             
 
@@ -319,20 +323,23 @@
       
 
       
-        <ol>
-<li>假设现在是 20018-12-03 12:00:00.000，如果我调用一下 Thread.Sleep(1000) ，在 20018-12-03 12:00:01.000 的时候，这个线程会不会被唤醒？</li>
-<li>某人的代码中用了一句看似莫明其妙的话：Thread.Sleep(0) 。既然是 Sleep 0 毫秒，那么他跟去掉这句代码相比，有啥区别么？</li>
-</ol>
-<p>对于第一个问题，答案是：不一定。因为你只是告诉操作系统：在未来的1000毫秒内我不想再参与到CPU竞争。那么1000毫秒过去之后，这时候也许另外一个线程正在使用CPU，那么这时候操作系统是不会重新分配CPU的，直到那个线程挂起或结束；况且，即使这个时候恰巧轮到操作系统进行CPU 分配，那么当前线程也不一定就是总优先级最高的那个，CPU还是可能被其他线程抢占去。<br> Thread.Sleep(0)的作用，就是“让出cpu，会触发操作系统立刻重新进行一次CPU竞争”。竞争的结果也许是当前线程仍然获得CPU控制权，也许会换成别的线程获得CPU控制权。</p>
-<h3 id="sleep的底层实现"><a href="#sleep的底层实现" class="headerlink" title="sleep的底层实现"></a>sleep的底层实现</h3><p>sleep()：进程、线程或任务(Linux中不区分进程与线程，都称为task)可以sleep，这会导致它们暂停执行一段时间，直到等待的时间结束才恢复执行或在这段时间内被中断。<br> sleep()在OS中的实现的大概流程：</p>
-<ul>
-<li>挂起进程（或线程）并修改其运行状态</li>
-<li>用sleep()提供的参数来设置一个定时器。</li>
-<li>当时间结束，定时器会触发，内核收到中断后修改进程（或线程）的运行状态。例如线程会被标志为就绪而进入就绪队列等待调度。</li>
-</ul>
-<p>可变定时器(variable timer)一般在硬件层面是通过一个固定的时钟和计数器来实现的，每经过一个时钟周期将计数器递减，当计数器的值为0时产生中断。内核注册一个定时器后可以在一段时间后收到中断。</p>
-<p>alarm(time);执行之后告诉内核，让内核在time秒时间之后向该进程发送一个定时信号，然后该进程捕获该信号并处理；<br> pause()函数使该进程暂停让出CPU,但是该函数的暂停是可被中断的睡眠，也就是说收到了中断信号之后处理完毕，再重新执行该进程的时候就直接执行pause()函数之后的语句；注意的是一个进程只能有一个闹钟时间，如果调用alarm()之前已经设置了闹钟时间，那么任何以前的闹钟时间都会被新值所代替。<br> 综上所述，内核的sleep()函数是在挂起原语的基础上利用定时器实现的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;signal.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F;时钟编程 alarm()</span><br><span class="line">void wakeUp()</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;please wakeup!!\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;you have 4 s sleep!\n&quot;);</span><br><span class="line">    signal(SIGALRM,wakeUp);</span><br><span class="line">    alarm(4);</span><br><span class="line">    &#x2F;&#x2F;将进程挂起</span><br><span class="line">    pause();</span><br><span class="line">    printf(&quot;good morning!\n&quot;);</span><br><span class="line"></span><br><span class="line">    return EXIT_SUCCESS;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>刚刚接触Spark的时候对这些概念没有好好思考，走马观花似的扫过去了，后面碰到master、worker、executor和driver的时候，也就没想太多，最近刚刚跑通了一个spark项目，准备好好研究一下程序的运行原理，却突然发现对于master、worker、executor和driver一知半解，对这些概念没有很好地理解，实在难以深入学习spark，于是，查了一些资料，做了一些简单的记载供后面的学习使用。</p>
+<p>首先说一句，master和worker是物理节点，driver和executor是进程。</p>
+<h1 id="1，master和worker节点"><a href="#1，master和worker节点" class="headerlink" title="1，master和worker节点"></a>1，master和worker节点</h1><p>搭建spark集群的时候我们就已经设置好了master节点和worker节点，一个集群有多个master节点和多个worker节点。</p>
+<p>master节点常驻master守护进程，负责管理worker节点，我们从master节点提交应用。</p>
+<p>worker节点常驻worker守护进程，与master节点通信，并且管理executor进程。</p>
+<p>PS：一台机器可以同时作为master和worker节点（举个例子：你有四台机器，你可以选择一台设置为master节点，然后剩下三台设为worker节点，也可以把四台都设为worker节点，这种情况下，有一个机器既是master节点又是worker节点）</p>
+<h1 id="2，driver和executor进程"><a href="#2，driver和executor进程" class="headerlink" title="2，driver和executor进程"></a>2，driver和executor进程</h1><p>driver进程就是应用的main()函数并且构建sparkContext对象，当我们提交了应用之后，便会启动一个对应的driver进程，driver本身会根据我们设置的参数占有一定的资源（主要指cpu core和memory）。下面说一说driver和executor会做哪些事。</p>
+<p>driver可以运行在master上，也可以运行worker上（根据部署模式的不同）。driver首先会向集群管理者（standalone、yarn，mesos）申请spark应用所需的资源，也就是executor，然后集群管理者会根据spark应用所设置的参数在各个worker上分配一定数量的executor，每个executor都占用一定数量的cpu和memory。在申请到应用所需的资源以后，driver就开始调度和执行我们编写的应用代码了。driver进程会将我们编写的spark应用代码拆分成多个stage，每个stage执行一部分代码片段，并为每个stage创建一批tasks，然后将这些tasks分配到各个executor中执行。</p>
+<p>executor进程宿主在worker节点上，一个worker可以有多个executor。每个executor持有一个线程池，每个线程可以执行一个task，executor执行完task以后将结果返回给driver，每个executor执行的task都属于同一个应用。此外executor还有一个功能就是为应用程序中要求缓存的 RDD 提供内存式存储，RDD 是直接缓存在executor进程内的，因此任务可以在运行时充分利用缓存数据加速运算。</p>
+<h1 id="3，例图"><a href="#3，例图" class="headerlink" title="3，例图"></a>3，例图</h1><p>为了加深理解，我做了一个说明图，为了便于作图，假设了一种非常简单的集群模式。</p>
+<h2 id="（1）"><a href="#（1）" class="headerlink" title="（1）"></a>（1）</h2><h2 id=""><a href="#" class="headerlink" title=""></a><img src="https://img-blog.csdnimg.cn/20181128192241304.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70" alt="img"></h2><p>假设我们现在有一个集群，为了便于作图，我们设有一个master节点，两个worker节点，并且驱动程序运行在master节点上。</p>
+<h2 id="（2）"><a href="#（2）" class="headerlink" title="（2）"></a>（2）</h2><p>​                       <img src="https://img-blog.csdnimg.cn/20181128194151526.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70" alt="img"></p>
+<p>在master节点提交应用以后，在master节点中启动driver进程，driver进程向集群管理者申请资源（executor），集群管理者在不同的worker上启动了executor进程，相当于分配资源。</p>
+<h2 id="（3）"><a href="#（3）" class="headerlink" title="（3）"></a>（3）</h2><p>​                          <img src="https://img-blog.csdnimg.cn/20181128194550101.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70" alt="img"></p>
+<p>driver进程会将我们编写的spark应用代码拆分成多个stage，每个stage执行一部分代码片段，并为每个stage创建一批tasks，然后将这些tasks分配到各个executor中执行。</p>
+<p>以上大概就是spark中最基本的几个概念之一啦。这篇博文并没有涉及到具体的技术实现细节，只是一个概念上的说明，便于理解。</p>
+
       
     </div>
     
@@ -356,8 +363,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/12/11/Exception/" rel="next" title="RuntimeException和Exception区别">
-                <i class="fa fa-chevron-left"></i> RuntimeException和Exception区别
+              <a href="/2020/12/15/Spark/" rel="next" title="Spark中Task，Partition，RDD、节点数、Executor数、core数目的关系和Application，Driver，Job，Task，Stage理解">
+                <i class="fa fa-chevron-left"></i> Spark中Task，Partition，RDD、节点数、Executor数、core数目的关系和Application，Driver，Job，Task，Stage理解
               </a>
             
           </div>
@@ -365,10 +372,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/12/11/%E8%AE%A9%E5%87%BACPU/" rel="prev" title="C语言陷阱与技巧第3节，怎样主动让出CPU？如何为C语言函数增加超时检测功能">
-                C语言陷阱与技巧第3节，怎样主动让出CPU？如何为C语言函数增加超时检测功能 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -500,7 +503,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#sleep%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">sleep的底层实现</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1%EF%BC%8Cmaster%E5%92%8Cworker%E8%8A%82%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">1，master和worker节点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2%EF%BC%8Cdriver%E5%92%8Cexecutor%E8%BF%9B%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">2，driver和executor进程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3%EF%BC%8C%E4%BE%8B%E5%9B%BE"><span class="nav-number">3.</span> <span class="nav-text">3，例图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%881%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">（1）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">3.2.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%882%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">（2）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%883%EF%BC%89"><span class="nav-number">3.4.</span> <span class="nav-text">（3）</span></a></li></ol></li></ol></div>
             
 
           </div>
