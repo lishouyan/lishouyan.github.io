@@ -249,6 +249,477 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/07/AppleTV%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97%E4%BA%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thousandth of Dirt">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/12/07/AppleTV%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97%E4%BA%8C/" itemprop="url">Apple TV 编程指南：使用Apple TV遥控器控制屏幕上的用户界面</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-07T02:16:00+08:00">
+                2020-12-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>原文：App Programming Guide for tvOS：Building Apple TV Apps–Controlling the User Interface with the Apple TV Remote</p>
+<p>本文档文章包括</p>
+<ul>
+<li>Apple TV 编程指南：介绍</li>
+<li>Apple TV 编程指南：创建Client-Server App</li>
+<li>Apple TV 编程指南：使用Apple TV遥控器控制屏幕上的用户界面</li>
+<li>Apple TV 编程指南：检测手势和按钮按压</li>
+<li>Apple TV 编程指南：设计键盘输入体验</li>
+<li>Apple TV 编程指南：使用游戏控制器</li>
+<li>Apple TV 编程指南：创造视差美术资源</li>
+<li>Apple TV 编程指南：资源管理</li>
+</ul>
+<h6 id="使用Apple-TV遥控器控制屏幕上的用户界面"><a href="#使用Apple-TV遥控器控制屏幕上的用户界面" class="headerlink" title="使用Apple TV遥控器控制屏幕上的用户界面"></a>使用Apple TV遥控器控制屏幕上的用户界面</h6><p>在iOS设备上，用户通过触屏直接进行交互。在苹果电视上，用户使用遥控器进行间接交互。用户浏览到一个特定的选项上，然后按下遥控器上一个按钮来选择这个选项。当用户选中屏幕上的选项时，该选项就会变成焦点。焦点是指用户间接地通过远程的或者其他的输入设备进行的输入行为引起的屏幕的外部效果。在一个以焦点为基础的交互模型中，在屏幕上的单一视图可以得到焦点，并且用户可以通过浏览屏幕上不同的UI选项将焦点移动到其他视图，从而引起焦点更新。得到焦点的视图被用作任何用户操作的目标事件。例如，如果一个屏幕上的按钮被选中，当由遥控器发送按钮选择事件时，目标事件将被触发。</p>
+<p>UIKit框架只支持以焦点为基础的交互，在大多数情况下，这种行为只在有意义的地方自动提供。你可以要求以编程形式焦点更新，但不能将焦点往某个方向设置或者移动。例如，UIButton对象有焦点，但UILabel对象都没有。对于自定义用户界面组件的应用程序，你需要实现自定义的焦点目标事件，正如Supporting Focus Within Your App中解释一样。UIKit库中，如UIButton，UITextField，UITableView，UICollectionView，UITextView，UIsearchbar 以及UISegmentedControl有默认焦点。</p>
+<h6 id="焦点引擎控制焦点"><a href="#焦点引擎控制焦点" class="headerlink" title="焦点引擎控制焦点"></a>焦点引擎控制焦点</h6><p>包含可控制焦点的UIKit的系统和焦点移动称为焦点引擎。有许多用户可以控制焦点的输入设备，例如（不同类型）遥控器，游戏控制器，模拟器等等。在你的应用程序中，焦点引擎监听来自这些不同输入设备的焦点移动事件。当一个事件发生时，焦点引擎会自动判断更新焦点并通知你的应用程序。该系统有助于创造一个持续性的用户体验，即提供了每一个应用程序中所有当前和未来的输入方法的自动支持，并帮助开发人员专注于实现他们的应用程序的独特行为而不是定义或重塑基本的导航。</p>
+<p>只有焦点引擎才能显式更新焦点，这意味着没有一个可直接设置焦点的视图或移动焦点往一个特定方向的接口。如果用户发送一个移动事件，如果焦点引擎系统要求更新，或者如果应用程序请求更新，该焦点引擎只更新焦点。要了解更多关于如何手动更新的焦点，请参看 Updating Focus Programmatically 一节。</p>
+<p>焦点引擎控制主要是确保焦点不在屏幕上意外地移动，并且它的行为在不同的应用程序中是相似的。这有助于防止用户对不同的行为感到困惑，同时意味着开发人员不必自己定制适当的焦点管理解决方案。</p>
+<h6 id="UIFocusEnvironment协议"><a href="#UIFocusEnvironment协议" class="headerlink" title="UIFocusEnvironment协议"></a>UIFocusEnvironment协议</h6><p>焦点引擎通过UIFocusEnvironment协议，与你的应用程序进行通信。 UIFocusEnvironment 协议定义了视图层次结构的一个分支的焦点行为。UIKit库中遵循这个协议的类有UIView、UIViewController、UIWindow 和 UIPresentationController，换句话说，这些类都直接或间接地控制在屏幕上的视图。在视图和视图控制器中重写UIFocusEnvironment协议方法，你可以在应用程序中控制焦点行为。</p>
+<h6 id="用户生成的焦点移动"><a href="#用户生成的焦点移动" class="headerlink" title="用户生成的焦点移动"></a>用户生成的焦点移动</h6><p>焦点引擎可以根据遥控器或者其他输入设备的响应事件自动决定焦点应该移动到哪里。用户可以将焦点转移到任何二维方向：上下左右或对角线（如果硬件支持的话）。例如，如果用户左滑，焦点引擎试图直接找到在当前获得焦点的视图左边的一个视图，这个视图必须具有可以获得焦点的特性。如果一个新的视图被发现，则焦点移动到该视图；否则，焦点停留在当前激活的视图。</p>
+<p>如果输入设备支持，焦点引擎也自动处理复杂的行为。例如，基于运动的远程滑动，根据焦点速度调节焦点相关的动画速度，播放导航的声音，和当焦点移出屏幕，时更新滚动视图偏移。要了解更多关于焦点相关的动画，请参看 UIFocusAnimationCoordinator类参考。</p>
+<h6 id="决定在哪里移动焦点"><a href="#决定在哪里移动焦点" class="headerlink" title="决定在哪里移动焦点"></a>决定在哪里移动焦点</h6><p>当决定如何按照用户动作移动焦点时，焦点引擎需要应用程序内部的用户界面和所有的具有可获得焦点特性的所有视图的可视区域。这意味着，如果一个可获得焦点的视图在完全在另一个可获得焦点视图的下面，那么它将会被忽略，不能得到焦点。也就是说部分区域隐藏的视图，只有可见部分才能获得焦点。利用这一技术，焦点引擎从当前获得焦点的视图开始，在运动路径上直接找到可以获得焦点的区域。搜索区域的大小与当前焦点视图的大小直接相关。</p>
+<p>图 3-1焦点移动</p>
+<p><img src="/images/pasted-5.png" alt="upload successful"></p>
+<p>如果焦点引擎找到一个新的视图去移动焦点，那么它会在移动焦点发生之前给你的应用程序一个验证移动的机会。操作系统在每个包含上一个和下一个焦点视图的焦点环境上都会调用 shouldUpdateFocusInContext:方法。先通知先前的焦点视图，然后是焦点视图，最后通知父视图。如果所有焦点环境 shouldupdatefocusincontext：的返回值为NO，那么这个焦点移动将会被取消。要了解更多关于焦点环境的知识，参见 UIFocusEnvironment Protocol Reference.</p>
+<h6 id="初始焦点和首选焦点链"><a href="#初始焦点和首选焦点链" class="headerlink" title="初始焦点和首选焦点链"></a>初始焦点和首选焦点链</h6><p>当一个应用程序启动时，焦点引擎决定一个默认的焦点视图获得焦点。这个视图通常是距屏幕左上角最近的一个可获得焦点的视图。</p>
+<p>图 3-2分层搜索的初始视图，以获得焦点。</p>
+<p><img src="/images/pasted-6.png" alt="upload successful"></p>
+<p>但是，使用 UIFocusEnvironment 协议的首选焦点视图，可以为你的应用程序提供默认情况下焦点该去哪的线索。当设置初始化焦点时，焦点引擎首先询问 window 的首选的焦点视图，这个视图就是根视图控制器的 preferredFocusedView 对象。因为返回值是一个符合 UIFocusEnvironment 协议的 UIView 对象，所以焦点引擎询问其首选的焦点视图，以次类推。这个由一系列作为返回值的首选焦点视图组成的链表是首选焦点链。焦点引擎遵循这个首选焦点链，直到得到的焦点视图是它本身或者是nil。从首选焦点链中的最后一个列表中选择位置最深处的视图作为下一个可获得焦点的视图。</p>
+<h6 id="下面这个例子展示什么是首选焦点链："><a href="#下面这个例子展示什么是首选焦点链：" class="headerlink" title="下面这个例子展示什么是首选焦点链："></a>下面这个例子展示什么是首选焦点链：</h6><p>焦点引擎向根窗口查询 preferredFocusedView，并返回它的根视图控制器下的 preferredFocusedView。</p>
+<p>根视图控制器是选项卡视图器的时候，返回值是它的被选者的视图控制器的 preferredFocusedView 对象。</p>
+<p>被选择视图控制器重写其 preferredFocusedView 方法，返回一个特定的 UIButton实例对象。</p>
+<p>这个 UIButton 实例对象返回 self（默认值），并可获得焦点，所以它被焦点引擎选择作为下一个焦点视图。</p>
+<p>正如首选焦点链所定义的那样，每当焦点在一个指定的视图更新时，新的焦点视图都会被设定为首选焦点视图。焦点链的另一个例子，当有一个视图控制器呈现在当前焦点视图的上面时，焦点引擎会使用它的首选焦点链更新焦点到新的视图控制器上。<br>焦点更新</p>
+<p>当用户行为引起了焦点运动时就会引起焦点更新（例如，在遥控器上滑动），这时应用将会请求更新焦点或者系统自定触发更新焦点。</p>
+<h6 id="焦点更新的解析"><a href="#焦点更新的解析" class="headerlink" title="焦点更新的解析"></a>焦点更新的解析</h6><p>当焦点更新或者焦点移动到一个新的视图的时候，无论焦点视图是子视图或者不同于这个视图层级的部分，都将会有下列事情发生：</p>
+<p>focusedView 属性被更新，并且更新的效果会反应到最新的到焦点的视图或者首选焦点视图上。</p>
+<p>焦点引擎使用didUpdateFocusInContext:withAnimationCoordinator:方法通知每一个焦点环境，包含先前焦点视图或下一个焦点视图（焦点更新后的视图）的焦点环境。焦点更新时，系统会使用动画协调员安排焦点更新相关的动画。详见 UIFocusAnimationCoordinator。</p>
+<p>在所有相关的焦点环境得到通知后，所有的协调动画都在同一时间运行。</p>
+<p>如果下一个焦点视图是在一个滚动视图上，并且在屏幕以外，那么滚动视图将会滚动到该视图所在的位置，使它移进屏幕内。</p>
+<h6 id="系统生成的焦点更新"><a href="#系统生成的焦点更新" class="headerlink" title="系统生成的焦点更新"></a>系统生成的焦点更新</h6><p>在许多常见的情况下，必要的时候UIKit会自动更新焦点。下面的几个例子展示了什么情况下系统会自动的更新焦点：</p>
+<ol>
+<li>从视图层次结构中移除一个焦点视图。</li>
+<li>UITableView 或 UICollectionView 重新加载数据。</li>
+<li>在当前获得焦点的视图上展示一个新的视图控制器。</li>
+<li>用户按下遥控器上的菜单回退。</li>
+</ol>
+<h6 id="以编程方式更新焦点"><a href="#以编程方式更新焦点" class="headerlink" title="以编程方式更新焦点"></a>以编程方式更新焦点</h6><p>通常情况下，焦点会在必要的时候自动更新，但是有时候，你需要在应用程序内部，用代码主动引起焦点更新。任何焦点环境通过调用 setNeedsFocusUpdate方法请求焦点更新，这个方法重置了焦点环境的 preferredFocusedView。下面是一些何时可以在你的应用内部主动的更新焦点的例子：</p>
+<p>如果应用程序的内容发生变化，那么为了留在用户所期望的地方，则需要改变焦点。例如:音乐类应用程序总是希望专注当前播放的歌曲。当一首歌曲结束时，应用程序应该请求更新的焦点，并移动到播放列表中得下一首歌曲。</p>
+<p>用户期望焦点转移到某个新的地方的操作行为。例如：一个应用程序的界面由两个部分组成，左边是一个菜单，右边是对应菜单项的内容集合。当用户在菜单项之间移动时，右边的内容更改。当用户选中一个菜单项时，他们可能会期待焦点自动移动到选定的菜单项集合中的第一项。</p>
+<p>得到焦点的自定义的焦点控件，更新它的内部状态时需要以某种方式改变焦点。例如: 当用户在遥控器上选定选取器件时，焦点会移动到这个控件上，让用户选取选取器上的一系列选项。按下遥控器上的菜单又会导致改控件获得焦点。在这种场景下，通过 preferredFocusedView，选择控件会发出请求更新焦点移动到它的一个子视图上。</p>
+<h6 id="让你的APP支持焦点"><a href="#让你的APP支持焦点" class="headerlink" title="让你的APP支持焦点"></a>让你的APP支持焦点</h6><p>如果你的应用程序使用内置 UIKit 控件，你的应用程序什么都不用做就可以支持焦点：在应用程序启动时，屏幕上的一个可获得焦点的视图会被选择作为最初的焦点视图，在应用程序的运行周期中，焦点引擎负责管理焦点。</p>
+<p>然而，对于大多数应用程序来说，都希望实现某些自定义的焦点行为，例如，当焦点改变时，更新应用程序状态，创建新的用户交互界面元素类型，并实现自定义的焦点动画。下面的章节概述了在你的应用程序中实现支持自定义焦点行为需要做什么。</p>
+<p>对一个视图层级结构的分支来说 UIFocusEnvironment 类控制焦点相关行为。这意味着控制器控制着它的根视图和子节点视图的焦点相关行为，并且 UIView 类型对象控制它自己和它子节点的焦点行为。因此，多个焦点环境，可以控制同一个视图层级结构的分支的焦点相关行为。视图层级结构分支是指视图不但包含其他视图，而且还在视图控制器中。控制焦点相关行为并不是意味着某个视图获得焦点，而是意味着焦点环境可以控制焦点在它的视图层级上如何移动，在焦点环境下的视图层级上焦点改变后，UI如何应对。</p>
+<h6 id="在视图控制器中支持焦点"><a href="#在视图控制器中支持焦点" class="headerlink" title="在视图控制器中支持焦点"></a>在视图控制器中支持焦点</h6><p>因为 UIViewController 遵循 UIFocusEnvironment 协议，所以在你的应用程序中，自定义视图控制器可以重写 UIFocusEnvironment 委托方法来实现自定义的焦点行为。自定义视图控制器可以实现如下功能：</p>
+<ol>
+<li>重写 preferredFocusedView 方法指明焦点默认开始的视图。</li>
+<li>重写 shouldUpdateFocusInContext:方法来定义焦点允许移动的位置。</li>
+<li>在更新你的应用程序的内部状态或者焦点更新发生时，重写 didUpdateFocusInContext:withAnimationCoordinator: 方法来对焦点更新。</li>
+<li>通过调用 setNeedsFocusUpdate方法，你的视图控制器可以请求焦点引擎为当前的 preferredFocusedView 重置焦点。注意，只有视图控制器包含当前焦点视图，调用setneedsfocusupdate 才有效果。</li>
+</ol>
+<h6 id="在Collection视图和Table视图中支持焦点"><a href="#在Collection视图和Table视图中支持焦点" class="headerlink" title="在Collection视图和Table视图中支持焦点"></a>在Collection视图和Table视图中支持焦点</h6><p>当使用 collection 视图和 table 视图工作时，你可以使用委托对象来定义任何自定义行为。这种模式也可以基于焦点交互界面实现时使用。UITableViewDelegate 和UICollectionViewDelegate 协议声明的方法和属性和 UIFocusEnvironment 协议提供的属性和方法相似，但是 tableView 和 collectionView 的协议是规范他们自己的行为的。</p>
+<h6 id="在collection视图和table视图中支持焦点的提示："><a href="#在collection视图和table视图中支持焦点的提示：" class="headerlink" title="在collection视图和table视图中支持焦点的提示："></a>在collection视图和table视图中支持焦点的提示：</h6><p>使用 UICollectionViewDelegate 的 collectionView:canFocusItemAtIndexPath: 方法或者 UITableViewDelegate 的 tableView:canFocusRowAtIndexPath: 方法去检查某个特殊的 cell 是否需要焦点。这一行动的工作类似于在一个自定义视图中重写 UIView 的 canBecomeFocused 方法。</p>
+<p>当焦点离开当前视图时，使用在 UICollectionView 和 UITableView 中都有定义的 remembersLastFocusedIndexPath 属性，检查焦点是否应该返回上一个焦点索引， 指定焦点是否应返回焦点离开时的最后一个焦点索引路径，然后焦点重新进入 collectionView 或者 tableView 视图。</p>
+<h6 id="在自定义视图中支持焦点"><a href="#在自定义视图中支持焦点" class="headerlink" title="在自定义视图中支持焦点"></a>在自定义视图中支持焦点</h6><p>像 UIViewController 和 UIView 类也遵循 UIFocusEnvironment 协议，这意味着 Supporting Focus in View Controllers 文档中概述的所有的功能都可以应用到自定义的视图中。但是，因为视图可以获得焦点，所以在你实现自定义的焦点行为的时候，需要考虑下面的几个因素：</p>
+<p>如果你的自定义视图需要焦点，重写 canBecomeFocused方法并设置返回值为 YES（默认情况下，它的返回值为NO）。你的视图可能经常得到焦点或在某种情况下才能得到焦点。例如，UIButton 对象的 enable 属性为 NO 的时候，它不能得到焦点。</p>
+<p>如果聚焦这一观点必须重新聚焦到另一个视图（例如，一个子视图），选择重写 preferredFocusedView。</p>
+<p>更新你的应用程序的内部状态或者焦点更新发生时，重写 didUpdateFocusInContext:withAnimationCoordinator: 方法作为焦点更新后的反应行为。</p>
+<h6 id="协调焦点相关动画"><a href="#协调焦点相关动画" class="headerlink" title="协调焦点相关动画"></a>协调焦点相关动画</h6><p>当焦点发生更新时，当前视图以某种动画的形式过度到焦点状态，之前的焦点视图以某种动画形式过度到非焦点状态，焦点更新后获得焦点的视图将以某种动画形式过度到焦点状态。然而，这些动画和你应用程序中定义的常见的动画不同，为了实现某种系统级别的行为，UIKit 使与焦点相关的动画的曲线轨迹和运动时间相适应。例如，当焦点正在快速移动时，动画的时间会缩短，以跟上用户的移动。</p>
+<p>UIKit提供系统定义的有关可以获得焦点的视图类的焦点动画。使用 UIKit 的内置 UIFocusAnimationCoordinator 类和 addCoordinatedAnimations:completion: 方法，可以创建带有系统级行为的自定义动画。</p>
+<p>根据协调器提供了的焦点环境，被添加到协调器中的动画可以作为正在获取焦点的动画中的边缘动画，或者失去焦点中得动画，或者两者都不是。一般情况下，获得焦点和失去焦点的父视图，和特殊的焦点视图的父视图一样，将会沿着获得焦点的方向做动画。非焦点视图独有的父视图将会做失去焦点的动画。</p>
+<p>图 3-3自定义焦点动画</p>
+<p><img src="/images/pasted-7.png" alt="upload successful"></p>
+<p>通常，视图拥有不同的动画，取决于他们正在得到焦点或失去焦点。通过重写视图的 didUpdateFocusInContext:withAnimationCoordinator: 方法和检查视图的当前焦点的状态的上下文，你可以指定视图需要哪种动画。下面是重写 didUpdateFocusInContext:withAnimationCoordinator: 方法的例子。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (void)didUpdateFocusInContext:(UIFocusUpdateContext *)context withAnimationCoordinator:(UIFocusAnimationCoordinator *)coordinator</span><br><span class="line">&#123;</span><br><span class="line">    [super didUpdateFocusInContext:context withAnimationCoordinator:coordinator];</span><br><span class="line"> </span><br><span class="line">    if (self &#x3D;&#x3D; context.nextFocusedView) &#123;</span><br><span class="line">        [coordinator addCoordinatedAnimations:^&#123;</span><br><span class="line">            &#x2F;&#x2F; focusing animations</span><br><span class="line">        &#125; completion:^&#123;</span><br><span class="line">            &#x2F;&#x2F; completion</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125; else if (self &#x3D;&#x3D; context.previouslyFocusedView) &#123;</span><br><span class="line">        [coordinator addCoordinatedAnimations:^&#123;</span><br><span class="line">            &#x2F;&#x2F; unfocusing animations</span><br><span class="line">        &#125; completion:^&#123;</span><br><span class="line">            &#x2F;&#x2F; completion</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>非焦点和焦点视图共同的父视图，可以为焦点视图和非焦点视图一起关联相关动画。例如，一个 UICollectionView 对象可以将之前获得焦点的cell以及将要获得焦点的 cell 一起做动画。在对 UICollectionViewCell 的子类情况下，推荐使用上面代码片段的相似逻辑，并在子类中实现动画代码。</p>
+<h6 id="调试焦点问题"><a href="#调试焦点问题" class="headerlink" title="调试焦点问题"></a>调试焦点问题</h6><p>当应用程序运行时，UIKit帮助你调试的焦点问题。</p>
+<p>为什么这个视图不能获得焦点？</p>
+<p>一个被期望获得焦点的视图却不能获得焦点的原因有很多种，下面列举了几种可能的原因但并不是全部原因：</p>
+<p>视图的 canBecomeFocused 方法返会值为 NO 。</p>
+<p>视图的 hidden 属性值设置为 YES 。</p>
+<p>视图的透明度属性值为 0 。</p>
+<p>视图的用户交互被禁用。</p>
+<p>这个视图被它上面的视图完全遮盖。</p>
+<p>UIKit 提供的 UIView 类的隐藏方法——_whyIsThisViewNotFocusable，目的是为了帮助测试所有前面提到的常见情况。此方法仅是在调试一个特别的视图引用时调用，并打印出一个具有可读性并且可能引起问题的如下所示的列表：</p>
+<p>32.png</p>
+<h6 id="为什么焦点移动到你没有想到的某个地方？"><a href="#为什么焦点移动到你没有想到的某个地方？" class="headerlink" title="为什么焦点移动到你没有想到的某个地方？"></a>为什么焦点移动到你没有想到的某个地方？</h6><p>有时候，焦点并没有移动到你所期待的地方，或者它根本就没有移动。焦点引擎提供了很多便利，有时候你最好了解关于它是如何移动焦点的更多信息。  </p>
+<p>UIKit发送了一个可视化的关于焦点引擎在 Quick Look 中如何搜寻下一个焦点视图的 UIFocusUpdateContext 实例对象。为了看到这个场景，可以在shouldUpdateFocusInContext: 或者 didUpdateFocusInContext:withAnimationCoordinator: 方法中设置断点，当程序运行到这个断点时，在调试台中选中 context 参数并代开 Quick Look 菜单选项。</p>
+<p>图 3-4在调试器中选择上下文参数</p>
+<p><img src="/images/pasted-8.png" alt="upload successful"></p>
+<p>如果断点在焦点运动的过程中被执行（不是焦点更新时）， Quick Look会展示一张图片来表达搜索引擎找到下一个焦点视图的搜索路径。例子如下3-5图。</p>
+<p>图 3-5快速寻找一个图像显示</p>
+<p><img src="/images/pasted-9.png" alt="upload successful"></p>
+<p>下面是 Quick Look 中图片可能展示的几种信息</p>
+<ol>
+<li>以前的焦点视图（搜索的开始视图），显示在红色区域。</li>
+<li>搜索路径轮廓，用虚线标注。</li>
+<li>任何在搜索路径中可获得焦点的 UIView 对象区域，显示紫色。</li>
+<li>任何在搜索路径中可获得焦点的 UIFocusGuide 类区域，显示蓝色。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/07/AppleTV%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97%E4%B8%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thousandth of Dirt">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/12/07/AppleTV%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97%E4%B8%80/" itemprop="url">AppleTV编程指南一</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-07T01:58:00+08:00">
+                2020-12-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Swift/" itemprop="url" rel="index">
+                    <span itemprop="name">Swift</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>原文：App Programming Guide for tvOS–The New Apple TV</p>
+<p><img src="/images/pasted-3.png" alt="upload successful"></p>
+<h6 id="本文档文章包括"><a href="#本文档文章包括" class="headerlink" title="本文档文章包括"></a>本文档文章包括</h6><ul>
+<li>Apple TV 编程指南：介绍</li>
+<li>Apple TV 编程指南：创建Client-Server App</li>
+<li>Apple TV 编程指南：使用Apple TV遥控器控制屏幕上的用户界面</li>
+<li>Apple TV 编程指南：检测手势和按钮按压</li>
+<li>Apple TV 编程指南：设计键盘输入体验</li>
+<li>Apple TV 编程指南：使用游戏控制器</li>
+<li>Apple TV 编程指南：创造视差美术资源</li>
+<li>Apple TV 编程指南：资源管理</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">重要：这是针对于正在开发中的API或技术的预备文档(预发布版本)。苹果提供这份文档的目的是帮助你按照文中描述的方式对技术的选择及界面的设计开发进行规划。这些信息有可能发生变化，因此根据本文档的软件开发应当基于最终版本的操作系统和文档进行测试。该文档的新版本或许会随着API或相关技术未来的发展而进行更新。</span><br></pre></td></tr></table></figure>
+
+<p>新的 Apple TV 不仅仅是一个被动的媒体播放器。Apple TV 的用户还可以玩游戏，使用工具类应用程序，看电影，享受并分享经验。这些功能的增加也给开发商提供了更多机会。</p>
+<p>tv OS 开发由 iOS 开发衍生而来但又有所不同，包括 tv OS 特有的一些框架。你会发现 Apple TV 的开发跟 iOS 开发很相似，它结合了支持分享技术、多用户体验，并且开辟了你在 iOS 设备上没有发现的app开发领域的空间。你可以创建新的APP也可以使用 iOS 代码作为起点。无论是哪种开发，你使用的都是熟悉的工具（Xcode）、语言（Objective-C,Swift以及JavaScript）。本文档介绍了 Apple TV 的独特功能，并提供了帮你开始 tv OS app 开发之旅的深入指导信息。</p>
+<p>当移植现有的项目时，你可以在 Xcode 工程中增加一个 target 以简化资源共享，但是你需要为 tv OS 创建新的 storyboards。你可能会需要了解用户如何浏览你的APP，然后让APP用户界面适用于 Apple TV。想要了解更多信息，请查看Apple TV Human Interface Guidelines（<a target="_blank" rel="noopener" href="http://www.cocoachina.com/design/20150924/13533.html">中文版</a>/<a target="_blank" rel="noopener" href="https://developer.apple.com/tvos/human-interface-guidelines/">英文版</a>）</p>
+<p>创建Apple TV的配置文件与iOS创建的配置文件方法是一样的，即在Xcode中使用Fix Issue命令或者通过开发者中心网站来创建配置文件。更多关于 Apple TV 功能支持信息，请参看 <a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/IDEs/Conceptual/AppDistributionGuide/SupportedCapabilities/SupportedCapabilities.html#//apple_ref/doc/uid/TP40012582-CH38">Supported Capabilities</a>.</p>
+<p>虽然 iOS 和 tv OS APP 是不同的实体（也就是说没有一个可以在两个平台上运行的二进制文件），但你可以创建一个绑定这些应用程序的通用购买。用户一次购买应用程序，但可以同时获得应用的 iOS 和 tv OS 版本。更多信息，请查看<a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/tvos/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40012582">App Distribution Guide</a>。</p>
+<h6 id="AppleTV硬件"><a href="#AppleTV硬件" class="headerlink" title="AppleTV硬件"></a>AppleTV硬件</h6><p>新的AppleTV有以下硬件规格：</p>
+<ul>
+<li>64-bit A8 处理器 </li>
+<li>32 GB/64 GB 存储空间 </li>
+<li>2 GB RAM</li>
+<li>10/100 Mbps Ethernet</li>
+<li>WiFi 802.11a/b/g/n/ac</li>
+<li>1080p 分辨率</li>
+<li>HDMI</li>
+<li>全新Siri 遥控器/Apple TV 遥控器</li>
+</ul>
+<p>新Apple TV遥控器有两种控制方式：一种使用Siri，另一种是在屏幕上搜索。Siri搜索适用于以下国家：</p>
+<p>澳大利亚\加拿大\法国\德国\日本\西班牙\英国\美国</p>
+<p>图1-1展示的是新遥控器，它有以下按钮：</p>
+<p><img src="/images/pasted-4.png" alt="upload successful"></p>
+<ol>
+<li>触摸界面。滑动浏览。按下选择。长按展示详情菜单。</li>
+<li>菜单。按下返回上个菜单。</li>
+<li>Siri/搜索。长按与之进行对话（编辑注：适用于上边列出的国家）。在其他国家，按下该按钮则打开屏幕搜索应用程序。</li>
+<li>播放/暂停。播放和暂停媒体。</li>
+<li>Home按钮。按下返回主屏幕。按两次查看打开应用程序。长按休眠。</li>
+<li>音量。控制TV音量。</li>
+<li>Lightning接口。插入充电。<br>下图是Siri遥控器和Apple TV遥控器。</li>
+</ol>
+<h6 id="传统的APP"><a href="#传统的APP" class="headerlink" title="传统的APP"></a>传统的APP</h6><p>为 Apple TV 开发应用程序类似于 iOS APP 开发。你可以用 iOS 开发中相同的技术和框架来开发游戏、实用应用程序、媒体应用程序以及其他类型的应用。全新的以及现有的APP可以同时部署到 iOS 和新 Apple TV 平台。</p>
+<h6 id="Client-Server-Apps（简写为-C-S-APP）"><a href="#Client-Server-Apps（简写为-C-S-APP）" class="headerlink" title="Client-Server Apps（简写为 C-S APP）"></a>Client-Server Apps（简写为 C-S APP）</h6><p>为Apple TV创建Client-Server APP（简写为 C-S APP）非常简单，它的主要目的是使用HTTPS、XMLHTTPRequest、DOM 以及 JavaScript 技术传输流媒体。你可以使用苹果的自定义标记语言–TVML 创建接口，并使用JavaScript指定 APP 的行为。TVMLKit框架在原生代码和 JavaScript 代码之间搭建了桥梁。</p>
+<p>你可以在 JavaScript 文件中指定APP的初次启动行为。向往常一样创建你的二进制APP，再使用TVMLKit框架来加载 JavaScript 文件。JavaScript 文件加载 TVML页面并在屏幕上展示。你可以使用苹果提供的模板创建TVML页面。每个模板都提供了独一无二的全屏信息展示。你可以通过添加或者移除模板中的元素来调整页面。关于苹果提供的TVML模板和元素列表，请查看 Apple TV Markup Language Reference。</p>
+<p>Apple TV上所有的视频回放都基于 HTTP Live Streaming 和 FairPlay Streaming。请查看 HTTP Live Streaming 和 FairPlay Streaming Overview。关于HTTP Live Streaming 编写规范，请查阅 HLS Authoring Specification for Apple TV。</p>
+<h6 id="Top-Shelf"><a href="#Top-Shelf" class="headerlink" title="Top Shelf"></a>Top Shelf</h6><p>用户可以将任何 Apple TV app放在 App菜单的顶行，最多能放5个 icon。用户在顶行选中某个 icon 时，屏幕顶部会展示与该 APP 相关的内容，这个区域被称为 Top Shelf。在这个区域展示 APP 的内容，可以让用户预览他们关心的内容，或者让他们直接跳转至 APP 的特定部分。</p>
+<h6 id="焦点和视差图片"><a href="#焦点和视差图片" class="headerlink" title="焦点和视差图片"></a>焦点和视差图片</h6><p>当用户停留在某个项目上但却没有选择该项目时，某个UI元素就处于聚焦状态。当用户聚焦到一个分层图片上时，图片会响应用户在遥控器玻璃材质触控板上的触摸。</p>
+<p>每层图片以稍有不同的速度旋转以产生视察效果。这种精细的效果为用户创造了视觉上的深度，更现实也更有活力，并强调被聚焦的图片正是用户想要的。</p>
+<p>视差图片由设计师完成。但是如何将其应用在你的APP中呢？改进后的 UIImageView 可以支持视差图片，所以大多数情况下你只需做很小的编码调整。根据是要将图片直接添加到APP，还是在运行时从服务器加载，你的工作也会有所变化。</p>
+<h6 id="新的-tvOS-框架"><a href="#新的-tvOS-框架" class="headerlink" title="新的 tvOS 框架"></a>新的 tvOS 框架</h6><p>Apple tvOS 引入了 tvOS 专有的新框架：</p>
+<ul>
+<li>TVMLJS：描述了用于加载 TVML 页面（在C-S APP中展示信息）的JavaScript API。详见 TVJS Framework Reference.\</li>
+<li>TVMLKit：提供了将 JavaScript 和 TVML 元素包含进你的 APP 的方法。详见TVMLKit Framework Reference.</li>
+<li>TVServices：描述如何为 APP 添加一个 top shelf 扩展。详见 TVServices Framework Reference.</li>
+</ul>
+<h6 id="继承-iOS-框架"><a href="#继承-iOS-框架" class="headerlink" title="继承 iOS 框架"></a>继承 iOS 框架</h6><p>Apple tvOS 继承了 iOS 的一些框架。详见 iOS 框架和 tvOS 框架之间一些小差异。</p>
+<ul>
+<li>Accelerate</li>
+<li>AudioToolbox</li>
+<li>AudioUnit</li>
+<li>AVFoundation</li>
+<li>AVKit</li>
+<li>CFNetwork</li>
+<li>CloudKit</li>
+<li>CoreBluetooth</li>
+<li>CoreData</li>
+<li>CoreFoundation</li>
+<li>CoreGraphics</li>
+<li>CoreImage</li>
+<li>CoreLocation</li>
+<li>CoreMedia</li>
+<li>CoreSpotlight</li>
+<li>CoreText</li>
+<li>CoreVideo</li>
+<li>Darwin</li>
+<li>Foundation</li>
+<li>GameController</li>
+<li>GameKit</li>
+<li>GameplayKit</li>
+<li>GLKit</li>
+<li>ImageIO</li>
+<li>MachO</li>
+<li>MediaAccessibility</li>
+<li>MediaPlayer</li>
+<li>MediaToolbox</li>
+<li>Metal</li>
+<li>MetalKit</li>
+<li>MetalPerformanceShaders</li>
+<li>MobileCoreServices</li>
+<li>ModelIO</li>
+<li>OpenGLES</li>
+<li>SceneKit</li>
+<li>Security</li>
+<li>simd</li>
+<li>SpriteKit</li>
+<li>StoreKit</li>
+<li>Swift Standard Library</li>
+<li>SystemConfiguration</li>
+<li>UIKit</li>
+</ul>
+<h6 id="新用户界面挑战"><a href="#新用户界面挑战" class="headerlink" title="新用户界面挑战"></a>新用户界面挑战</h6><p>Apple TV 没有鼠标来让用户直接选择 APP 或者与之进行交互，也不能触摸和使用手势。相反，Apple TV 使用了 Siri Remote 或者游戏控制器在屏幕上进行移动。</p>
+<p>除了新控制器，整个用户体验也是完全不同。Mac 和 iOS 设备通常是单人体验。用户可能在你的 APP 中进行其他交互操作，但用户依然是一个人使用设备。对于新Apple TV，用户体验变得更加社交化。可能会有几个人坐在沙发上与你的 APP 进行交互。对于一款优秀的 APP 来说，利用这些变化是至关重要的。</p>
+<h6 id="APP本地储存有限"><a href="#APP本地储存有限" class="headerlink" title="APP本地储存有限"></a>APP本地储存有限</h6><p>Apple TV app 最大容量为 200MB。此外，你的 APP 最多可使用该设备本地 500KB 的永久存储（使用 NSUserDefaults 类）。</p>
+<p>除了有限的本地存储，在空间不够的情况下，其他所有数据必须可由操作系统清除。对于这些资源的管理，你有以下几个选择：</p>
+<p>你的 APP 可以在iCloud服务中存储和检索用户数据。</p>
+<p>你的 APP 将所需数据下载到它的缓存目录中。当 APP 运行时下载的数据不会被删除。不过，当空间不足并且你的 APP 没有运行时，这些数据可能会被删除。不要使用整个缓存空间，这样会导致不可预知的后果。</p>
+<p>你的 APP 可以使用 on-demand resources 打包只读资产。在运行时，APP 会根据需要请求资源，并且操作系统会自动下载和管理这些资源。知道如何以及何时加载新资产而又保持用户的参与非常关键。关于 on-demand resources 的更多信息，请参看 On-Demand Resources Guide。</p>
+<p>这意味着为新 Apple TV 开发的每款应用程序都必须能在 iCloud 储存和检索数据，以提供良好的用户体验。</p>
+<p>以 Apple TV 作为目标平台</p>
+<p>当你需要编写仅适用于 tvOS 的代码时，可使用 #define TARGET_OS_TV 1 宏。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/07/Swift-%E7%AC%94%E8%AE%B0%EF%BC%9A%E5%8A%A8%E7%94%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -738,7 +1209,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
