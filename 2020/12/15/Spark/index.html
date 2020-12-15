@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="Spark中Task，Partition，RDD、节点数、Executor数、core数目的关系和Application，Driver，Job，Task，Stage理解from：https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013013024&#x2F;article&#x2F;details&#x2F;72876427 有部分图和语句摘抄别的博客，有些理解是自己的  梳理一下Spark中关于并发度涉及的几个概念File，Bl">
+<meta name="description" content="from：https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013013024&#x2F;article&#x2F;details&#x2F;72876427 有部分图和语句摘抄别的博客，有些理解是自己的  梳理一下Spark中关于并发度涉及的几个概念File，Block，Split，Task，Partition，RDD以及节点数、Executor数、core数目的关系。  输入可能以多个文件的形式存储在HDFS上，每个File都">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spark中Task，Partition，RDD、节点数、Executor数、core数目的关系和Application，Driver，Job，Task，Stage理解">
 <meta property="og:url" content="http://example.com/2020/12/15/Spark/index.html">
 <meta property="og:site_name" content="Thousandth of Dirt">
-<meta property="og:description" content="Spark中Task，Partition，RDD、节点数、Executor数、core数目的关系和Application，Driver，Job，Task，Stage理解from：https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013013024&#x2F;article&#x2F;details&#x2F;72876427 有部分图和语句摘抄别的博客，有些理解是自己的  梳理一下Spark中关于并发度涉及的几个概念File，Bl">
+<meta property="og:description" content="from：https:&#x2F;&#x2F;blog.csdn.net&#x2F;u013013024&#x2F;article&#x2F;details&#x2F;72876427 有部分图和语句摘抄别的博客，有些理解是自己的  梳理一下Spark中关于并发度涉及的几个概念File，Block，Split，Task，Partition，RDD以及节点数、Executor数、core数目的关系。  输入可能以多个文件的形式存储在HDFS上，每个File都">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20181119103752562.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTMwMTMwMjQ=,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20181119103927394.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTMwMTMwMjQ=,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20181119104039876.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTMwMTMwMjQ=,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20181119104212924.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTMwMTMwMjQ=,size_16,color_FFFFFF,t_70">
 <meta property="article:published_time" content="2020-12-15T04:49:51.000Z">
-<meta property="article:modified_time" content="2020-12-15T04:50:11.172Z">
+<meta property="article:modified_time" content="2020-12-15T07:40:00.482Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://img-blog.csdnimg.cn/20181119103752562.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTMwMTMwMjQ=,size_16,color_FFFFFF,t_70">
@@ -324,7 +324,7 @@
       
 
       
-        <h1 id="Spark中Task，Partition，RDD、节点数、Executor数、core数目的关系和Application，Driver，Job，Task，Stage理解"><a href="#Spark中Task，Partition，RDD、节点数、Executor数、core数目的关系和Application，Driver，Job，Task，Stage理解" class="headerlink" title="Spark中Task，Partition，RDD、节点数、Executor数、core数目的关系和Application，Driver，Job，Task，Stage理解"></a>Spark中Task，Partition，RDD、节点数、Executor数、core数目的关系和Application，Driver，Job，Task，Stage理解</h1><p>from：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u013013024/article/details/72876427">https://blog.csdn.net/u013013024/article/details/72876427</a></p>
+        <p>from：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u013013024/article/details/72876427">https://blog.csdn.net/u013013024/article/details/72876427</a></p>
 <p>有部分图和语句摘抄别的博客，有些理解是自己的 </p>
 <p>梳理一下Spark中关于并发度涉及的几个概念File，Block，Split，Task，Partition，RDD以及节点数、Executor数、core数目的关系。</p>
 <p><img src="https://img-blog.csdnimg.cn/20181119103752562.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTMwMTMwMjQ=,size_16,color_FFFFFF,t_70" alt="img"></p>
@@ -689,7 +689,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spark%E4%B8%ADTask%EF%BC%8CPartition%EF%BC%8CRDD%E3%80%81%E8%8A%82%E7%82%B9%E6%95%B0%E3%80%81Executor%E6%95%B0%E3%80%81core%E6%95%B0%E7%9B%AE%E7%9A%84%E5%85%B3%E7%B3%BB%E5%92%8CApplication%EF%BC%8CDriver%EF%BC%8CJob%EF%BC%8CTask%EF%BC%8CStage%E7%90%86%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">Spark中Task，Partition，RDD、节点数、Executor数、core数目的关系和Application，Driver，Job，Task，Stage理解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%8CApplication"><span class="nav-number">1.0.1.</span> <span class="nav-text">1，Application</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%8CDriver"><span class="nav-number">1.0.2.</span> <span class="nav-text">2，Driver</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%8CJob"><span class="nav-number">1.0.3.</span> <span class="nav-text">3，Job</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Task"><span class="nav-number">1.0.4.</span> <span class="nav-text">4, Task</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Stage"><span class="nav-number">1.0.5.</span> <span class="nav-text">5, Stage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E8%AE%A1%E7%AE%97"><span class="nav-number">1.1.</span> <span class="nav-text">资源计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8%E7%9A%84%E4%BC%98%E5%8C%96"><span class="nav-number">1.2.</span> <span class="nav-text">资源使用的优化</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%8CApplication"><span class="nav-number">1.</span> <span class="nav-text">1，Application</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%8CDriver"><span class="nav-number">2.</span> <span class="nav-text">2，Driver</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%8CJob"><span class="nav-number">3.</span> <span class="nav-text">3，Job</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Task"><span class="nav-number">4.</span> <span class="nav-text">4, Task</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Stage"><span class="nav-number">5.</span> <span class="nav-text">5, Stage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E8%AE%A1%E7%AE%97"><span class="nav-number"></span> <span class="nav-text">资源计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E4%BD%BF%E7%94%A8%E7%9A%84%E4%BC%98%E5%8C%96"><span class="nav-number"></span> <span class="nav-text">资源使用的优化</span></a></div>
             
 
           </div>
