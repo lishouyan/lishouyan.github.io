@@ -79,21 +79,24 @@
 
 
 
-<meta name="description" content="刚刚接触Spark的时候对这些概念没有好好思考，走马观花似的扫过去了，后面碰到master、worker、executor和driver的时候，也就没想太多，最近刚刚跑通了一个spark项目，准备好好研究一下程序的运行原理，却突然发现对于master、worker、executor和driver一知半解，对这些概念没有很好地理解，实在难以深入学习spark，于是，查了一些资料，做了一些简单的记载供">
+<meta name="description" content="ss是Socket Statistics的缩写。顾名思义，ss命令可以用来获取socket统计信息，它可以显示和netstat类似的内容。ss的优势在于它能够显示更多更详细的有关TCP和连接状态的信息，而且比netstat更快速更高效。 当服务器的socket连接数量变得非常大时，无论是使用netstat命令还是直接cat &#x2F;proc&#x2F;net&#x2F;tcp，执行速度都会很慢。 ss快的秘诀在于，它利用到">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spark中master、worker、executor和driver的关系">
-<meta property="og:url" content="http://example.com/2020/12/15/S/index.html">
+<meta property="og:title" content="ss">
+<meta property="og:url" content="http://example.com/2020/12/16/ss/index.html">
 <meta property="og:site_name" content="Thousandth of Dirt">
-<meta property="og:description" content="刚刚接触Spark的时候对这些概念没有好好思考，走马观花似的扫过去了，后面碰到master、worker、executor和driver的时候，也就没想太多，最近刚刚跑通了一个spark项目，准备好好研究一下程序的运行原理，却突然发现对于master、worker、executor和driver一知半解，对这些概念没有很好地理解，实在难以深入学习spark，于是，查了一些资料，做了一些简单的记载供">
+<meta property="og:description" content="ss是Socket Statistics的缩写。顾名思义，ss命令可以用来获取socket统计信息，它可以显示和netstat类似的内容。ss的优势在于它能够显示更多更详细的有关TCP和连接状态的信息，而且比netstat更快速更高效。 当服务器的socket连接数量变得非常大时，无论是使用netstat命令还是直接cat &#x2F;proc&#x2F;net&#x2F;tcp，执行速度都会很慢。 ss快的秘诀在于，它利用到">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20181128192241304.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20181128194151526.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20181128194550101.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70">
-<meta property="article:published_time" content="2020-12-15T07:43:51.000Z">
-<meta property="article:modified_time" content="2020-12-15T07:44:33.980Z">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223532170-306875155.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223533049-345723838.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223533999-1801145862.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223534892-658586688.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223535826-1562743745.png">
+<meta property="og:image" content="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223536763-140879039.png">
+<meta property="article:published_time" content="2020-12-16T13:36:01.000Z">
+<meta property="article:modified_time" content="2020-12-16T13:36:04.209Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20181128192241304.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70">
+<meta name="twitter:image" content="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223532170-306875155.png">
 
 
 
@@ -123,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2020/12/15/S/"/>
+  <link rel="canonical" href="http://example.com/2020/12/16/ss/"/>
 
 
 
 
 
-  <title>Spark中master、worker、executor和driver的关系 | Thousandth of Dirt</title>
+  <title>ss | Thousandth of Dirt</title>
   
 
 
@@ -256,7 +259,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/15/S/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/16/ss/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -273,7 +276,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spark中master、worker、executor和driver的关系</h1>
+          <h1 class="post-title" itemprop="name headline">ss</h1>
         
 
         <div class="post-meta">
@@ -285,8 +288,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-15T15:43:51+08:00">
-                2020-12-15
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-16T21:36:01+08:00">
+                2020-12-16
               </time>
             
 
@@ -323,22 +326,53 @@
       
 
       
-        <p>刚刚接触Spark的时候对这些概念没有好好思考，走马观花似的扫过去了，后面碰到master、worker、executor和driver的时候，也就没想太多，最近刚刚跑通了一个spark项目，准备好好研究一下程序的运行原理，却突然发现对于master、worker、executor和driver一知半解，对这些概念没有很好地理解，实在难以深入学习spark，于是，查了一些资料，做了一些简单的记载供后面的学习使用。</p>
-<p>首先说一句，master和worker是物理节点，driver和executor是进程。</p>
-<h1 id="1，master和worker节点"><a href="#1，master和worker节点" class="headerlink" title="1，master和worker节点"></a>1，master和worker节点</h1><p>搭建spark集群的时候我们就已经设置好了master节点和worker节点，一个集群有多个master节点和多个worker节点。</p>
-<p>master节点常驻master守护进程，负责管理worker节点，我们从master节点提交应用。</p>
-<p>worker节点常驻worker守护进程，与master节点通信，并且管理executor进程。</p>
-<p>PS：一台机器可以同时作为master和worker节点（举个例子：你有四台机器，你可以选择一台设置为master节点，然后剩下三台设为worker节点，也可以把四台都设为worker节点，这种情况下，有一个机器既是master节点又是worker节点）</p>
-<h1 id="2，driver和executor进程"><a href="#2，driver和executor进程" class="headerlink" title="2，driver和executor进程"></a>2，driver和executor进程</h1><p>driver进程就是应用的main()函数并且构建sparkContext对象，当我们提交了应用之后，便会启动一个对应的driver进程，driver本身会根据我们设置的参数占有一定的资源（主要指cpu core和memory）。下面说一说driver和executor会做哪些事。</p>
-<p>driver可以运行在master上，也可以运行worker上（根据部署模式的不同）。driver首先会向集群管理者（standalone、yarn，mesos）申请spark应用所需的资源，也就是executor，然后集群管理者会根据spark应用所设置的参数在各个worker上分配一定数量的executor，每个executor都占用一定数量的cpu和memory。在申请到应用所需的资源以后，driver就开始调度和执行我们编写的应用代码了。driver进程会将我们编写的spark应用代码拆分成多个stage，每个stage执行一部分代码片段，并为每个stage创建一批tasks，然后将这些tasks分配到各个executor中执行。</p>
-<p>executor进程宿主在worker节点上，一个worker可以有多个executor。每个executor持有一个线程池，每个线程可以执行一个task，executor执行完task以后将结果返回给driver，每个executor执行的task都属于同一个应用。此外executor还有一个功能就是为应用程序中要求缓存的 RDD 提供内存式存储，RDD 是直接缓存在executor进程内的，因此任务可以在运行时充分利用缓存数据加速运算。</p>
-<h1 id="3，例图"><a href="#3，例图" class="headerlink" title="3，例图"></a>3，例图</h1><p>为了加深理解，我做了一个说明图，为了便于作图，假设了一种非常简单的集群模式。</p>
-<h2 id="（1）"><a href="#（1）" class="headerlink" title="（1）"></a>（1）</h2><h2 id=""><a href="#" class="headerlink" title=""></a><img src="https://img-blog.csdnimg.cn/20181128192241304.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70" alt="img"></h2><p>假设我们现在有一个集群，为了便于作图，我们设有一个master节点，两个worker节点，并且驱动程序运行在master节点上。</p>
-<h2 id="（2）"><a href="#（2）" class="headerlink" title="（2）"></a>（2）</h2><p>​                       <img src="https://img-blog.csdnimg.cn/20181128194151526.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70" alt="img"></p>
-<p>在master节点提交应用以后，在master节点中启动driver进程，driver进程向集群管理者申请资源（executor），集群管理者在不同的worker上启动了executor进程，相当于分配资源。</p>
-<h2 id="（3）"><a href="#（3）" class="headerlink" title="（3）"></a>（3）</h2><p>​                          <img src="https://img-blog.csdnimg.cn/20181128194550101.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70" alt="img"></p>
-<p>driver进程会将我们编写的spark应用代码拆分成多个stage，每个stage执行一部分代码片段，并为每个stage创建一批tasks，然后将这些tasks分配到各个executor中执行。</p>
-<p>以上大概就是spark中最基本的几个概念之一啦。这篇博文并没有涉及到具体的技术实现细节，只是一个概念上的说明，便于理解。</p>
+        <p>ss是Socket Statistics的缩写。顾名思义，ss命令可以用来获取socket统计信息，它可以显示和netstat类似的内容。ss的优势在于它能够显示更多更详细的有关TCP和连接状态的信息，而且比netstat更快速更高效。</p>
+<p>当服务器的socket连接数量变得非常大时，无论是使用netstat命令还是直接cat /proc/net/tcp，执行速度都会很慢。</p>
+<p>ss快的秘诀在于，它利用到了TCP协议栈中tcp_diag。tcp_diag是一个用于分析统计的模块，可以获得Linux 内核中第一手的信息，这就确保了ss的快捷高效。</p>
+<h3 id="ss常见命令参数"><a href="#ss常见命令参数" class="headerlink" title="ss常见命令参数"></a>ss常见命令参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Usage: ss [ OPTIONS ]&#96;&#96;    &#96;&#96;ss [ OPTIONS ] [ FILTER ]&#96;&#96;  &#96;&#96;-h, --help      this message&#96;&#96;  &#96;&#96;-V, --version    output version information&#96;&#96;  &#96;&#96;-n, --numeric    don&#39;t resolve service names&#96;&#96;  &#96;&#96;-r, --resolve    resolve host names&#96;&#96;  &#96;&#96;-a, --all      display all sockets&#96;&#96;  &#96;&#96;-l, --listening   display listening socket&#96;&#96;  &#96;&#96;-o, --options    show timer information&#96;&#96;  &#96;&#96;-e, --extended   show detailed socket information&#96;&#96;  &#96;&#96;-m, --memory    show socket memory usage&#96;&#96;  &#96;&#96;-p, --processes   show process using socket&#96;&#96;  &#96;&#96;-i, --info      show internal TCP information&#96;&#96;  &#96;&#96;-s, --summary    show socket usage summary&#96; &#96;  &#96;&#96;-4, --ipv4     display only IP version 4 sockets&#96;&#96;  &#96;&#96;-6, --ipv6     display only IP version 6 sockets&#96;&#96;  &#96;&#96;-0, --packet display PACKET sockets&#96;&#96;  &#96;&#96;-t, --tcp      display only TCP sockets&#96;&#96;  &#96;&#96;-u, --udp      display only UDP sockets&#96;&#96;  &#96;&#96;-d, --dccp      display only DCCP sockets&#96;&#96;  &#96;&#96;-w, --raw      display only RAW sockets&#96;&#96;  &#96;&#96;-x, --unix      display only Unix domain sockets&#96;&#96;  &#96;&#96;-f, --family&#x3D;FAMILY display sockets of &#96;&#96;type&#96; &#96;FAMILY&#96; &#96;  &#96;&#96;-A, --query&#x3D;QUERY, --socket&#x3D;QUERY&#96;&#96;    &#96;&#96;QUERY :&#x3D; &#123;all|inet|tcp|udp|raw|unix|packet|netlink&#125;[,QUERY]&#96; &#96;  &#96;&#96;-D, --diag&#x3D;FILE   Dump raw information about TCP sockets to FILE&#96;&#96;  &#96;&#96;-F, --filter&#x3D;FILE  &#96;&#96;read&#96; &#96;filter information from FILE&#96;&#96;    &#96;&#96;FILTER :&#x3D; [ state TCP-STATE ] [ EXPRESSION ]</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="常用的命令展示"><a href="#常用的命令展示" class="headerlink" title="常用的命令展示"></a>常用的命令展示</h3><p><strong>ss -t -a</strong> 【显示TCP连接】</p>
+<blockquote>
+<p>-t： tcp</p>
+<p> -a: all</p>
+<p> -l: listening     【ss -l列出所有打开的网络连接端口】</p>
+<p> -s: summary    【显示 Sockets 摘要】</p>
+<p> -p: progress</p>
+<p> -n: numeric     【不解析服务名称】</p>
+<p> -r: resolve    【解析服务名称】</p>
+<p> -m: memory    【显示内存情况】</p>
+</blockquote>
+<p>查看进程使用的socket</p>
+<p>1、ss –pl</p>
+<p><a target="_blank" rel="noopener" href="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223531755-1580727976.png"><img src="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223532170-306875155.png" alt="image"></a></p>
+<p>找出打开套接字/端口应用程序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ss -lp | &#96;&#96;grep&#96; &#96;22</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223532585-1127571363.png"><img src="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223533049-345723838.png" alt="image"></a></p>
+<p>显示所有UDP Sockets</p>
+<p>ss -u –a</p>
+<p><a target="_blank" rel="noopener" href="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223533538-60300400.png"><img src="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223533999-1801145862.png" alt="image"></a></p>
+<p>显示所有状态为established的SMTP连接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ss -o state &#96;&#96;&#39;established&#39;</span><br><span class="line">ss -o state established &#96;&#96;&#39;( dport &#x3D; :smtp or sport &#x3D; :smtp )&#39;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223534470-2073446054.png"><img src="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223534892-658586688.png" alt="image"></a></p>
+<p>列举出处于 FIN-WAIT-1状态的源端口为 80或者 443，目标网络为 193.233.7/24所有 tcp套接字</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ss -o state FIN-WAIT-1 dst 192.168.25.100&#96;&#96;&#x2F;24</span><br></pre></td></tr></table></figure>
+
+<p>匹配远程地址和端口号</p>
+<p>ss dst 192.168.25.100</p>
+<p>ss dst 192.168.25.100:50460</p>
+<p>匹配本地地址和端口号</p>
+<p>ss src 192.168.25.140</p>
+<p>ss 和 netstat 效率对比</p>
+<p>time netstat –an 【效率低】</p>
+<p><a target="_blank" rel="noopener" href="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223535379-717602317.png"><img src="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223535826-1562743745.png" alt="image"></a></p>
+<p>time ss  【效率高】</p>
+<p><a target="_blank" rel="noopener" href="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223536249-43888315.png"><img src="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223536763-140879039.png" alt="image"></a></p>
+<p>此篇文章为装载过来！</p>
+<p>为者常成，行者常至 Give me five~!</p>
 
       
     </div>
@@ -363,8 +397,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/12/13/Untitled/" rel="next" title="控制tvOS Focus Engine">
-                <i class="fa fa-chevron-left"></i> 控制tvOS Focus Engine
+              <a href="/2020/12/16/Spark/" rel="next" title="内存模型学习-- Container Executor task之间的关系">
+                <i class="fa fa-chevron-left"></i> 内存模型学习-- Container Executor task之间的关系
               </a>
             
           </div>
@@ -372,10 +406,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/12/16/Spark/" rel="prev" title="内存模型学习-- Container Executor task之间的关系">
-                内存模型学习-- Container Executor task之间的关系 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -507,7 +537,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1%EF%BC%8Cmaster%E5%92%8Cworker%E8%8A%82%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">1，master和worker节点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2%EF%BC%8Cdriver%E5%92%8Cexecutor%E8%BF%9B%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">2，driver和executor进程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3%EF%BC%8C%E4%BE%8B%E5%9B%BE"><span class="nav-number">3.</span> <span class="nav-text">3，例图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%881%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">（1）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">3.2.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%882%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">（2）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%883%EF%BC%89"><span class="nav-number">3.4.</span> <span class="nav-text">（3）</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ss%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4%E5%8F%82%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">ss常见命令参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E5%91%BD%E4%BB%A4%E5%B1%95%E7%A4%BA"><span class="nav-number">2.</span> <span class="nav-text">常用的命令展示</span></a></li></ol></div>
             
 
           </div>

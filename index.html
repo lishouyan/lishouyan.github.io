@@ -249,6 +249,172 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/16/ss/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thousandth of Dirt">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/12/16/ss/" itemprop="url">ss</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-16T21:36:01+08:00">
+                2020-12-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>ss是Socket Statistics的缩写。顾名思义，ss命令可以用来获取socket统计信息，它可以显示和netstat类似的内容。ss的优势在于它能够显示更多更详细的有关TCP和连接状态的信息，而且比netstat更快速更高效。</p>
+<p>当服务器的socket连接数量变得非常大时，无论是使用netstat命令还是直接cat /proc/net/tcp，执行速度都会很慢。</p>
+<p>ss快的秘诀在于，它利用到了TCP协议栈中tcp_diag。tcp_diag是一个用于分析统计的模块，可以获得Linux 内核中第一手的信息，这就确保了ss的快捷高效。</p>
+<h3 id="ss常见命令参数"><a href="#ss常见命令参数" class="headerlink" title="ss常见命令参数"></a>ss常见命令参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Usage: ss [ OPTIONS ]&#96;&#96;    &#96;&#96;ss [ OPTIONS ] [ FILTER ]&#96;&#96;  &#96;&#96;-h, --help      this message&#96;&#96;  &#96;&#96;-V, --version    output version information&#96;&#96;  &#96;&#96;-n, --numeric    don&#39;t resolve service names&#96;&#96;  &#96;&#96;-r, --resolve    resolve host names&#96;&#96;  &#96;&#96;-a, --all      display all sockets&#96;&#96;  &#96;&#96;-l, --listening   display listening socket&#96;&#96;  &#96;&#96;-o, --options    show timer information&#96;&#96;  &#96;&#96;-e, --extended   show detailed socket information&#96;&#96;  &#96;&#96;-m, --memory    show socket memory usage&#96;&#96;  &#96;&#96;-p, --processes   show process using socket&#96;&#96;  &#96;&#96;-i, --info      show internal TCP information&#96;&#96;  &#96;&#96;-s, --summary    show socket usage summary&#96; &#96;  &#96;&#96;-4, --ipv4     display only IP version 4 sockets&#96;&#96;  &#96;&#96;-6, --ipv6     display only IP version 6 sockets&#96;&#96;  &#96;&#96;-0, --packet display PACKET sockets&#96;&#96;  &#96;&#96;-t, --tcp      display only TCP sockets&#96;&#96;  &#96;&#96;-u, --udp      display only UDP sockets&#96;&#96;  &#96;&#96;-d, --dccp      display only DCCP sockets&#96;&#96;  &#96;&#96;-w, --raw      display only RAW sockets&#96;&#96;  &#96;&#96;-x, --unix      display only Unix domain sockets&#96;&#96;  &#96;&#96;-f, --family&#x3D;FAMILY display sockets of &#96;&#96;type&#96; &#96;FAMILY&#96; &#96;  &#96;&#96;-A, --query&#x3D;QUERY, --socket&#x3D;QUERY&#96;&#96;    &#96;&#96;QUERY :&#x3D; &#123;all|inet|tcp|udp|raw|unix|packet|netlink&#125;[,QUERY]&#96; &#96;  &#96;&#96;-D, --diag&#x3D;FILE   Dump raw information about TCP sockets to FILE&#96;&#96;  &#96;&#96;-F, --filter&#x3D;FILE  &#96;&#96;read&#96; &#96;filter information from FILE&#96;&#96;    &#96;&#96;FILTER :&#x3D; [ state TCP-STATE ] [ EXPRESSION ]</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="常用的命令展示"><a href="#常用的命令展示" class="headerlink" title="常用的命令展示"></a>常用的命令展示</h3><p><strong>ss -t -a</strong> 【显示TCP连接】</p>
+<blockquote>
+<p>-t： tcp</p>
+<p> -a: all</p>
+<p> -l: listening     【ss -l列出所有打开的网络连接端口】</p>
+<p> -s: summary    【显示 Sockets 摘要】</p>
+<p> -p: progress</p>
+<p> -n: numeric     【不解析服务名称】</p>
+<p> -r: resolve    【解析服务名称】</p>
+<p> -m: memory    【显示内存情况】</p>
+</blockquote>
+<p>查看进程使用的socket</p>
+<p>1、ss –pl</p>
+<p><a target="_blank" rel="noopener" href="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223531755-1580727976.png"><img src="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223532170-306875155.png" alt="image"></a></p>
+<p>找出打开套接字/端口应用程序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ss -lp | &#96;&#96;grep&#96; &#96;22</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223532585-1127571363.png"><img src="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223533049-345723838.png" alt="image"></a></p>
+<p>显示所有UDP Sockets</p>
+<p>ss -u –a</p>
+<p><a target="_blank" rel="noopener" href="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223533538-60300400.png"><img src="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223533999-1801145862.png" alt="image"></a></p>
+<p>显示所有状态为established的SMTP连接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ss -o state &#96;&#96;&#39;established&#39;</span><br><span class="line">ss -o state established &#96;&#96;&#39;( dport &#x3D; :smtp or sport &#x3D; :smtp )&#39;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223534470-2073446054.png"><img src="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223534892-658586688.png" alt="image"></a></p>
+<p>列举出处于 FIN-WAIT-1状态的源端口为 80或者 443，目标网络为 193.233.7/24所有 tcp套接字</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ss -o state FIN-WAIT-1 dst 192.168.25.100&#96;&#96;&#x2F;24</span><br></pre></td></tr></table></figure>
+
+<p>匹配远程地址和端口号</p>
+<p>ss dst 192.168.25.100</p>
+<p>ss dst 192.168.25.100:50460</p>
+<p>匹配本地地址和端口号</p>
+<p>ss src 192.168.25.140</p>
+<p>ss 和 netstat 效率对比</p>
+<p>time netstat –an 【效率低】</p>
+<p><a target="_blank" rel="noopener" href="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223535379-717602317.png"><img src="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223535826-1562743745.png" alt="image"></a></p>
+<p>time ss  【效率高】</p>
+<p><a target="_blank" rel="noopener" href="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223536249-43888315.png"><img src="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223536763-140879039.png" alt="image"></a></p>
+<p>此篇文章为装载过来！</p>
+<p>为者常成，行者常至 Give me five~!</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/16/Spark/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1608,304 +1774,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/07/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Thousandth of Dirt">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/12/07/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" itemprop="url">推荐系统的112条实战经验</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-07T13:23:00+08:00">
-                2020-12-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index">
-                    <span itemprop="name">推荐系统</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p> <strong>阿里巴巴</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247507509&idx=1&sn=5f0db1f772d6d8c39016c54318bbc1b1&chksm=fbd76c59cca0e54f82bc64bd1480e1bf36eb1d3323eaf0ce48c9362cdf2665aaafde8c1943a2&scene=21#wechat_redirect">阿里新一代Rank技术</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247513875&idx=1&sn=75f718e9c7a27e37a753bd7d7e3c1fd1&chksm=fbd7057fcca08c690d7b5aab77ff92a374e8f88b722815c421e0d69d1fecad73fec888969a7c&scene=21#wechat_redirect">信息流推荐的用户增长机制</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247493262&idx=1&sn=c5c2b9827c5de1d1311673523c96e3e7&chksm=fbd754e2cca0ddf47163df7559a20bb85a45633ecdc57f168874819225dffb4db19449c00cdc&scene=21#wechat_redirect">推荐系统走向下一阶段最重要的三个问题</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247509261&idx=1&sn=17a4b327f46ea40bdf4f7481f8739311&chksm=fbd71761cca09e778f3e05860d2e1333c0ba9e32c6854f1040991478f5965262ef1a0f849b4c&scene=21#wechat_redirect">阿里深度召回模型实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247509060&idx=1&sn=be61e643a3de80d8b0bd028cdb5b6827&chksm=fbd71628cca09f3e637db58ce5fc43254fa18ad16779cd6eaf6f1c2d70bbf9e787b420d4116e&scene=21#wechat_redirect">动态网络表征学习在推荐领域的创新与实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247508674&idx=1&sn=098ce77e2947f6e7bb28e56f320d7633&chksm=fbd710aecca099b8e4facf74dc0de9c6023d022c701d012e181c6286295c7578601b5cf78979&scene=21#wechat_redirect">阿里强化学习重排实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247507741&idx=2&sn=7d147d3db65d445cd6e17fd943643ebf&chksm=fbd76d71cca0e467a1d6add9d396f1722534d13c9a6c7bacb644c92105f5830bb04a240360ee&scene=21#wechat_redirect">阿里跨域点击率预估混合兴趣模型</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247507022&idx=1&sn=aa4a99562a274b5fd07e5f987a5dc807&chksm=fbd76e22cca0e734f4bc319ec3b908b9b3f200bda80e20b8f65836aac4445bc6a14675aa174e&scene=21#wechat_redirect">深度树匹配技术演进：TDM-&gt;JTM-&gt;BSAT</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247495660&idx=1&sn=21a5b7e811d104162609d5fef993be79&chksm=fbd75d80cca0d496995ab1135ceb4734b90553a8fd82f4c970ed48212f3d0abd98f58e4e0864&scene=21#wechat_redirect">阿里新一代算法 JTM：如何优化大规模推荐？</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247492994&idx=1&sn=6a787521ad85f37339f880bba0cc5d63&chksm=fbd757eecca0def8ac32a1c60f49ec933096833b5b55860074fd5d305499adc85d9f833fa333&scene=21#wechat_redirect">深度树检索技术（TDM）及应用框架的探索实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247506153&idx=1&sn=6ce4840ec9642deb8e1c97efdc727390&chksm=fbd76a85cca0e393c44815b55af12ceca91546d32b5aa6b6340cfb3bb4dbed94d88c5f741cb0&scene=21#wechat_redirect">阿里飞猪个性化推荐：召回篇</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247505774&idx=1&sn=63efc686d3dda67fa4631e5550560476&chksm=fbd76502cca0ec141440482e048196119101abd0a56dd5dba7c9a18f46ba8f0358e3a458408b&scene=21#wechat_redirect">面向下一代的粗排排序系统COLD</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247504918&idx=1&sn=d4cb633276121dc4f09329cf9d231539&chksm=fbd7667acca0ef6cc9d0f21d309b5b28b15f0452f43d33055a1b9562a9519ad36c032ab961f0&scene=21#wechat_redirect">EdgeRec：边缘计算在淘宝推荐系统中的大规模应用</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247504657&idx=1&sn=cdc744687502d33c5481aef9aad36618&chksm=fbd7617dcca0e86be7f56b15680c0bb97c2b16d2ac07f71ce251ec2f7dbdbb7e79f3d1747ff6&scene=21#wechat_redirect">阿里飞猪旅行场景下的个性化营销平台揭秘</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247498610&idx=1&sn=803bff13e7f663a63358ffef96b4525e&chksm=fbd7491ecca0c008f45e48180991ff7f2ccb70b6640ea9d9534c9cb6c2ddc4346bc848c4a3f3&scene=21#wechat_redirect">深度学习在阿里B2B电商推荐系统中的实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247497190&idx=1&sn=c210c40cd365312038c5248752f9e187&chksm=fbd7478acca0ce9c3848d2e699ee4193b9cf08473a3f700d04f8514fa247594cded254aee600&scene=21#wechat_redirect">融合Matching与Ranking的个性化CTR预估模型</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247496080&idx=1&sn=70f79a37a6000965fa96bccf893b9c40&chksm=fbd743fccca0caeadb59820801597c51353b0a4ba080d2caf66eccb6644102c2fe674ffcb378&scene=21#wechat_redirect">阿里妈妈点击率预估中的长期兴趣建模</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247495786&idx=1&sn=da7f3edb91280bc37dbf276e74cfecba&chksm=fbd74206cca0cb10d871e9af5e07a7f0427b7483dad6bd770e926b7622f31b0d4b1800e9bd15&scene=21#wechat_redirect">知识结构化在阿里小蜜中的应用</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247494398&idx=1&sn=cd08a71c4a7ec9a2d81107603fc4c437&chksm=fbd75892cca0d184585075b3315fe0386d37c174995a5a4b27e02db4117a13897678dbcb52ed&scene=21#wechat_redirect">UC 信息流推荐模型在多目标和模型优化方面的进展</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247494295&idx=1&sn=1218bfa026994967939fa676ed7dd5f9&chksm=fbd758fbcca0d1ede59b225e98add36cae74e9fd3006d42a054c73aaa4a87c75ef46684b9733&scene=21#wechat_redirect">UC 国际信息流推荐中的多语言内容理解</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247493952&idx=1&sn=f32e43f0e834d12649a3a6272b85ede0&chksm=fbd75b2ccca0d23a224032d999dd52ca3fa53529abf78c2cf3d4f5e9d52ef3a691bcf76bbdd1&scene=21#wechat_redirect">浅谈 UC 国际信息流推荐</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247492047&idx=1&sn=7db1f1eaadfdac75c5a0ae0e3a7beea1&chksm=fbd753a3cca0dab5fe09c091fb36c0ae9ba9ae83af38593d333bbdf61d97ee137b1577611ec0&scene=21#wechat_redirect">阿里零售通智能导购推荐技术实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247486538&idx=1&sn=32498d028a74dce05ffa4a4eee66e4b5&chksm=fbd4be26cca33730d988a9bd19e5bcd8034fc3388ff468853bfcf5367a4dc446c1ffcff355f8&scene=21#wechat_redirect">饿了么推荐算法演进及在线学习实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247486253&idx=1&sn=5730d5ab24b87a5985ffa5ff10d34c79&chksm=fbd4b941cca330577e3755aea84d9026aca36a55490e7f71c447d613fca0ba5be77c00067490&scene=21#wechat_redirect">外卖推荐算法中有哪些机制与手段？</a></p>
-<p> <strong>腾讯</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247509016&idx=1&sn=aa4c859d268ca02ff869d0930f154463&chksm=fbd71674cca09f62c62bcc8fa9704df9d041c2c5271bdf4eb4bb9cf7e12bb407469e07868017&scene=21#wechat_redirect">Angel：深度学习在腾讯广告推荐系统中的实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247511450&idx=2&sn=57ce9b8d1493fa72f4255dc9b0b866f2&chksm=fbd71ff6cca096e0f798537bcb9e75b88dd777013b7a9fc94b42fa5e7f7368347fb2c566643d&scene=21#wechat_redirect">如何提升微信看一看推荐混排的长期收益？</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247495622&idx=1&sn=3d229e34dfe061b61bb47b4677def6a0&chksm=fbd75daacca0d4bc83d02b78b7d7c8485521eba07a03553db52ba039f3d948835f3d750a301e&scene=21#wechat_redirect">腾讯信息流内容理解技术实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247495507&idx=1&sn=a1e0cf988d2e366be58faf1110e4d885&chksm=fbd75d3fcca0d429b33c5a49053dd99a03e603b3230e950d0109f3c9dbe7ede21e1fa2a86752&scene=21#wechat_redirect">RALM: 实时 Look-alike 算法在微信看一看中的应用</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247487358&idx=2&sn=cb34ecfd9007f7d5e8ab1666d28ae6a3&chksm=fbd4bd12cca33404ad13012093854135de2dbe4a120afa1b8fdc5813bff3344d76cd673dcaa2&scene=21#wechat_redirect">Yoo视频底层页推荐系统从0到1的实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247503484&idx=2&sn=e2a2cdd3a517ab09e903e69ccb1e9f94&chksm=fbd77c10cca0f50642dde47439ed919aa2e61b7ff57bc4cbaacc3acaac3c620a1ed6f92684ab&scene=21#wechat_redirect">微信”看一看”多模型内容策略与召回</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247504009&idx=2&sn=c3d07faaf34416790456eac5be094049&chksm=fbd762e5cca0ebf33eb7f3de1f9c1539ef5bf9fd7c8196bb85a9012ac7472f9c197b80ef8d56&scene=21#wechat_redirect">微信”看一看”个性化推荐：排序篇</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247504409&idx=2&sn=69becfabe9fc59774781b7193655c765&chksm=fbd76075cca0e963b64387d7544990b9c2edc4340c43c5b908809f52bc99d649858c7da78866&scene=21#wechat_redirect">微信”看一看”内容理解与推荐</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247503968&idx=1&sn=d8fac671af39a87c9a74fb1aff327e41&chksm=fbd7620ccca0eb1aab16ab0e7d06e9c8975749808ca8d1191b442458280ea227b8ce4d90d865&scene=21#wechat_redirect">推荐系统 Embedding 技术实践总结</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247495039&idx=1&sn=35905df6cd4ef33d2ce505d284d3c8ad&chksm=fbd75f13cca0d605c17bf7a8b3b899b7798a590008625fcffbf00d77c2451249bbdc086d6b18&scene=21#wechat_redirect">推荐系统中模型训练及使用流程的标准化</a></p>
-<blockquote>
-<p><strong>京东</strong></p>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247492901&idx=1&sn=e0241e72bb057ed300fef994721a2a3b&chksm=fbd75749cca0de5f029b880bbe53914dfd789452d35cde78097f00a75f789f2508e452bf1805&scene=21#wechat_redirect">京东电商推荐系统实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247484272&idx=1&sn=4efe082488a823710044688fa4bb0c2d&chksm=fbd4b11ccca3380ac58d9697f766ac394496e84236be21e0301a7808b43a9bdd8e408cefbcc5&scene=21#wechat_redirect">京东购物在微信等场景下的算法应用实践</a></p>
-<p> <strong>微博</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247505895&idx=1&sn=d449cd607a21e01805db245be8289de6&chksm=fbd7658bcca0ec9d27eb71a01e8b08711802f59cb0c04aa6059eb0d60b895212de8b8e0b5a38&scene=21#wechat_redirect">微博推荐算法实践与机器学习平台演进</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247496280&idx=1&sn=870b45e0f9bfda51a093ceabb9b51df2&chksm=fbd74034cca0c922893be32402905954f87d98ffa55aa879b45d9974870f29e15e2a1f5a1429&scene=21#wechat_redirect">NLP 技术在微博 feed 流中的应用</a></p>
-<p> <strong>Hulu</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247491883&idx=1&sn=9a28cb03a2e34ec380cd5ff789b8f48d&chksm=fbd75347cca0da51e1257f4de6824e77546f3eeb1e78090cd11ec71841f31cc4cf8562ab3151&scene=21#wechat_redirect">基于行列式点过程的推荐多样性提升算法</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247488030&idx=1&sn=03c7488018b9a6488d5fa01a4057cf3c&chksm=fbd4a072cca32964e7a847bca7e0aecd4bcdacfbf2a47be8f646257f4fd1808cb8472869c6d4&scene=21#wechat_redirect">从推荐推理奔向未来AI</a></p>
-<p> <strong>第四范式</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247508574&idx=1&sn=c6c97956d6184d02b4c1a80b37c40f49&chksm=fbd71032cca099244958d11f79c848cccc7cb8d709630848788dfa59093df466cb0e1abfae16&scene=21#wechat_redirect">全新的深度模型在推荐系统中的应用</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247507062&idx=1&sn=bbc69fc689ae1e641856455b047a52cf&chksm=fbd76e1acca0e70cab30c3709e1cda4ca10f5e82d61f15c07b68b16882e2e795fafef483ebe8&scene=21#wechat_redirect">推荐系统架构治理</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247506671&idx=1&sn=31d5a7736c6e5c7c000539c2968db26f&chksm=fbd76883cca0e195a1e5870594dd909408fed909caa16c188751b8d281a10f590a32476eed06&scene=21#wechat_redirect">基于Spark的大规模推荐系统特征工程</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247496107&idx=1&sn=9b04539283fcb1f5922d75fb6d366dfc&chksm=fbd743c7cca0cad16e5d41c3c1d7b33144d1ad2a7a644b708909e41d4d9e4923a445d4918e4b&scene=21#wechat_redirect">自动特征工程在推荐系统中的研究</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247499510&idx=1&sn=e4fd68b0694c090dde8ddf1f763a33c8&chksm=fbd74c9acca0c58cba9f28f94707698eafa3a18500b5d06f6468d8a9ac9f187af75bf26e1a14&scene=21#wechat_redirect">分布式机器学习框架与高维实时推荐系统</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247493934&idx=1&sn=9b58f070854bf02139d9e157ed955c14&chksm=fbd75b42cca0d254c73b2511f324b3474649fc106dc46b321326d93446feeae8cd04d3ac58f1&scene=21#wechat_redirect">推荐系统应该如何保障推荐的多样性？</a></p>
-<p> <strong>网易</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247512229&idx=1&sn=fe8430b49e6d5fd73e0f9c5cd9d0aaf6&chksm=fbd702c9cca08bdf665cb5628d380e25073dd18366372ff75243f0d9491760f6030a10aebc01&scene=21#wechat_redirect">网易云音乐推荐中的用户行为序列深度建模</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247509607&idx=1&sn=341212c60824f8c636ee7e8b64a63d62&chksm=fbd7140bcca09d1d52dfb1c10c180feffe3641d2611b46497f08f9722a66cbd6b08436013be4&scene=21#wechat_redirect">“全能选手”召回表征算法实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247508638&idx=1&sn=97aa5c7ee4a7981942f40eed91853645&chksm=fbd710f2cca099e45307f0622d243ba543164c14131bbc8cb5a410b4a8ea974f9e1562b34cde&scene=21#wechat_redirect">Embedding在网易严选搜索推荐中的应用</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247491955&idx=1&sn=8d6258dd5330a86608191088ec5444a2&chksm=fbd7531fcca0da0945008445177aaaf07b72b61e990fd847e36a8f516eed0f0c93123409dddd&scene=21#wechat_redirect">网易新闻推荐：深度学习排序系统及模型</a></p>
-<p> <strong>汽车之家</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247497757&idx=1&sn=fe521ea5a746be9ba0aa208506d716b8&chksm=fbd74a71cca0c3676f2681bb7917a12e77562d2c5b3d1e5def4a3eac3fc40bd57e12ef2548e5&scene=21#wechat_redirect">汽车之家推荐系统排序算法迭代之路</a></p>
-<blockquote>
-<p><strong>58同城</strong></p>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247512153&idx=2&sn=6cc47aea1e33a787bb80f470d80334f0&chksm=fbd70235cca08b23a96c732096c549bd3ec57626a8f49c782caf22ce25a9f2dfb34b97108bb1&scene=21#wechat_redirect">58同镇下沉市场中的推荐技术实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247508695&idx=1&sn=289aae29d0f912a40c459a458c015157&chksm=fbd710bbcca099ad287709a4b59c7df4a90a040a3010d9652738d290f8948500bd2b2cbdd8e0&scene=21#wechat_redirect">多样性算法在58部落的实践和思考</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247501599&idx=1&sn=10c0eaa021ef4d7b39a82819bf4b0f66&chksm=fbd77573cca0fc658535625c70a550c297d10d8efcf6ca5640851d76e4cb0b051a9f5f6da62e&scene=21#wechat_redirect">Embedding技术在房产推荐中的应用</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247502918&idx=1&sn=b461d08b22a9fd8ca2e711bb501b7d7a&chksm=fbd77e2acca0f73ccb2e2dad23ce817a968a9d83fcb0f5c8edda7d6566e77c2ff8bdcd1145a7&scene=21#wechat_redirect">跨域推荐技术在58部落内容社区的实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247501908&idx=1&sn=2478b53f5a28eb4002bbfc9bef62001e&chksm=fbd77a38cca0f32ed9b04e6a2b38c3ce08c47f126863b1dafedefa5aa4d662d25d5537c384e2&scene=21#wechat_redirect">深度召回在招聘推荐中的挑战和实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247506940&idx=2&sn=df6d88efa9f45dc7e2e4592018979692&chksm=fbd76990cca0e08637035afb74fb94cfaec3250c81c8744f41ac6be316d2bee96db16c9fc56c&scene=21#wechat_redirect">深度学习在商业排序的应用实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247506415&idx=2&sn=8daf7925271e76eaf25e4da78a3c1c59&chksm=fbd76b83cca0e29503632cf52ead2b26f62b5aa331ff6030f5fa675b008906e0d51a73ae9cbd&scene=21#wechat_redirect">本地服务场景下的流量分发算法实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247495381&idx=1&sn=4dfd39fe16a402ffef8e32235aa36b21&chksm=fbd75cb9cca0d5af552d9958a3a08690d2767a3f0165537108231bff157fbaf28bd45760ea6b&scene=21#wechat_redirect">如何从 0 到 1 构建个性化推荐？</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247504377&idx=1&sn=7ca002dd3bfd00a14c93a519b3765a04&chksm=fbd76395cca0ea83b55807543fde6e8fd7879af67d5a4079365493669752cdff06fac5d632c5&scene=21#wechat_redirect">多业务融合推荐策略实践与思考</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247487523&idx=1&sn=cfe857dd30ba6e59e8a692d68e7ad967&chksm=fbd4a24fcca32b591548023b6a9a6d21b3d758c67912938ac1c78a18f1d0f8ec63cd6593978f&scene=21#wechat_redirect">连接效率优化实践</a></p>
-<p> <strong>滴滴</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247493807&idx=2&sn=61c5284f22c11a19030bb174bb61f4af&chksm=fbd75ac3cca0d3d580dfbd24ddd9e9dc5c03a01c827efa5bb3e0797e2366fcd2d84c7f2720ab&scene=21#wechat_redirect">浅谈滴滴派单算法</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247499525&idx=1&sn=638746fcd82ed8ebadb947c5848d8363&chksm=fbd74d69cca0c47fe102231f40b946c7bb0ae968c44061592bf161eb722f6fa71ee6a40b8fdb&scene=21#wechat_redirect">Contextual Bandits 算法在推荐场景中的应用</a></p>
-<blockquote>
-<p><strong>爱奇艺</strong></p>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247511245&idx=2&sn=06e8909f8955594394daef5c43f1b538&chksm=fbd71ea1cca097b7373fa24f9d398b58747ef06c408bd798c1995a37a11132e66809306a2ba0&scene=21#wechat_redirect">TF Ranking框架在爱奇艺海外推荐的实践与应用</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247497579&idx=2&sn=c3ec951aeb5a1a8211826dbd636aee29&chksm=fbd74507cca0cc11226ab3dedc8973d137ceb2123ddd25990a85362161bd00b72ebc2e6d7638&scene=21#wechat_redirect">双DNN排序模型：在线知识蒸馏在爱奇艺推荐的实践</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247487111&idx=1&sn=0466151a7745795694ee6b66838ef263&chksm=fbd4bcebcca335fd6038ab853b9a73ce1147c953594df2aea6fd1c1db013191086f4c656f5d2&scene=21#wechat_redirect">爱奇艺搜索排序模型迭代之路</a></p>
-<p> <strong>携程</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247499139&idx=1&sn=c187e0108e9bd55b69e48d0c8de1887d&chksm=fbd74fefcca0c6f9290da7221b0d4b02a1d6a84913cf4950052b2050cd73e52b906d489f824e&scene=21#wechat_redirect">Bandit算法在携程推荐系统中的应用与实践</a></p>
-<p> <strong>微众银行</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247501356&idx=1&sn=b20af0897367aebb8ca0e53194a68fe8&chksm=fbd77440cca0fd5653e3683ddafff1a67da067cc6726af4e58be75eb8c1ab0a1dfa1b563750b&scene=21#wechat_redirect">微众银行在联邦推荐算法上的探索及应用</a></p>
-<p> <strong>花椒直播</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247498637&idx=1&sn=a91d76109129fa42e5910c2e2b5f68ef&chksm=fbd749e1cca0c0f75c8a9dc06c16b8d9a53cdf57eb370c07424d88eefd1ddb66928dd1bf2f7f&scene=21#wechat_redirect">智能推荐算法在花椒直播中的应用</a></p>
-<p> <strong>凤凰新闻</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247498125&idx=1&sn=52efbe5876151b48a917640f5f56c589&chksm=fbd74be1cca0c2f7b2f378a1b15339ef8697544c2b43bb9b51c7c9eaa79b6aea119d943786a9&scene=21#wechat_redirect">信息流推荐在凤凰新闻的业务实践</a></p>
-<p> <strong>省钱快报</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247498064&idx=1&sn=66db655be0bcc5e6ee0dc58f869ef6eb&chksm=fbd74b3ccca0c22aacea4a7aca9e803f4044f78ad056983484ebc5ab0c718773ebd4ee8204ea&scene=21#wechat_redirect">深度学习在省钱快报推荐排序中的应用与实践</a></p>
-<p> <strong>出门问问</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247496007&idx=1&sn=c0e0d603533c69a66d8ff93b54396ebd&chksm=fbd7432bcca0ca3de60cdde385c995f5e99dc79f34e254ae8eef579301017a727aa47ec5e20f&scene=21#wechat_redirect">用户行为序列推荐模型</a></p>
-<p> <strong>知乎</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247487240&idx=1&sn=f38e4a5cd73a2d2f1d52ee5eda418528&chksm=fbd4bd64cca334720629ba997aca98642bc1e1b25c422623ddf07e30cb9a5f5068cf22af0048&scene=21#wechat_redirect">知乎推荐页Ranking经验分享</a></p>
-<p> <strong>美图</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247498181&idx=1&sn=f3ee8fc793cc47d069913017f5aa7c74&chksm=fbd74ba9cca0c2bfef5fd5a07805b35cc90d15146899125e6bf21be2294a811e42d851cd2c06&scene=21#wechat_redirect">美图个性化推送的 AI 探索之路</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247494558&idx=1&sn=10a6332147d713230d0fa4dbf9cdc897&chksm=fbd759f2cca0d0e4f5d39887a86b1d6efae13ad0540dc191fdbc8bb29120d0081a90c97b35f6&scene=21#wechat_redirect">深度学习技术在美图个性化推荐的应用实践</a></p>
-<p> <strong>快看世界</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247493714&idx=1&sn=146ca2efa604b71b20ae166fb0cd6b85&chksm=fbd75a3ecca0d3280f88577c843d7ebf7c4b66f00134f2802e3863e17fa811eb8e328ca030a2&scene=21#wechat_redirect">快看漫画个性化推荐探索与实践</a></p>
-<p> <strong>途家</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247491647&idx=1&sn=787f20dad8e613c0f72142df6789d91d&chksm=fbd75253cca0db45abed1a13b555f358ce059b4e9477afaeb872cab12d4fc310f119d65f797a&scene=21#wechat_redirect">Embedding 技术在民宿推荐中的应用</a></p>
-<p> <strong>达观数据</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247498789&idx=2&sn=54346566c38a7142645137c8220bb51c&chksm=fbd74e49cca0c75f68e388e63e6671440fbc5b75e4213765f7644e2b8aead54c8a5464a7501a&scene=21#wechat_redirect">怎样评价推荐系统的结果质量？</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247488752&idx=1&sn=aaaed48b319d572990c93dc1e60a7ba2&chksm=fbd4a69ccca32f8a636b600a77504ab7689f8e90279ace41ae669268dba533e5b8ece9e7b2d3&scene=21#wechat_redirect">达观数据个性化推荐系统实践</a></p>
-<p> <strong>搜狗</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247485411&idx=1&sn=3ac29da8b7a81869bd33679531e2cfe3&chksm=fbd4b58fcca33c998652a1e1a84b4dee7b825df919e1c68702938ee24728121617ac30f85878&scene=21#wechat_redirect">搜狗信息流推荐算法交流</a></p>
-<p> <strong>NVIDIA</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247513593&idx=2&sn=376de870c28403fa35087e438a4e6279&chksm=fbd70795cca08e838ee482038a321031db6f4725accb631d92587f111a856ea7217a7727b083&scene=21#wechat_redirect">Merlin：基于深度学习的推荐系统框架</a></p>
-<p> <strong>脉脉</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247492644&idx=1&sn=79b3f706711de3195c8efc02b23cf0ac&chksm=fbd75648cca0df5ed5c04f529f5ec53c5debe285dc8baebcdcc67bddb975d3d296e6d8ce600a&scene=21#wechat_redirect">推荐技术随谈</a></p>
-<p> <strong>360</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247487297&idx=1&sn=85cba65a01ec1e438216cb84565a0627&chksm=fbd4bd2dcca3343b0fd739b95e9a20c6d7e87f3ae3f725a09d4703b35ae4f644d4fb7c235afd&scene=21#wechat_redirect">机器学习与推荐系统实践</a></p>
-<p> <strong>搜狐</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247485385&idx=1&sn=3f181a137981d5bf1f2f68ab19d313be&chksm=fbd4b5a5cca33cb337b73a0d5395a21991dd3bd391230d4f5e9af8e835ba772438d905e3d000&scene=21#wechat_redirect">图片主题模型在推荐系统的应用实践</a></p>
-<p> <strong>OPPO</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247485069&idx=1&sn=0c122c7506321b1cd6069e4079ff744c&chksm=fbd4b4e1cca33df7169e31abb37295b1bcb4a2462690e636aaab8d65734de81bbaf147ac3e0f&scene=21#wechat_redirect">AI在OPPO个性化推荐中的应用</a></p>
-<p><strong>来自大神的系统性总结</strong></p>
-<p> <strong>姚凯飞</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247499687&idx=2&sn=e319f898f10f683e5e0a3ffd835d6a19&chksm=fbd74dcbcca0c4dd1b8a81cffe15cafed0ad3f831d746a00bbe0baf0f4bb137551b755e8f30c&scene=21#wechat_redirect">做推荐系统之余，我们该思考什么？</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247493202&idx=1&sn=2c9de4b8f1d9c02cda8680496d7acab1&chksm=fbd7543ecca0dd281ad36f974fae6e3863817a6d9b24d574e069b5285de6b69d50e191c21f90&scene=21#wechat_redirect">电商推荐那点事</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247492940&idx=1&sn=501df3fe540e7d5d2f69b6a8e8be8a6f&chksm=fbd75720cca0de365550dd8267be272d67b8f529363ba9359c40a86dbc97665b004937418ae2&scene=21#wechat_redirect">多维度分析：推荐效果明显的产品属性</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247492304&idx=1&sn=eebf41490bbb1ea78c5b45024b8b5537&chksm=fbd750bccca0d9aa8404b57d809c4cae3502fda555bc55c78230ea67448fb8bae834950a3ac7&scene=21#wechat_redirect">推荐系统：石器与青铜时代</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247491453&idx=1&sn=b42d2b3637c4c9cec0b9ff8ebd4a95e8&chksm=fbd4ad11cca32407ca43c4575fedf8359521305d8defd04c3c5445e9fc88929303e9590545ab&scene=21#wechat_redirect">推荐系统衡量：ABtest 框架</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247491059&idx=1&sn=4e57c075f7a249d90cfe9a57602d62ef&chksm=fbd4af9fcca32689ebfa57fde6979a9a8a245f7db09f18be79f8fe98fb04926e1f594d0220d3&scene=21#wechat_redirect">推荐系统评价：什么是好的推荐系统</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247489574&idx=2&sn=17a93acbbebe9de3b170611c8b6296bf&chksm=fbd4aa4acca3235c09ef69be50886d719caed4a0d9f1094dbbd3efd7149dcd563bc3bd8a1638&scene=21#wechat_redirect">个性化推荐技术</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247492426&idx=1&sn=5a3cf9bba5d47aa9c2b2826191843a65&chksm=fbd75126cca0d8307ac4c4269a47adf8c0edd8bfb3000a952b9fe977f0f3ca315edcde716f4b&scene=21#wechat_redirect">推荐排序</a></p>
-<p> <strong>张俊林</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247496363&idx=1&sn=0d2b2ac176e2a72eb2e760b7b591788f&chksm=fbd740c7cca0c9d16c76fdeb1a874a53f7408d8125b2e1bed3173ecb69d131167c1c9c35c71f&scene=21#wechat_redirect">推荐系统技术演进趋势：召回-&gt;排序-&gt;重排</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247499753&idx=2&sn=da9c4b5876a70f447f8fa5cda834f4b5&chksm=fbd74d85cca0c493c2a1473e4e5966b9a2db997ee02e484eb464afc71030f8af3ec44ee1efb5&scene=21#wechat_redirect">推荐系统中稀疏特征 Embedding 的优化表示方法</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247489042&idx=1&sn=883b9380fbd3fe5fab82e1984cff7e27&chksm=fbd4a47ecca32d68f4ea7397998184924b9b173c2eec4c82fd3bcd9c210425eb1f4867a12392&scene=21#wechat_redirect">推荐系统召回四模型之二：沉重的FFM模型</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247500473&idx=1&sn=d80079358ca353fc917a2fb31431763b&chksm=fbd770d5cca0f9c378b1047b4fd6ecd0d46832de4ce070f5e24c3ea46f68ce809b6fdb6937ff&scene=21#wechat_redirect">知识蒸馏在推荐系统中的应用</a></p>
-<p> <strong>梦想做个翟老师</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247496157&idx=1&sn=d7a00dad2fb9c206ab7ba75fc5c4358d&chksm=fbd743b1cca0caa79c4c0675b5dd9420b33fcb68a560890ad2168412bdf61ce0f1a80fe0ceea&scene=21#wechat_redirect">推荐场景中召回模型的演化过程</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247496333&idx=1&sn=da03f8db68e5276cffe73e090ac271ec&chksm=fbd740e1cca0c9f76da90a713311bac81e9890c1f9fd69976705e167dd30e4135db6ea297d6b&scene=21#wechat_redirect">多任务学习在推荐算法中的应用</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247499206&idx=1&sn=3ca9afb2f7b15d7a5f17be8e8e511b9b&chksm=fbd74faacca0c6bcd392db99ec2e4425aafc51157979205418aa2ed9636ba365deff9effadca&scene=21#wechat_redirect">Attention机制在深度学习推荐算法中的应用</a></p>
-<p> <strong>辛俊波</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247496713&idx=1&sn=07bb184081bf8590db12e63ccda6bf22&chksm=fbd74665cca0cf73e625c403d61bb3f1f0fdfe680566927f1b1cda7cb54a7b9ce17418c9690b&scene=21#wechat_redirect">推荐系统中的深度匹配模型</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247499284&idx=1&sn=ed11fb81ffb5a6de80b00a4daacbcc6b&chksm=fbd74c78cca0c56e320f2dd324424e1156e79ffefbd146fabf819e1b131dfa5edecd17ae77f1&scene=21#wechat_redirect">在你做推荐系统的过程中都遇到过什么坑？</a></p>
-<p> <strong>哥不是小萝莉</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247508141&idx=2&sn=b93e1baadafec7ad6b28c4c43a9c266e&chksm=fbd712c1cca09bd77d33847222834b0b8be51c20acfb0251805971e156c287b9e44ab7bdd8e8&scene=21#wechat_redirect">基于用户的协同过滤来构建推荐系统</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247507976&idx=2&sn=c71bc471e23b239a22a8dfe6d1159ed9&chksm=fbd71264cca09b722e10d3b22269171d558ffaf013dabe5b41d9e631e4f94ba31490180cfa1d&scene=21#wechat_redirect">如何构建一个生产环境的推荐系统</a></p>
-<p> <strong>浅梦</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247498816&idx=1&sn=2f64ef4d479e721d3b255f70d51ed445&chksm=fbd74e2ccca0c73af7ed0a1a54844edc64a4778668201d8fb536b52f514e44e627ae79efc49d&scene=21#wechat_redirect">DeepMatch：用于广告和推荐的深度召回匹配算法库</a></p>
-<p> <strong>邹敏</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247489798&idx=1&sn=c9b43455db52640c739be800362ca2fb&chksm=fbd4ab6acca3227c1677382917f3746cad6819a52c930e3867e118ba7af1d8836190d3e0980a&scene=21#wechat_redirect">分类模型与排序模型在推荐系统中的异同分析</a></p>
-<p> <strong>张相於</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247485031&idx=1&sn=4da5a667e04b0a300fba6db13b079f94&chksm=fbd4b40bcca33d1d9a36395b82f0f15a5b9395f4ccb7da0c31ab72d63d63481f381f8c298ab5&scene=21#wechat_redirect">电商平台推荐系统架构演进</a></p>
-<p> <strong>Others</strong></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247499347&idx=1&sn=0fde3a3b3994b040477fcae4eff3b7fd&chksm=fbd74c3fcca0c529d61453ab410d48fe98786137944d9a1ccd098d0c30d40cf53cfabacf55e7&scene=21#wechat_redirect">图推荐算法在E&amp;E问题上的应用</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247505416&idx=2&sn=81e65c69559952cef0ad5f6ac12e3ca9&chksm=fbd76464cca0ed721b9aef24d0f4b9da7ffdcd29341ddb5e1477c48ff08f68ccad76f69f7ed2&scene=21#wechat_redirect">基于内容和上下文的音乐推荐</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247503167&idx=1&sn=4bcea1a5d9dcc75852d3ef19a042a39d&chksm=fbd77f53cca0f645b635c6e2bbe0f365fdc6628fe8827ced480ab35b42542bbc642d797d21d4&scene=21#wechat_redirect">社交推荐系统中的用户交互</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247502080&idx=1&sn=f2e3484e8abd3a187976ff29ebc032d0&chksm=fbd77b6ccca0f27a11bf2d4f6a93fb95dae7b3bd40a26539299fd88a9f3c9db9da41a2dc0a45&scene=21#wechat_redirect">主流推荐引擎技术及优缺点分析</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247498081&idx=1&sn=442ba26e13ac0df9a558df197daf2f79&chksm=fbd74b0dcca0c21b23b5ca6729d5ec82da435003902648e48e24568e0c1382f5c8ff944d0236&scene=21#wechat_redirect">知识图谱辅助的个性化推荐系统</a></p>
-<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU1NTMyOTI4Mw==&mid=2247486975&idx=1&sn=8c5bacd451b8d08a3517dc691872f6cf&chksm=fbd4bf93cca336858770741723368e687958d3f19ff20aec614d72e2ab17fdfe68a973d278a5&scene=21#wechat_redirect">YouTube 基于深度神经网络推荐系统剖析</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1956,7 +1824,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
