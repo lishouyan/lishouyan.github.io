@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="java实现高效文件下载本文我们介绍几种方法下载文件。从基本JAVA IO 到 NIO包，也介绍第三方库的一些方法，如Async Http Client 和 Apache Commons IO.最后我们还讨论在连接断开后如何恢复下载。 使用java IO下载文件最基本的方法是java IO，使用URL类打开待下载文件的连接。为有效读取文件，我们使用openStream() 方法获取 InputSt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java  高性能下载">
+<meta property="og:url" content="http://example.com/2020/12/29/Java-%E9%AB%98%E6%80%A7%E8%83%BD%E4%B8%8B%E8%BD%BD/index.html">
+<meta property="og:site_name" content="Thousandth of Dirt">
+<meta property="og:description" content="java实现高效文件下载本文我们介绍几种方法下载文件。从基本JAVA IO 到 NIO包，也介绍第三方库的一些方法，如Async Http Client 和 Apache Commons IO.最后我们还讨论在连接断开后如何恢复下载。 使用java IO下载文件最基本的方法是java IO，使用URL类打开待下载文件的连接。为有效读取文件，我们使用openStream() 方法获取 InputSt">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-12-29T11:56:25.000Z">
+<meta property="article:modified_time" content="2020-12-29T11:56:49.581Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2020/12/29/Java-高性能下载/"/>
+
+
+
+
+
+  <title>Java  高性能下载 | Thousandth of Dirt</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Thousandth of Dirt</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/29/Java-%E9%AB%98%E6%80%A7%E8%83%BD%E4%B8%8B%E8%BD%BD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thousandth of Dirt">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java  高性能下载</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-29T19:56:25+08:00">
+                2020-12-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="java实现高效文件下载"><a href="#java实现高效文件下载" class="headerlink" title="java实现高效文件下载"></a>java实现高效文件下载</h1><p>本文我们介绍几种方法下载文件。从基本JAVA IO 到 NIO包，也介绍第三方库的一些方法，如Async Http Client 和 Apache Commons IO.<br>最后我们还讨论在连接断开后如何恢复下载。</p>
+<h2 id="使用java-IO"><a href="#使用java-IO" class="headerlink" title="使用java IO"></a>使用java IO</h2><p>下载文件最基本的方法是java IO，使用URL类打开待下载文件的连接。为有效读取文件，我们使用openStream() 方法获取 InputStream:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BufferedInputStream in &#x3D; new BufferedInputStream(new URL(FILE_URL).openStream())1</span><br></pre></td></tr></table></figure>
+
+<p>当从InputStream读取文件时，强烈建议使用BufferedInputStream去包装InputStream，用于提升性能。<br>使用缓存可以提升性能。read方法每次读一个字节，每次方法调用意味着系统调用底层的文件系统。当JVM调用read()方法时，程序执行上下文将从用户模式切换到内核模式并返回。</p>
+<p>从性能的角度来看，这种上下文切换非常昂贵。当我们读取大量字节时，由于涉及大量上下文切换，应用程序性能将会很差。</p>
+<p>为了读取URL的字节并写至本地文件，需要使用FileOutputStream 类的write方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">try (BufferedInputStream in &#x3D; new BufferedInputStream(new URL(FILE_URL).openStream());</span><br><span class="line">  FileOutputStream fileOutputStream &#x3D; new FileOutputStream(FILE_NAME)) &#123;</span><br><span class="line">    byte dataBuffer[] &#x3D; new byte[1024];</span><br><span class="line">    int bytesRead;</span><br><span class="line">    while ((bytesRead &#x3D; in.read(dataBuffer, 0, 1024)) !&#x3D; -1) &#123;</span><br><span class="line">        fileOutputStream.write(dataBuffer, 0, bytesRead);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; catch (IOException e) &#123;</span><br><span class="line">    &#x2F;&#x2F; handle exception</span><br><span class="line">&#125;12345678910</span><br></pre></td></tr></table></figure>
+
+<p>使用BufferedInputStream，read方法按照我们设置缓冲器大小读取文件。示例中我们设置一次读取1024字节，所以BufferedInputStream 是必要的。</p>
+<p>上述示例代码冗长，幸运的是在Java7中Files类包含处理IO操作的助手方法。可以使用File.copy()方法从InputStream中读取所有字节，然后复制至本地文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">InputStream in &#x3D; new URL(FILE_URL).openStream();</span><br><span class="line">Files.copy(in, Paths.get(FILE_NAME), StandardCopyOption.REPLACE_EXISTING);12</span><br></pre></td></tr></table></figure>
+
+<p>上述代码可以正常工作，但缺点是字节被缓冲到内存中。Java为我们提供了NIO包，它有方法在两个通道之间直接传输字节，而无需缓冲。下面我们会详细讲解。</p>
+<h2 id="使用NIO"><a href="#使用NIO" class="headerlink" title="使用NIO"></a>使用NIO</h2><p>java NIO包提供了无缓冲情况下在两个通道之间直接传输字节的可能。</p>
+<p>为了读来自URL的文件，需从URL流创建ReadableByteChannel ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ReadableByteChannel readableByteChannel &#x3D; Channels.newChannel(url.openStream());1</span><br></pre></td></tr></table></figure>
+
+<p>从ReadableByteChannel 读取字节将被传输至FileChannel:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FileOutputStream fileOutputStream &#x3D; new FileOutputStream(FILE_NAME);</span><br><span class="line">FileChannel fileChannel &#x3D; fileOutputStream.getChannel();12</span><br></pre></td></tr></table></figure>
+
+<p>然后使用transferFrom方法，从ReadableByteChannel 类下载来自URL的字节传输到FileChannel：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fileOutputStream.getChannel()</span><br><span class="line">  .transferFrom(readableByteChannel, 0, Long.MAX_VALUE);12</span><br></pre></td></tr></table></figure>
+
+<p>transferTo() 和 transferFrom() 方法比简单使用缓存从流中读更有效。依据不同的底层操作系统，数据可以直接从文件系统缓存传输到我们的文件，而不必将任何字节复制到应用程序内存中。</p>
+<p>在Linux和UNIX系统上，这些方法使用零拷贝技术，减少了内核模式和用户模式之间的上下文切换次数。</p>
+<h2 id="使用第三方库"><a href="#使用第三方库" class="headerlink" title="使用第三方库"></a>使用第三方库</h2><p>上面我们已经使用java 核心功能实现从URL下载文件。当无需调整性能是，我们也可以利用第三方库轻松实现。举例，在实际场景中，需要实现异步下载，我们可以封装逻辑至Callable，下面看已有库实现。</p>
+<h3 id="Async-HTTP-Client"><a href="#Async-HTTP-Client" class="headerlink" title="Async HTTP Client"></a>Async HTTP Client</h3><p>Async HTTP Client是使用Netty框架执行异步HTTP请求的流行库。我们使用它对URL文件执行GET请求并获取其内容。首先需要创建HTTP client：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AsyncHttpClient client &#x3D; Dsl.asyncHttpClient();1</span><br></pre></td></tr></table></figure>
+
+<p>下面内容放到FileOutputStream：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FileOutputStream stream &#x3D; new FileOutputStream(FILE_NAME);1</span><br></pre></td></tr></table></figure>
+
+<p>接下来，创建HTTP GET请求并注册AsyncCompletionHandler 处理器去处理下载内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">client.prepareGet(FILE_URL).execute(new AsyncCompletionHandler&lt;FileOutputStream&gt;() &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public State onBodyPartReceived(HttpResponseBodyPart bodyPart) </span><br><span class="line">      throws Exception &#123;</span><br><span class="line">        stream.getChannel().write(bodyPart.getBodyByteBuffer());</span><br><span class="line">        return State.CONTINUE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public FileOutputStream onCompleted(Response response) </span><br><span class="line">      throws Exception &#123;</span><br><span class="line">        return stream;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)123456789101112131415</span><br></pre></td></tr></table></figure>
+
+<p>上面我们覆盖了onBodyPartReceived() 方法。缺省实现是累加HTTP 接收块至ArrayList，这可能导致耗费高内存或下载大文件时OutOfMemory 异常。<br>代替累加每个HttpResponseBodyPart 至内存，我们使用FileChannel写字节至本地文件。getBodyByteBuffer()方法通过ByteBuffer访问bodyPart内容。ByteBuffers的优势是把内存分配到JVM堆之外，所以不会影响应用程序的内存。</p>
+<h3 id="Apache-Commons-IO"><a href="#Apache-Commons-IO" class="headerlink" title="Apache Commons IO"></a>Apache Commons IO</h3><p>另一个高可用的IO操作库是Apache Commons IO。我们从其Javadoc看到FileUtils实用类，用于一般的文件操作任务。从URL下载文件，仅需一行代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FileUtils.copyURLToFile(</span><br><span class="line">  new URL(FILE_URL), </span><br><span class="line">  new File(FILE_NAME), </span><br><span class="line">  CONNECT_TIMEOUT, </span><br><span class="line">  READ_TIMEOUT);12345</span><br></pre></td></tr></table></figure>
+
+<p>从性能角度看，与前面JAVA IO示例相同。底层代码使用相同的概念，从InputStream读取一些字节并将它们写入OutputStream。不同之处在于，URLConnection类在这里用于控制连接超时，这样下载就不会阻塞很长时间:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URLConnection connection &#x3D; source.openConnection();</span><br><span class="line">connection.setConnectTimeout(connectionTimeout);</span><br><span class="line">connection.setReadTimeout(readTimeout);123</span><br></pre></td></tr></table></figure>
+
+<h2 id="恢复下载"><a href="#恢复下载" class="headerlink" title="恢复下载"></a>恢复下载</h2><p>考虑到internet连接的不确定性，失败时我们可以重新下载文件，但不是再次从字节0位置下载文件。<br>让我们重写前面的第一个示例，以添加这个功能。</p>
+<p>我们首先要知道的是，我们可以使用HTTP HEAD方法从给定URL读取文件的大小，而无需实际下载它:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">URL url &#x3D; new URL(FILE_URL);</span><br><span class="line">HttpURLConnection httpConnection &#x3D; (HttpURLConnection) url.openConnection();</span><br><span class="line">httpConnection.setRequestMethod(&quot;HEAD&quot;);</span><br><span class="line">long removeFileSize &#x3D; httpConnection.getContentLengthLong();1234</span><br></pre></td></tr></table></figure>
+
+<p>现在我们有了文件内容的总大小，可以检查文件是否已下载了部分内容。如果是，我们将继续从磁盘上记录的最后一个字节开始下载:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">long existingFileSize &#x3D; outputFile.length();</span><br><span class="line">if (existingFileSize &lt; fileLength) &#123;</span><br><span class="line">    httpFileConnection.setRequestProperty(</span><br><span class="line">      &quot;Range&quot;, </span><br><span class="line">      &quot;bytes&#x3D;&quot; + existingFileSize + &quot;-&quot; + fileLength</span><br><span class="line">    );</span><br><span class="line">&#125;1234567</span><br></pre></td></tr></table></figure>
+
+<p>上述代码我们配置了URLConnection以在一定范围内请求文件内容。范围将从最后下载的字节位置开始，并以远程文件大小的字节长度为结束。</p>
+<p>使用范围HEAD标识的另一种常见方法是通过设置不同的字节范围以块形式下载文件。例如，要下载2KB文件，我们可以使用范围0 - 1024和1024 - 2048。</p>
+<p>与前节代码稍微不同的是设置FileOutputStream 方法append参数为true：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OutputStream os &#x3D; new FileOutputStream(FILE_NAME, true);1</span><br></pre></td></tr></table></figure>
+
+<p>在我们做了这个更改之后，其余的代码与我们前面看到的代码一样。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在本文中，我们已经看到Java中从URL下载文件的几种实现方式。<br>最常见的实现是在执行读/写操作时使用缓冲区。这个实现即使对于大文件也是安全的，因为我们没有将整个文件加载到内存中。<br>我们还了解了如何使用Java NIO通道实现零拷贝下载。这很有用，因为它最小化了在读取和写入字节时执行的上下文切换的次数，并且通过使用直接缓冲区字节不会加载到应用程序内存中。另外，由于下载文件通常是通过HTTP完成的，我们也说明如何使用AsyncHttpClient库实现这一点。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/16/ss/" rel="next" title="ss">
+                <i class="fa fa-chevron-left"></i> ss
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#java%E5%AE%9E%E7%8E%B0%E9%AB%98%E6%95%88%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="nav-number">1.</span> <span class="nav-text">java实现高效文件下载</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8java-IO"><span class="nav-number">1.1.</span> <span class="nav-text">使用java IO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8NIO"><span class="nav-number">1.2.</span> <span class="nav-text">使用NIO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93"><span class="nav-number">1.3.</span> <span class="nav-text">使用第三方库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Async-HTTP-Client"><span class="nav-number">1.3.1.</span> <span class="nav-text">Async HTTP Client</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Apache-Commons-IO"><span class="nav-number">1.3.2.</span> <span class="nav-text">Apache Commons IO</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%81%A2%E5%A4%8D%E4%B8%8B%E8%BD%BD"><span class="nav-number">1.4.</span> <span class="nav-text">恢复下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

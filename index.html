@@ -249,6 +249,182 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/29/Java-%E9%AB%98%E6%80%A7%E8%83%BD%E4%B8%8B%E8%BD%BD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Thousandth of Dirt">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/12/29/Java-%E9%AB%98%E6%80%A7%E8%83%BD%E4%B8%8B%E8%BD%BD/" itemprop="url">Java  高性能下载</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-29T19:56:25+08:00">
+                2020-12-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="java实现高效文件下载"><a href="#java实现高效文件下载" class="headerlink" title="java实现高效文件下载"></a>java实现高效文件下载</h1><p>本文我们介绍几种方法下载文件。从基本JAVA IO 到 NIO包，也介绍第三方库的一些方法，如Async Http Client 和 Apache Commons IO.<br>最后我们还讨论在连接断开后如何恢复下载。</p>
+<h2 id="使用java-IO"><a href="#使用java-IO" class="headerlink" title="使用java IO"></a>使用java IO</h2><p>下载文件最基本的方法是java IO，使用URL类打开待下载文件的连接。为有效读取文件，我们使用openStream() 方法获取 InputStream:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BufferedInputStream in &#x3D; new BufferedInputStream(new URL(FILE_URL).openStream())1</span><br></pre></td></tr></table></figure>
+
+<p>当从InputStream读取文件时，强烈建议使用BufferedInputStream去包装InputStream，用于提升性能。<br>使用缓存可以提升性能。read方法每次读一个字节，每次方法调用意味着系统调用底层的文件系统。当JVM调用read()方法时，程序执行上下文将从用户模式切换到内核模式并返回。</p>
+<p>从性能的角度来看，这种上下文切换非常昂贵。当我们读取大量字节时，由于涉及大量上下文切换，应用程序性能将会很差。</p>
+<p>为了读取URL的字节并写至本地文件，需要使用FileOutputStream 类的write方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">try (BufferedInputStream in &#x3D; new BufferedInputStream(new URL(FILE_URL).openStream());</span><br><span class="line">  FileOutputStream fileOutputStream &#x3D; new FileOutputStream(FILE_NAME)) &#123;</span><br><span class="line">    byte dataBuffer[] &#x3D; new byte[1024];</span><br><span class="line">    int bytesRead;</span><br><span class="line">    while ((bytesRead &#x3D; in.read(dataBuffer, 0, 1024)) !&#x3D; -1) &#123;</span><br><span class="line">        fileOutputStream.write(dataBuffer, 0, bytesRead);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; catch (IOException e) &#123;</span><br><span class="line">    &#x2F;&#x2F; handle exception</span><br><span class="line">&#125;12345678910</span><br></pre></td></tr></table></figure>
+
+<p>使用BufferedInputStream，read方法按照我们设置缓冲器大小读取文件。示例中我们设置一次读取1024字节，所以BufferedInputStream 是必要的。</p>
+<p>上述示例代码冗长，幸运的是在Java7中Files类包含处理IO操作的助手方法。可以使用File.copy()方法从InputStream中读取所有字节，然后复制至本地文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">InputStream in &#x3D; new URL(FILE_URL).openStream();</span><br><span class="line">Files.copy(in, Paths.get(FILE_NAME), StandardCopyOption.REPLACE_EXISTING);12</span><br></pre></td></tr></table></figure>
+
+<p>上述代码可以正常工作，但缺点是字节被缓冲到内存中。Java为我们提供了NIO包，它有方法在两个通道之间直接传输字节，而无需缓冲。下面我们会详细讲解。</p>
+<h2 id="使用NIO"><a href="#使用NIO" class="headerlink" title="使用NIO"></a>使用NIO</h2><p>java NIO包提供了无缓冲情况下在两个通道之间直接传输字节的可能。</p>
+<p>为了读来自URL的文件，需从URL流创建ReadableByteChannel ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ReadableByteChannel readableByteChannel &#x3D; Channels.newChannel(url.openStream());1</span><br></pre></td></tr></table></figure>
+
+<p>从ReadableByteChannel 读取字节将被传输至FileChannel:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FileOutputStream fileOutputStream &#x3D; new FileOutputStream(FILE_NAME);</span><br><span class="line">FileChannel fileChannel &#x3D; fileOutputStream.getChannel();12</span><br></pre></td></tr></table></figure>
+
+<p>然后使用transferFrom方法，从ReadableByteChannel 类下载来自URL的字节传输到FileChannel：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fileOutputStream.getChannel()</span><br><span class="line">  .transferFrom(readableByteChannel, 0, Long.MAX_VALUE);12</span><br></pre></td></tr></table></figure>
+
+<p>transferTo() 和 transferFrom() 方法比简单使用缓存从流中读更有效。依据不同的底层操作系统，数据可以直接从文件系统缓存传输到我们的文件，而不必将任何字节复制到应用程序内存中。</p>
+<p>在Linux和UNIX系统上，这些方法使用零拷贝技术，减少了内核模式和用户模式之间的上下文切换次数。</p>
+<h2 id="使用第三方库"><a href="#使用第三方库" class="headerlink" title="使用第三方库"></a>使用第三方库</h2><p>上面我们已经使用java 核心功能实现从URL下载文件。当无需调整性能是，我们也可以利用第三方库轻松实现。举例，在实际场景中，需要实现异步下载，我们可以封装逻辑至Callable，下面看已有库实现。</p>
+<h3 id="Async-HTTP-Client"><a href="#Async-HTTP-Client" class="headerlink" title="Async HTTP Client"></a>Async HTTP Client</h3><p>Async HTTP Client是使用Netty框架执行异步HTTP请求的流行库。我们使用它对URL文件执行GET请求并获取其内容。首先需要创建HTTP client：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AsyncHttpClient client &#x3D; Dsl.asyncHttpClient();1</span><br></pre></td></tr></table></figure>
+
+<p>下面内容放到FileOutputStream：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FileOutputStream stream &#x3D; new FileOutputStream(FILE_NAME);1</span><br></pre></td></tr></table></figure>
+
+<p>接下来，创建HTTP GET请求并注册AsyncCompletionHandler 处理器去处理下载内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">client.prepareGet(FILE_URL).execute(new AsyncCompletionHandler&lt;FileOutputStream&gt;() &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public State onBodyPartReceived(HttpResponseBodyPart bodyPart) </span><br><span class="line">      throws Exception &#123;</span><br><span class="line">        stream.getChannel().write(bodyPart.getBodyByteBuffer());</span><br><span class="line">        return State.CONTINUE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public FileOutputStream onCompleted(Response response) </span><br><span class="line">      throws Exception &#123;</span><br><span class="line">        return stream;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)123456789101112131415</span><br></pre></td></tr></table></figure>
+
+<p>上面我们覆盖了onBodyPartReceived() 方法。缺省实现是累加HTTP 接收块至ArrayList，这可能导致耗费高内存或下载大文件时OutOfMemory 异常。<br>代替累加每个HttpResponseBodyPart 至内存，我们使用FileChannel写字节至本地文件。getBodyByteBuffer()方法通过ByteBuffer访问bodyPart内容。ByteBuffers的优势是把内存分配到JVM堆之外，所以不会影响应用程序的内存。</p>
+<h3 id="Apache-Commons-IO"><a href="#Apache-Commons-IO" class="headerlink" title="Apache Commons IO"></a>Apache Commons IO</h3><p>另一个高可用的IO操作库是Apache Commons IO。我们从其Javadoc看到FileUtils实用类，用于一般的文件操作任务。从URL下载文件，仅需一行代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FileUtils.copyURLToFile(</span><br><span class="line">  new URL(FILE_URL), </span><br><span class="line">  new File(FILE_NAME), </span><br><span class="line">  CONNECT_TIMEOUT, </span><br><span class="line">  READ_TIMEOUT);12345</span><br></pre></td></tr></table></figure>
+
+<p>从性能角度看，与前面JAVA IO示例相同。底层代码使用相同的概念，从InputStream读取一些字节并将它们写入OutputStream。不同之处在于，URLConnection类在这里用于控制连接超时，这样下载就不会阻塞很长时间:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URLConnection connection &#x3D; source.openConnection();</span><br><span class="line">connection.setConnectTimeout(connectionTimeout);</span><br><span class="line">connection.setReadTimeout(readTimeout);123</span><br></pre></td></tr></table></figure>
+
+<h2 id="恢复下载"><a href="#恢复下载" class="headerlink" title="恢复下载"></a>恢复下载</h2><p>考虑到internet连接的不确定性，失败时我们可以重新下载文件，但不是再次从字节0位置下载文件。<br>让我们重写前面的第一个示例，以添加这个功能。</p>
+<p>我们首先要知道的是，我们可以使用HTTP HEAD方法从给定URL读取文件的大小，而无需实际下载它:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">URL url &#x3D; new URL(FILE_URL);</span><br><span class="line">HttpURLConnection httpConnection &#x3D; (HttpURLConnection) url.openConnection();</span><br><span class="line">httpConnection.setRequestMethod(&quot;HEAD&quot;);</span><br><span class="line">long removeFileSize &#x3D; httpConnection.getContentLengthLong();1234</span><br></pre></td></tr></table></figure>
+
+<p>现在我们有了文件内容的总大小，可以检查文件是否已下载了部分内容。如果是，我们将继续从磁盘上记录的最后一个字节开始下载:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">long existingFileSize &#x3D; outputFile.length();</span><br><span class="line">if (existingFileSize &lt; fileLength) &#123;</span><br><span class="line">    httpFileConnection.setRequestProperty(</span><br><span class="line">      &quot;Range&quot;, </span><br><span class="line">      &quot;bytes&#x3D;&quot; + existingFileSize + &quot;-&quot; + fileLength</span><br><span class="line">    );</span><br><span class="line">&#125;1234567</span><br></pre></td></tr></table></figure>
+
+<p>上述代码我们配置了URLConnection以在一定范围内请求文件内容。范围将从最后下载的字节位置开始，并以远程文件大小的字节长度为结束。</p>
+<p>使用范围HEAD标识的另一种常见方法是通过设置不同的字节范围以块形式下载文件。例如，要下载2KB文件，我们可以使用范围0 - 1024和1024 - 2048。</p>
+<p>与前节代码稍微不同的是设置FileOutputStream 方法append参数为true：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OutputStream os &#x3D; new FileOutputStream(FILE_NAME, true);1</span><br></pre></td></tr></table></figure>
+
+<p>在我们做了这个更改之后，其余的代码与我们前面看到的代码一样。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在本文中，我们已经看到Java中从URL下载文件的几种实现方式。<br>最常见的实现是在执行读/写操作时使用缓冲区。这个实现即使对于大文件也是安全的，因为我们没有将整个文件加载到内存中。<br>我们还了解了如何使用Java NIO通道实现零拷贝下载。这很有用，因为它最小化了在读取和写入字节时执行的上下文切换的次数，并且通过使用直接缓冲区字节不会加载到应用程序内存中。另外，由于下载文件通常是通过HTTP完成的，我们也说明如何使用AsyncHttpClient库实现这一点。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/16/ss/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1627,153 +1803,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/08/Spark%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Thousandth of Dirt">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/12/08/Spark%E7%AC%94%E8%AE%B0/" itemprop="url">Spark的driver理解和executor理解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-08T17:44:00+08:00">
-                2020-12-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>如下图，本人觉得这些始终有些抽象</p>
-<p><img src="https://img-blog.csdn.net/20181011090802244" alt="img"></p>
-<p>看到这样的图，我很想知道driver program在哪里啊，鬼知道？为此我自己研究了一下，网友大多都说是对的有不同想法的请评论</p>
-<h3 id="二、现在我有三台电脑-分别是"><a href="#二、现在我有三台电脑-分别是" class="headerlink" title="二、现在我有三台电脑 分别是"></a>二、现在我有三台电脑 分别是</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">192.168.10.82 –&gt;bigdata01.hzjs.co </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">192.168.10.83 –&gt;bigdata02.hzjs.co </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">192.168.10.84 –&gt;bigdata03.hzjs.co </span><br></pre></td></tr></table></figure>
-
-<p>集群的slaves文件配置如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">bigdata01.hzjs.co</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bigdata02.hzjs.co</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bigdata03.hzjs.co</span><br></pre></td></tr></table></figure>
-
-<p>那么这三台机器都是worker节点，本集群是一个完全分布式的集群经过测试，我使用# ./start-all.sh ，那么你在哪台机器上执行的哪台机器就是7071 Master主节点进程的位置，我现在在192.168.10.84使用./start-all.sh </p>
-<p>那么就会这样</p>
-<p><img src="https://img-blog.csdn.net/2018101109111487" alt="img"></p>
-<h3 id="三、那么我们来看看local模式下"><a href="#三、那么我们来看看local模式下" class="headerlink" title="三、那么我们来看看local模式下"></a>三、那么我们来看看local模式下</h3><p><img src="https://img-blog.csdn.net/20181011091217842" alt="img"></p>
-<p>现在假设我在192.168.10.84上执行了 bin]# spark-shell 那么就会在192.168.10.84产生一个SparkContext，此时84就是driver,其他woker节点（三台都是）就是产生executor的机器。如图 </p>
-<p><img src="https://img-blog.csdn.net/20181011091449914" alt="img"></p>
-<p>现在假设我在192.168.10.83上执行了 bin]# spark-shell 那么就会在192.168.10.83产生一个SparkContext，此时83就是driver,其他woker节点（三台都是）就是产生executor的机器。如图</p>
-<p><img src="https://img-blog.csdn.net/20181011091610529" alt="img"></p>
-<p><strong>总结：</strong>在local模式下  驱动程序driver就是执行了一个Spark Application的main函数和创建Spark Context的进程，它包含了这个application的全部代码。（在那台机器运行了应用的全部代码创建了sparkContext就是drive,也可以说是你提交代码运行的那台机器）</p>
-<h3 id="四、那么看看cluster模式下"><a href="#四、那么看看cluster模式下" class="headerlink" title="四、那么看看cluster模式下"></a>四、那么看看cluster模式下</h3><p><img src="https://img-blog.csdn.net/20181011091756661" alt="img"></p>
-<p>现在假设我在192.168.10.83上执行了 bin]# spark-shell 192.168.10.84:7077 那么就会在192.168.10.84产生一个SparkContext，此时84就是driver,其他woker节点（三台都是）就是产生executor的机器。这里直接指定了主节点driver是哪台机器:如图</p>
-<p><img src="https://img-blog.csdn.net/2018101109193384" alt="img"></p>
-<h3 id="五、如果driver有多个，那么按照上面的规则，去判断具体在哪里"><a href="#五、如果driver有多个，那么按照上面的规则，去判断具体在哪里" class="headerlink" title="五、如果driver有多个，那么按照上面的规则，去判断具体在哪里"></a>五、如果driver有多个，那么按照上面的规则，去判断具体在哪里</h3><p><img src="https://img-blog.csdn.net/20181011092039209" alt="img"></p>
-<p><strong>Driver:</strong> 使用Driver这一概念的分布式框架有很多，比如hive,Spark中的Driver即运行Application的main()函数，并且创建SparkContext，创建SparkContext的目的是为了准备Spark应用程序的运行环境，在Spark中由SparkContext负责与ClusterManager通讯，进行资源的申请，任务的分配和监控等。当Executor部分运行完毕后，Driver同时负责将SaprkContext关闭，通常SparkContext代表Driver.</p>
-<p><img src="https://img-blog.csdn.net/20181011092216651" alt="img"></p>
-<p>上面红色框框都属于Driver，运行在Driver端，中间没有框住的部分属于Executor，运行的每个ExecutorBackend进程中。println(pcase.count())collect方法是Spark中Action操作，负责job的触发，因为这里有个sc.runJob（）方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def count(): Long &#x3D; sc.runJob(this, Utils.getIteratorSize _).sum</span><br></pre></td></tr></table></figure>
-
-<p>hbaseRDD.map(）属于Transformation操作。</p>
-<p><strong>总结：</strong>Spark Application的main方法（于SparkContext相关的代码）运行在Driver上，当用于计算的RDD触发Action动作之后，会提交Job，那么RDD就会向前追溯每一个transformation操作，直到初始的RDD开始，这之间的代码运行在Executor。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1824,7 +1853,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
