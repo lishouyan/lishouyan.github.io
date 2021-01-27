@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="java实现高效文件下载本文我们介绍几种方法下载文件。从基本JAVA IO 到 NIO包，也介绍第三方库的一些方法，如Async Http Client 和 Apache Commons IO.最后我们还讨论在连接断开后如何恢复下载。 使用java IO下载文件最基本的方法是java IO，使用URL类打开待下载文件的连接。为有效读取文件，我们使用openStream() 方法获取 InputSt">
+<meta name="description" content="java实现高效文件下载本文我们介绍几种方法下载文件。从基本JAVA IO 到 NIO包，也介绍第三方库的一些方法，如Async Http Client 和 Apache Commons IO.最后我们还讨论在连接断开后如何恢复下载。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java  高性能下载">
 <meta property="og:url" content="http://example.com/2020/12/29/Java-%E9%AB%98%E6%80%A7%E8%83%BD%E4%B8%8B%E8%BD%BD/index.html">
 <meta property="og:site_name" content="Thousandth of Dirt">
-<meta property="og:description" content="java实现高效文件下载本文我们介绍几种方法下载文件。从基本JAVA IO 到 NIO包，也介绍第三方库的一些方法，如Async Http Client 和 Apache Commons IO.最后我们还讨论在连接断开后如何恢复下载。 使用java IO下载文件最基本的方法是java IO，使用URL类打开待下载文件的连接。为有效读取文件，我们使用openStream() 方法获取 InputSt">
+<meta property="og:description" content="java实现高效文件下载本文我们介绍几种方法下载文件。从基本JAVA IO 到 NIO包，也介绍第三方库的一些方法，如Async Http Client 和 Apache Commons IO.最后我们还讨论在连接断开后如何恢复下载。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-12-29T11:56:25.000Z">
-<meta property="article:modified_time" content="2020-12-29T11:56:49.581Z">
+<meta property="article:modified_time" content="2021-01-27T07:41:26.167Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
@@ -320,6 +320,8 @@
 
       
         <h1 id="java实现高效文件下载"><a href="#java实现高效文件下载" class="headerlink" title="java实现高效文件下载"></a>java实现高效文件下载</h1><p>本文我们介绍几种方法下载文件。从基本JAVA IO 到 NIO包，也介绍第三方库的一些方法，如Async Http Client 和 Apache Commons IO.<br>最后我们还讨论在连接断开后如何恢复下载。</p>
+<a id="more"></a>
+
 <h2 id="使用java-IO"><a href="#使用java-IO" class="headerlink" title="使用java IO"></a>使用java IO</h2><p>下载文件最基本的方法是java IO，使用URL类打开待下载文件的连接。为有效读取文件，我们使用openStream() 方法获取 InputStream:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BufferedInputStream in &#x3D; new BufferedInputStream(new URL(FILE_URL).openStream())1</span><br></pre></td></tr></table></figure>
 
@@ -410,6 +412,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2021/01/20/Spark%E5%8E%8B%E7%BC%A9/" rel="prev" title="spark写出常见压缩格式设置">
+                spark写出常见压缩格式设置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -485,7 +491,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -560,7 +566,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

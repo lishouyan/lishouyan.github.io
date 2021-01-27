@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="假设现在是 20018-12-03 12:00:00.000，如果我调用一下 Thread.Sleep(1000) ，在 20018-12-03 12:00:01.000 的时候，这个线程会不会被唤醒？ 某人的代码中用了一句看似莫明其妙的话：Thread.Sleep(0) 。既然是 Sleep 0 毫秒，那么他跟去掉这句代码相比，有啥区别么？  对于第一个问题，答案是：不一定。因为你只是告诉操作">
+<meta name="description" content="假设现在是 20018-12-03 12:00:00.000，如果我调用一下 Thread.Sleep(1000) ，在 20018-12-03 12:00:01.000 的时候，这个线程会不会被唤醒？ 某人的代码中用了一句看似莫明其妙的话：Thread.Sleep(0) 。既然是 Sleep 0 毫秒，那么他跟去掉这句代码相比，有啥区别么？">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Sleep的实现原理">
 <meta property="og:url" content="http://example.com/2020/12/11/Sleep%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name" content="Thousandth of Dirt">
-<meta property="og:description" content="假设现在是 20018-12-03 12:00:00.000，如果我调用一下 Thread.Sleep(1000) ，在 20018-12-03 12:00:01.000 的时候，这个线程会不会被唤醒？ 某人的代码中用了一句看似莫明其妙的话：Thread.Sleep(0) 。既然是 Sleep 0 毫秒，那么他跟去掉这句代码相比，有啥区别么？  对于第一个问题，答案是：不一定。因为你只是告诉操作">
+<meta property="og:description" content="假设现在是 20018-12-03 12:00:00.000，如果我调用一下 Thread.Sleep(1000) ，在 20018-12-03 12:00:01.000 的时候，这个线程会不会被唤醒？ 某人的代码中用了一句看似莫明其妙的话：Thread.Sleep(0) 。既然是 Sleep 0 毫秒，那么他跟去掉这句代码相比，有啥区别么？">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-12-11T05:25:36.000Z">
-<meta property="article:modified_time" content="2020-12-11T05:26:36.131Z">
+<meta property="article:modified_time" content="2021-01-27T07:54:23.472Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
@@ -323,6 +323,8 @@
 <li>假设现在是 20018-12-03 12:00:00.000，如果我调用一下 Thread.Sleep(1000) ，在 20018-12-03 12:00:01.000 的时候，这个线程会不会被唤醒？</li>
 <li>某人的代码中用了一句看似莫明其妙的话：Thread.Sleep(0) 。既然是 Sleep 0 毫秒，那么他跟去掉这句代码相比，有啥区别么？</li>
 </ol>
+<a id="more"></a>
+
 <p>对于第一个问题，答案是：不一定。因为你只是告诉操作系统：在未来的1000毫秒内我不想再参与到CPU竞争。那么1000毫秒过去之后，这时候也许另外一个线程正在使用CPU，那么这时候操作系统是不会重新分配CPU的，直到那个线程挂起或结束；况且，即使这个时候恰巧轮到操作系统进行CPU 分配，那么当前线程也不一定就是总优先级最高的那个，CPU还是可能被其他线程抢占去。<br> Thread.Sleep(0)的作用，就是“让出cpu，会触发操作系统立刻重新进行一次CPU竞争”。竞争的结果也许是当前线程仍然获得CPU控制权，也许会换成别的线程获得CPU控制权。</p>
 <h3 id="sleep的底层实现"><a href="#sleep的底层实现" class="headerlink" title="sleep的底层实现"></a>sleep的底层实现</h3><p>sleep()：进程、线程或任务(Linux中不区分进程与线程，都称为task)可以sleep，这会导致它们暂停执行一段时间，直到等待的时间结束才恢复执行或在这段时间内被中断。<br> sleep()在OS中的实现的大概流程：</p>
 <ul>
@@ -445,7 +447,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -520,7 +522,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

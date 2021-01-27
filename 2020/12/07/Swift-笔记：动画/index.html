@@ -87,7 +87,7 @@
 <meta property="og:description" content="所有示例代码均可以在 Animations-Demo 下载到 iOS 中实现动画有好几种方式，UIView 无疑是最简单的一种，但是所有的动画归根结底还是 layer 层的动画。UIView 层面的动画只是对 layer 层部分属性的封装。我们可以直接对 UIView 的 alpha 、bounds 、center 、frame、transform、backgroundColor(如果view没有">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-12-06T17:52:39.000Z">
-<meta property="article:modified_time" content="2020-12-06T17:55:27.471Z">
+<meta property="article:modified_time" content="2021-01-27T07:52:55.462Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
@@ -321,6 +321,8 @@
       
         <p>所有示例代码均可以在 Animations-Demo 下载到</p>
 <p>iOS 中实现动画有好几种方式，UIView 无疑是最简单的一种，但是所有的动画归根结底还是 layer 层的动画。UIView 层面的动画只是对 layer 层部分属性的封装。我们可以直接对 UIView 的 alpha 、bounds 、center 、frame、transform、backgroundColor(如果view没有实现draw(_:))。上面这些属性看起来不多，但是足够满足大部分日常开发动画。</p>
+<a id="more"></a>
+
 <p>在 UIView 中执行一个动画非常简单，系统已经帮我们封装好了一切，你只需要将你想要动画的属性放到 animations 的闭包中即可。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UIView.animate(withDuration: 0.4) &#123;</span><br><span class="line">  self.v.backgroundColor &#x3D; UIColor.red</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>闭包中可以同时执行多个属性的动画,也可以是多个view的动画</p>
@@ -488,7 +490,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -547,7 +549,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -79,21 +79,17 @@
 
 
 
-<meta name="description" content="刚刚接触Spark的时候对这些概念没有好好思考，走马观花似的扫过去了，后面碰到master、worker、executor和driver的时候，也就没想太多，最近刚刚跑通了一个spark项目，准备好好研究一下程序的运行原理，却突然发现对于master、worker、executor和driver一知半解，对这些概念没有很好地理解，实在难以深入学习spark，于是，查了一些资料，做了一些简单的记载供">
+<meta name="description" content="\1. Hadoop之常见压缩格式以及性能对比 1.压缩的好处和坏处">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spark中master、worker、executor和driver的关系">
-<meta property="og:url" content="http://example.com/2020/12/15/S/index.html">
+<meta property="og:title" content="spark写出常见压缩格式设置">
+<meta property="og:url" content="http://example.com/2021/01/20/Spark%E5%8E%8B%E7%BC%A9/index.html">
 <meta property="og:site_name" content="Thousandth of Dirt">
-<meta property="og:description" content="刚刚接触Spark的时候对这些概念没有好好思考，走马观花似的扫过去了，后面碰到master、worker、executor和driver的时候，也就没想太多，最近刚刚跑通了一个spark项目，准备好好研究一下程序的运行原理，却突然发现对于master、worker、executor和driver一知半解，对这些概念没有很好地理解，实在难以深入学习spark，于是，查了一些资料，做了一些简单的记载供">
+<meta property="og:description" content="\1. Hadoop之常见压缩格式以及性能对比 1.压缩的好处和坏处">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20181128192241304.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20181128194151526.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20181128194550101.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70">
-<meta property="article:published_time" content="2020-12-15T07:43:51.000Z">
-<meta property="article:modified_time" content="2021-01-27T07:43:35.682Z">
+<meta property="article:published_time" content="2021-01-20T11:59:45.000Z">
+<meta property="article:modified_time" content="2021-01-27T07:40:46.869Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20181128192241304.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70">
 
 
 
@@ -123,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2020/12/15/S/"/>
+  <link rel="canonical" href="http://example.com/2021/01/20/Spark压缩/"/>
 
 
 
 
 
-  <title>Spark中master、worker、executor和driver的关系 | Thousandth of Dirt</title>
+  <title>spark写出常见压缩格式设置 | Thousandth of Dirt</title>
   
 
 
@@ -256,7 +252,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/15/S/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/01/20/Spark%E5%8E%8B%E7%BC%A9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -273,7 +269,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spark中master、worker、executor和driver的关系</h1>
+          <h1 class="post-title" itemprop="name headline">spark写出常见压缩格式设置</h1>
         
 
         <div class="post-meta">
@@ -285,8 +281,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-15T15:43:51+08:00">
-                2020-12-15
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-01-20T19:59:45+08:00">
+                2021-01-20
               </time>
             
 
@@ -323,24 +319,112 @@
       
 
       
-        <p>刚刚接触Spark的时候对这些概念没有好好思考，走马观花似的扫过去了，后面碰到master、worker、executor和driver的时候，也就没想太多，最近刚刚跑通了一个spark项目，准备好好研究一下程序的运行原理，却突然发现对于master、worker、executor和driver一知半解，对这些概念没有很好地理解，实在难以深入学习spark，于是，查了一些资料，做了一些简单的记载供后面的学习使用。</p>
-<a id="more"></a>
+        <p>\1. Hadoop之常见压缩格式以及性能对比</p>
+<h4 id="1-压缩的好处和坏处"><a href="#1-压缩的好处和坏处" class="headerlink" title="1.压缩的好处和坏处"></a>1.压缩的好处和坏处</h4><a id="more"></a>
+<p>好处</p>
+<ul>
+<li>减少存储磁盘空间</li>
+<li>降低IO(网络的IO和磁盘的IO)</li>
+<li>加快数据在磁盘和网络中的传输速度，从而提高系统的处理速度</li>
+</ul>
+<p>坏处</p>
+<ul>
+<li>由于使用数据时，需要先将数据解压，加重CPU负荷。而且压缩的越狠，耗费的时间越多。</li>
+</ul>
+<h4 id="2-压缩格式"><a href="#2-压缩格式" class="headerlink" title="2.压缩格式"></a>2.压缩格式</h4><table>
+<thead>
+<tr>
+<th>压缩格式</th>
+<th>工具</th>
+<th>算法</th>
+<th>扩展名</th>
+<th>分割</th>
+<th>Hadoop编码/解码器</th>
+<th>hadoop自带</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DEFLATE</td>
+<td>N/A</td>
+<td>DEFLATE</td>
+<td>.deflate</td>
+<td>No</td>
+<td>org.apache.hadoop.io.compress.DefalutCodec</td>
+<td>是</td>
+</tr>
+<tr>
+<td>gzip</td>
+<td>gzip</td>
+<td>DEFLATE</td>
+<td>.gz</td>
+<td>No</td>
+<td>org.apache.hadoop.io.compress.GzipCodec</td>
+<td>是</td>
+</tr>
+<tr>
+<td>bzip2</td>
+<td>bzip2</td>
+<td>bzip2</td>
+<td>.bz2</td>
+<td>yes</td>
+<td>org.apache.hadoop.io.compress.Bzip2Codec</td>
+<td>是</td>
+</tr>
+<tr>
+<td>LZO</td>
+<td>Lzop</td>
+<td>LZO</td>
+<td>.lzo</td>
+<td>yes(建索引)</td>
+<td>com.hadoop.compression.lzo.LzoCodec</td>
+<td>是</td>
+</tr>
+<tr>
+<td>LZ4</td>
+<td>N/A</td>
+<td>LZ4</td>
+<td>.lz4</td>
+<td>No</td>
+<td>org.apache.hadoop.io.compress.Lz4Codec</td>
+<td>否</td>
+</tr>
+<tr>
+<td>Snappy</td>
+<td>N/A</td>
+<td>Snappy</td>
+<td>.snappy</td>
+<td>No</td>
+<td>org.apache.hadoop.io.compress.SnappyCodec</td>
+<td>否</td>
+</tr>
+</tbody></table>
+<p>压缩比：Snappy &lt; LZ4 &lt; LZO &lt; GZIP &lt; BZIP2</p>
+<p><strong>3.优缺点</strong></p>
+<h5 id="a-gzip"><a href="#a-gzip" class="headerlink" title="a. gzip"></a>a. gzip</h5><p>优点：压缩比在四种压缩方式中较高；hadoop本身支持，在应用中处理gzip格式的文件就和直接处理文本一样；有hadoop native库；大部分linux系统都自带gzip命令，使用方便<br>缺点：不支持split</p>
+<h5 id="b-lzo"><a href="#b-lzo" class="headerlink" title="b. lzo"></a>b. lzo</h5><ul>
+<li>优点：压缩/解压速度也比较快，合理的压缩率；支持split，是hadoop中最流行的压缩格式；支持hadoop native库；需要在linux系统下自行安装lzop命令，使用方便</li>
+<li>缺点：压缩率比gzip要低；hadoop本身不支持，需要安装；lzo虽然支持split，但需要对lzo文件建索引，否则hadoop也是会把lzo文件看成一个普通文件（为了支持split需要建索引，需要指定inputformat为lzo格式）</li>
+</ul>
+<h5 id="c-snappy"><a href="#c-snappy" class="headerlink" title="c. snappy"></a>c. snappy</h5><p>优点：压缩速度快；支持hadoop native库<br>缺点：不支持split；压缩比低；hadoop本身不支持，需要安装；linux系统下没有对应的命令<br>d. bzip2</p>
+<p>优点：支持split；具有很高的压缩率，比gzip压缩率都高；hadoop本身支持，但不支持native；在linux系统下自带bzip2命令，使用方便<br>缺点：压缩/解压速度慢；不支持native</p>
+<p><strong>4.spark输出压缩文件</strong></p>
+<p>1）RDD输出压缩文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import org.apache.hadoop.io.compress.BZip2Codec</span><br><span class="line">&#x2F;&#x2F; bzip2 压缩率最高，压缩解压速度较慢，支持split。</span><br><span class="line">rdd.saveAsTextFile(&quot;codec&#x2F;bzip2&quot;,classOf[BZip2Codec])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import org.apache.hadoop.io.compress.SnappyCodec</span><br><span class="line">&#x2F;&#x2F;snappy json文本压缩率 38.2%，压缩和解压缩时间短。</span><br><span class="line">rdd.saveAsTextFile(&quot;codec&#x2F;snappy&quot;,classOf[SnappyCodec])</span><br><span class="line"></span><br><span class="line">import org.apache.hadoop.io.compress.GzipCodec</span><br><span class="line">&#x2F;&#x2F;gzip 压缩率高，压缩和解压速度较快，不支持split，如果不对文件大小进行控制，下次分析可能可能会造成效率低下的问题。</span><br><span class="line">rdd.saveAsTextFile(&quot;codec&#x2F;gzip&quot;,classOf[GzipCodec])</span><br></pre></td></tr></table></figure>
 
-<p>首先说一句，master和worker是物理节点，driver和executor是进程。</p>
-<h1 id="1，master和worker节点"><a href="#1，master和worker节点" class="headerlink" title="1，master和worker节点"></a>1，master和worker节点</h1><p>搭建spark集群的时候我们就已经设置好了master节点和worker节点，一个集群有多个master节点和多个worker节点。</p>
-<p>master节点常驻master守护进程，负责管理worker节点，我们从master节点提交应用。</p>
-<p>worker节点常驻worker守护进程，与master节点通信，并且管理executor进程。</p>
-<p>PS：一台机器可以同时作为master和worker节点（举个例子：你有四台机器，你可以选择一台设置为master节点，然后剩下三台设为worker节点，也可以把四台都设为worker节点，这种情况下，有一个机器既是master节点又是worker节点）</p>
-<h1 id="2，driver和executor进程"><a href="#2，driver和executor进程" class="headerlink" title="2，driver和executor进程"></a>2，driver和executor进程</h1><p>driver进程就是应用的main()函数并且构建sparkContext对象，当我们提交了应用之后，便会启动一个对应的driver进程，driver本身会根据我们设置的参数占有一定的资源（主要指cpu core和memory）。下面说一说driver和executor会做哪些事。</p>
-<p>driver可以运行在master上，也可以运行worker上（根据部署模式的不同）。driver首先会向集群管理者（standalone、yarn，mesos）申请spark应用所需的资源，也就是executor，然后集群管理者会根据spark应用所设置的参数在各个worker上分配一定数量的executor，每个executor都占用一定数量的cpu和memory。在申请到应用所需的资源以后，driver就开始调度和执行我们编写的应用代码了。driver进程会将我们编写的spark应用代码拆分成多个stage，每个stage执行一部分代码片段，并为每个stage创建一批tasks，然后将这些tasks分配到各个executor中执行。</p>
-<p>executor进程宿主在worker节点上，一个worker可以有多个executor。每个executor持有一个线程池，每个线程可以执行一个task，executor执行完task以后将结果返回给driver，每个executor执行的task都属于同一个应用。此外executor还有一个功能就是为应用程序中要求缓存的 RDD 提供内存式存储，RDD 是直接缓存在executor进程内的，因此任务可以在运行时充分利用缓存数据加速运算。</p>
-<h1 id="3，例图"><a href="#3，例图" class="headerlink" title="3，例图"></a>3，例图</h1><p>为了加深理解，我做了一个说明图，为了便于作图，假设了一种非常简单的集群模式。</p>
-<h2 id="（1）"><a href="#（1）" class="headerlink" title="（1）"></a>（1）</h2><h2 id=""><a href="#" class="headerlink" title=""></a><img src="https://img-blog.csdnimg.cn/20181128192241304.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70" alt="img"></h2><p>假设我们现在有一个集群，为了便于作图，我们设有一个master节点，两个worker节点，并且驱动程序运行在master节点上。</p>
-<h2 id="（2）"><a href="#（2）" class="headerlink" title="（2）"></a>（2）</h2><p>​                       <img src="https://img-blog.csdnimg.cn/20181128194151526.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70" alt="img"></p>
-<p>在master节点提交应用以后，在master节点中启动driver进程，driver进程向集群管理者申请资源（executor），集群管理者在不同的worker上启动了executor进程，相当于分配资源。</p>
-<h2 id="（3）"><a href="#（3）" class="headerlink" title="（3）"></a>（3）</h2><p>​                          <img src="https://img-blog.csdnimg.cn/20181128194550101.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmdtb2ZhbmcxMA==,size_16,color_FFFFFF,t_70" alt="img"></p>
-<p>driver进程会将我们编写的spark应用代码拆分成多个stage，每个stage执行一部分代码片段，并为每个stage创建一批tasks，然后将这些tasks分配到各个executor中执行。</p>
-<p>以上大概就是spark中最基本的几个概念之一啦。这篇博文并没有涉及到具体的技术实现细节，只是一个概念上的说明，便于理解。</p>
+<p>2)spark sql 输出压缩文件</p>
+<p>parquet文件压缩</p>
+<p>parquet为文件提供了列式存储，查询时只会取出需要的字段和分区，对IO性能的提升非常大，同时占用空间较小，即使是parquet的uncompressed存储方式也比普通的文本要小的多。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sparkConf.set(&quot;spark.sql.parquet.compression.codec&quot;,&quot;gzip&quot;)</span><br><span class="line">dataset.write().parquet(&quot;path&quot;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>parquet存储提供了:</strong> <code>**lzo gzip snappy uncompressed 四种方式**。</code></p>
+<ol start="3">
+<li>spark sql 的csv文件压缩设置</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.write.mode(SaveMode.Overwrite).option(&quot;compression&quot;, &quot;gzip&quot;).csv(s&quot;$&#123;path&#125;&quot;)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>我不生产知识 我只是知识的搬运工</p>
 
       
     </div>
@@ -365,8 +449,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/12/13/Untitled/" rel="next" title="控制tvOS Focus Engine">
-                <i class="fa fa-chevron-left"></i> 控制tvOS Focus Engine
+              <a href="/2020/12/29/Java-%E9%AB%98%E6%80%A7%E8%83%BD%E4%B8%8B%E8%BD%BD/" rel="next" title="Java  高性能下载">
+                <i class="fa fa-chevron-left"></i> Java  高性能下载
               </a>
             
           </div>
@@ -374,10 +458,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/12/16/Spark/" rel="prev" title="内存模型学习-- Container Executor task之间的关系">
-                内存模型学习-- Container Executor task之间的关系 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -509,7 +589,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1%EF%BC%8Cmaster%E5%92%8Cworker%E8%8A%82%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">1，master和worker节点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2%EF%BC%8Cdriver%E5%92%8Cexecutor%E8%BF%9B%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">2，driver和executor进程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3%EF%BC%8C%E4%BE%8B%E5%9B%BE"><span class="nav-number">3.</span> <span class="nav-text">3，例图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%881%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">（1）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">3.2.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%882%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">（2）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%883%EF%BC%89"><span class="nav-number">3.4.</span> <span class="nav-text">（3）</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%8E%8B%E7%BC%A9%E7%9A%84%E5%A5%BD%E5%A4%84%E5%92%8C%E5%9D%8F%E5%A4%84"><span class="nav-number">1.</span> <span class="nav-text">1.压缩的好处和坏处</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%8E%8B%E7%BC%A9%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">2.压缩格式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#a-gzip"><span class="nav-number">2.1.</span> <span class="nav-text">a. gzip</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#b-lzo"><span class="nav-number">2.2.</span> <span class="nav-text">b. lzo</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#c-snappy"><span class="nav-number">2.3.</span> <span class="nav-text">c. snappy</span></a></li></ol></li></ol></div>
             
 
           </div>

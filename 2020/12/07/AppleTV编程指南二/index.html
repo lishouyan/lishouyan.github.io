@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://example.com/images/pasted-8.png">
 <meta property="og:image" content="http://example.com/images/pasted-9.png">
 <meta property="article:published_time" content="2020-12-06T18:16:00.000Z">
-<meta property="article:modified_time" content="2020-12-06T18:23:40.366Z">
+<meta property="article:modified_time" content="2021-01-27T07:52:15.926Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/images/pasted-5.png">
@@ -338,6 +338,8 @@
 <li>Apple TV 编程指南：资源管理</li>
 </ul>
 <h6 id="使用Apple-TV遥控器控制屏幕上的用户界面"><a href="#使用Apple-TV遥控器控制屏幕上的用户界面" class="headerlink" title="使用Apple TV遥控器控制屏幕上的用户界面"></a>使用Apple TV遥控器控制屏幕上的用户界面</h6><p>在iOS设备上，用户通过触屏直接进行交互。在苹果电视上，用户使用遥控器进行间接交互。用户浏览到一个特定的选项上，然后按下遥控器上一个按钮来选择这个选项。当用户选中屏幕上的选项时，该选项就会变成焦点。焦点是指用户间接地通过远程的或者其他的输入设备进行的输入行为引起的屏幕的外部效果。在一个以焦点为基础的交互模型中，在屏幕上的单一视图可以得到焦点，并且用户可以通过浏览屏幕上不同的UI选项将焦点移动到其他视图，从而引起焦点更新。得到焦点的视图被用作任何用户操作的目标事件。例如，如果一个屏幕上的按钮被选中，当由遥控器发送按钮选择事件时，目标事件将被触发。</p>
+<a id="more"></a>
+
 <p>UIKit框架只支持以焦点为基础的交互，在大多数情况下，这种行为只在有意义的地方自动提供。你可以要求以编程形式焦点更新，但不能将焦点往某个方向设置或者移动。例如，UIButton对象有焦点，但UILabel对象都没有。对于自定义用户界面组件的应用程序，你需要实现自定义的焦点目标事件，正如Supporting Focus Within Your App中解释一样。UIKit库中，如UIButton，UITextField，UITableView，UICollectionView，UITextView，UIsearchbar 以及UISegmentedControl有默认焦点。</p>
 <h6 id="焦点引擎控制焦点"><a href="#焦点引擎控制焦点" class="headerlink" title="焦点引擎控制焦点"></a>焦点引擎控制焦点</h6><p>包含可控制焦点的UIKit的系统和焦点移动称为焦点引擎。有许多用户可以控制焦点的输入设备，例如（不同类型）遥控器，游戏控制器，模拟器等等。在你的应用程序中，焦点引擎监听来自这些不同输入设备的焦点移动事件。当一个事件发生时，焦点引擎会自动判断更新焦点并通知你的应用程序。该系统有助于创造一个持续性的用户体验，即提供了每一个应用程序中所有当前和未来的输入方法的自动支持，并帮助开发人员专注于实现他们的应用程序的独特行为而不是定义或重塑基本的导航。</p>
 <p>只有焦点引擎才能显式更新焦点，这意味着没有一个可直接设置焦点的视图或移动焦点往一个特定方向的接口。如果用户发送一个移动事件，如果焦点引擎系统要求更新，或者如果应用程序请求更新，该焦点引擎只更新焦点。要了解更多关于如何手动更新的焦点，请参看 Updating Focus Programmatically 一节。</p>
@@ -537,7 +539,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -612,7 +614,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

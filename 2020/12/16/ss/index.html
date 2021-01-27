@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="ss是Socket Statistics的缩写。顾名思义，ss命令可以用来获取socket统计信息，它可以显示和netstat类似的内容。ss的优势在于它能够显示更多更详细的有关TCP和连接状态的信息，而且比netstat更快速更高效。 当服务器的socket连接数量变得非常大时，无论是使用netstat命令还是直接cat &#x2F;proc&#x2F;net&#x2F;tcp，执行速度都会很慢。 ss快的秘诀在于，它利用到">
+<meta name="description" content="ss是Socket Statistics的缩写。顾名思义，ss命令可以用来获取socket统计信息，它可以显示和netstat类似的内容。ss的优势在于它能够显示更多更详细的有关TCP和连接状态的信息，而且比netstat更快速更高效。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ss">
 <meta property="og:url" content="http://example.com/2020/12/16/ss/index.html">
 <meta property="og:site_name" content="Thousandth of Dirt">
-<meta property="og:description" content="ss是Socket Statistics的缩写。顾名思义，ss命令可以用来获取socket统计信息，它可以显示和netstat类似的内容。ss的优势在于它能够显示更多更详细的有关TCP和连接状态的信息，而且比netstat更快速更高效。 当服务器的socket连接数量变得非常大时，无论是使用netstat命令还是直接cat &#x2F;proc&#x2F;net&#x2F;tcp，执行速度都会很慢。 ss快的秘诀在于，它利用到">
+<meta property="og:description" content="ss是Socket Statistics的缩写。顾名思义，ss命令可以用来获取socket统计信息，它可以显示和netstat类似的内容。ss的优势在于它能够显示更多更详细的有关TCP和连接状态的信息，而且比netstat更快速更高效。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223532170-306875155.png">
 <meta property="og:image" content="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223533049-345723838.png">
@@ -93,7 +93,7 @@
 <meta property="og:image" content="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223535826-1562743745.png">
 <meta property="og:image" content="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223536763-140879039.png">
 <meta property="article:published_time" content="2020-12-16T13:36:01.000Z">
-<meta property="article:modified_time" content="2020-12-16T13:36:04.209Z">
+<meta property="article:modified_time" content="2021-01-27T07:41:37.022Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://images2018.cnblogs.com/blog/519608/201807/519608-20180706223532170-306875155.png">
@@ -327,6 +327,8 @@
 
       
         <p>ss是Socket Statistics的缩写。顾名思义，ss命令可以用来获取socket统计信息，它可以显示和netstat类似的内容。ss的优势在于它能够显示更多更详细的有关TCP和连接状态的信息，而且比netstat更快速更高效。</p>
+<a id="more"></a>
+
 <p>当服务器的socket连接数量变得非常大时，无论是使用netstat命令还是直接cat /proc/net/tcp，执行速度都会很慢。</p>
 <p>ss快的秘诀在于，它利用到了TCP协议栈中tcp_diag。tcp_diag是一个用于分析统计的模块，可以获得Linux 内核中第一手的信息，这就确保了ss的快捷高效。</p>
 <h3 id="ss常见命令参数"><a href="#ss常见命令参数" class="headerlink" title="ss常见命令参数"></a>ss常见命令参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Usage: ss [ OPTIONS ]&#96;&#96;    &#96;&#96;ss [ OPTIONS ] [ FILTER ]&#96;&#96;  &#96;&#96;-h, --help      this message&#96;&#96;  &#96;&#96;-V, --version    output version information&#96;&#96;  &#96;&#96;-n, --numeric    don&#39;t resolve service names&#96;&#96;  &#96;&#96;-r, --resolve    resolve host names&#96;&#96;  &#96;&#96;-a, --all      display all sockets&#96;&#96;  &#96;&#96;-l, --listening   display listening socket&#96;&#96;  &#96;&#96;-o, --options    show timer information&#96;&#96;  &#96;&#96;-e, --extended   show detailed socket information&#96;&#96;  &#96;&#96;-m, --memory    show socket memory usage&#96;&#96;  &#96;&#96;-p, --processes   show process using socket&#96;&#96;  &#96;&#96;-i, --info      show internal TCP information&#96;&#96;  &#96;&#96;-s, --summary    show socket usage summary&#96; &#96;  &#96;&#96;-4, --ipv4     display only IP version 4 sockets&#96;&#96;  &#96;&#96;-6, --ipv6     display only IP version 6 sockets&#96;&#96;  &#96;&#96;-0, --packet display PACKET sockets&#96;&#96;  &#96;&#96;-t, --tcp      display only TCP sockets&#96;&#96;  &#96;&#96;-u, --udp      display only UDP sockets&#96;&#96;  &#96;&#96;-d, --dccp      display only DCCP sockets&#96;&#96;  &#96;&#96;-w, --raw      display only RAW sockets&#96;&#96;  &#96;&#96;-x, --unix      display only Unix domain sockets&#96;&#96;  &#96;&#96;-f, --family&#x3D;FAMILY display sockets of &#96;&#96;type&#96; &#96;FAMILY&#96; &#96;  &#96;&#96;-A, --query&#x3D;QUERY, --socket&#x3D;QUERY&#96;&#96;    &#96;&#96;QUERY :&#x3D; &#123;all|inet|tcp|udp|raw|unix|packet|netlink&#125;[,QUERY]&#96; &#96;  &#96;&#96;-D, --diag&#x3D;FILE   Dump raw information about TCP sockets to FILE&#96;&#96;  &#96;&#96;-F, --filter&#x3D;FILE  &#96;&#96;read&#96; &#96;filter information from FILE&#96;&#96;    &#96;&#96;FILTER :&#x3D; [ state TCP-STATE ] [ EXPRESSION ]</span><br></pre></td></tr></table></figure>
@@ -486,7 +488,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -561,7 +563,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
